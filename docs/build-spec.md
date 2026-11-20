@@ -118,6 +118,7 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 - **Characters:** Lucca and Nina both have complete frame sets, with the same animation names. Each has their own numbers in `data/movement.json`; today the only difference is height (1.9 and 1.7 tiles). Build the first map with Lucca and make the character a setting, not a constant.
 - **Sprites:** `assets/sprites/lucca/atlas/` and `assets/sprites/nina/atlas/`. The Lucca README explains every field, including the foot anchor, the hand anchor for ledge and rope frames, and the fist positions.
 - **Which frame when:** `pickFrame` in `feel-lab/index.html` is the reference. Port its choices.
+- **Stowed gear is not drawn.** An item appears only while it is in a hand or on its way there.
 - **Items:** `assets/sprites/items/`. The sword and shield are separate pictures pinned to his fists. Read "Which hand is which" and "Drawing and sheathing" in the Lucca README before touching this; the handedness rule is easy to get backwards. The lab's drawing code just after `pickFrame` is the reference.
 - Surfaces can be plain white lines for now, as in the lab: dashed for too steep to stand on, ground filled in dark beneath with its cliff faces drawn, scaffolds with thin posts. Tile art comes later.
 - **Background:** leave a hook for layers that scroll slower than the camera. The far layer will be a zoomed-out painting that moves at a small fraction of camera speed. No art for it yet; a flat colour is fine.

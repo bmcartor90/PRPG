@@ -310,6 +310,7 @@ Notes on Mind:
 - It still unequips that gear, for the leader only. If you sheathe and then end up in a fight, you are disadvantaged.
 - **It should be timely.** The best players should be able to weave it into their ninja moves, but it should not be free.
 - **Earlier concern, now answered by the refinements below:** "bursts versus sustained" implies sprinting costs stamina, and running dry during plain traversal with nothing at stake is a known way stamina systems annoy players.
+- **Stowed gear is invisible.** A sheathed sword or a put-away shield is not drawn on the character. Items only appear in a hand.
 
 ## When stat changes take effect
 
