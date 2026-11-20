@@ -35,6 +35,22 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 
 ---
 
+## Nina
+
+- **Reference picture:** `references/nina_anchor.png` (first frame of her walk sheet)
+- **Archetype:** not yet decided
+- **Height in the game:** not yet decided
+- **Size on a sheet:** about 321 pixels tall standing, hood up, on a 1536 x 864 sheet (Lucca is 307)
+- **Hair:** long, blonde, worn loose under the hood
+- **Outfit:** pale grey-white hooded wrap robe with wide sleeves, hood up; brown leather belt
+- **Legs and boots:** dark charcoal trousers, brown wrapped boots
+- **Skin:** light
+- **Distinguishing features:** the hood stays up in every frame
+- **Style:** chunky pixel art, crisp dark outline (same as Lucca)
+- **Sheets so far:** see `nina/README.md`
+
+---
+
 ## Template for a new character
 
 Copy this block, fill it in, and add a reference picture to `references/` once the first sheet comes back.
