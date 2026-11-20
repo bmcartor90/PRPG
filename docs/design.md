@@ -179,7 +179,7 @@ These have to be built in from the start, because they are painful to add later:
 ### Map size, doors and edges (decided 2026-11-19)
 
 - **A map is up to 344 by 344 tiles:** about 14 screens wide and 25 tall. There will be a lot of vertical climbing.
-- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below: your rise stops dead and your sideways speed carries on. Rock lower than you are tall cannot be got under, not even with a dodge slide; a crawl is not designed. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
+- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below: your rise stops dead and your sideways speed carries on. Rock lower than you are tall cannot be got under, not even with a dodge slide. That is intended: the slide is for dodging monsters. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
 - **Positions snap to sixths of a tile** in the map editor.
 - **Doors.** Press **interact** while standing at a door to go through it to another map. (Not up: up also mounts ladders, so a door near a ladder would be ambiguous.) Doors come in pairs. A door is 1.25 tiles wide, and you can enter from anywhere within it. They are an escape: you can use one while a monster has noticed you. A door can be marked locked, and then a plot element is needed to open it.
 - **Edges.** Walking off the edge of a map can lead to the opposite edge of another map. Edges are paired the way doors are.
@@ -306,7 +306,7 @@ Notes on Mind:
 - Press down while sprinting and he drops into a slide for a moment. It is for dodging things.
 - He is low during it (0.9 tiles against his standing 1.9), cannot steer, and loses speed. It ends by itself, or with a jump.
 - Lab starting numbers: 0.35 seconds, 70% of speed kept at the end (about 3.2 tiles covered from a full sprint), 5 stamina.
-- Nothing checks his height yet. It will matter once hazards and enemies exist.
+- **Its purpose is dodging monster hit boxes.** His low height during the slide is tested against monsters, not against rock. It does not let him under rock lower than he stands, and no crawl is planned.
 
 ### Stat scale
 

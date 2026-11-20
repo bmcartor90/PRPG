@@ -62,7 +62,7 @@ The lab is the reference. Port its behaviour, not its code style.
   - left to right: a surface, exactly like ground;
   - right to left: an **underside**. Rising into one stops his rise dead and leaves his sideways speed alone. Moving sideways into one that is too low for him is blocked, on the ground or in the air;
   - straight up or down: a **face**, which blocks like a cliff but has a bottom. He passes under it when his head is below that bottom.
-- **He always counts at full standing height against rock**, even during a dodge slide. Nothing lets him under rock lower than he is tall. (A crawl may come later; do not build one.)
+- **He always counts at full standing height against rock**, even during a dodge slide. Nothing lets him under rock lower than he is tall, and that is intended. The slide's lower height (`heightNow`) is for monster hit boxes, which do not exist yet.
 - Undersides are not checked while he is hanging, pulling up or climbing. A map should not run a climbable through rock.
 - The lab functions are `makeSlab`, `roofOver` and the bottom test in `hitCliffs`. `_world.json` lists the derived undersides and faces to check against.
 - **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
