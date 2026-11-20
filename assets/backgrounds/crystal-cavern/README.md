@@ -1,5 +1,17 @@
 # Crystal cavern background
 
+## Far layer (use this one)
+
+`Meshy_AI_crystal_cavern_far_matte.png`: 1536 x 864, as received. A cavern seen from far away: small, hazy, nothing at the scale of a character. This is the slow-scrolling far layer.
+
+- It did not repeat cleanly as delivered: the left and right edges differed by about four times the normal column-to-column change.
+- `far_matte_blue_repeating.png` and `far_matte_violet_repeating.png` are the fixed versions, 1344 x 864. The last 192 columns are cross-faded into the first 192, so copies placed side by side show no join.
+- The violet one has its blues moved to a dark muted violet so a navy character stands out. It came back blue although violet was asked for.
+
+Mock-ups: `docs/mockups/far-matte-mockup-1080p.png` and `far-matte-mockup-violet-1080p.png`.
+
+## First attempt (not suitable as delivered)
+
 `Meshy_AI_crystal_cavern_bg_matte.png`: 1536 x 864, one screen, opaque.
 
 `crystal_cavern_bg_violet.png`: the same image recoloured. Its blues are moved to a dark, muted violet so a navy character stands out against it; the warm torch colours are untouched. Made by a hue shift, not by Meshy. Compare the two mock-ups in `docs/mockups/`.
