@@ -39,7 +39,7 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 
 - **Reference picture:** `references/nina_anchor.png` (first frame of her walk sheet)
 - **Archetype:** not yet decided
-- **Height in the game:** not yet decided
+- **Height in the game:** 1.7 tiles
 - **Size on a sheet:** about 321 pixels tall standing, hood up, on a 1536 x 864 sheet (Lucca is 307)
 - **Hair:** long, blonde, worn loose under the hood
 - **Outfit:** pale grey-white hooded wrap robe with wide sleeves, hood up; brown leather belt

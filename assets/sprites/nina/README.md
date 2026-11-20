@@ -14,7 +14,7 @@ All sheets are 1536 x 864 with transparent backgrounds and empty fists.
 
 ## Size
 
-She stands about 321 pixels tall on a sheet against Lucca's 307, most of it the hood. Scale her by her own standing height, not his.
+She stands about 321 pixels tall on a sheet against Lucca's 307, most of it the hood. Scale her by her own standing height, not his: in the game she is 1.7 tiles tall and he is 1.9, so her art is drawn smaller than his even though it is larger on the sheet.
 
 ## Still missing before she can be played
 
