@@ -61,7 +61,7 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 - **Outfit:** full silver plate armour with a high collar; long navy cape; navy tabard with silver trim hanging from the belt
 - **Legs and boots:** dark trousers under plate greaves and plate boots
 - **Skin:** dark brown
-- **Hands:** not settled. Bare fists on three sheets, silver gauntlets on one
+- **Hands:** not settled. Bare fists on four sheets, silver gauntlets on one
 - **Distinguishing features:** the cape trails behind him in every frame
 - **Style:** chunky pixel art, crisp dark outline (same as Lucca)
 - **Sheets so far:** see `ramorand/README.md`
