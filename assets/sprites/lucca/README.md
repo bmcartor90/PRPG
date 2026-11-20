@@ -19,7 +19,7 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 | `Meshy_AI_Lucca_Rope_and_Climb_Sheet.png` | Rope climb (4), rope hang (1), one-handed rope (1), rope slide (1), ladder from behind (3), ladder rest (1), wall climb (2), wall hang (1) | Transparent | Yes |
 | `Meshy_AI_Lucca_Weapon_Draw_Sheet.png` | Draw sword (4), shield from back (2), draw staff (4), sword and shield (2) | Transparent | No. The items are painted into him, so this is a reference for where items sit in his hands. |
 | `Meshy_AI_Lucca_Invisible_Weapons_Sheet.png` | The same 12 poses with empty fists | Black | Not yet. These are the poses the items get pinned onto. |
-| `Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Not yet. Each item is drawn flat so it can be rotated to fit his hand. They are drawn much larger than him and must be scaled down: the sword is 514 pixels long against his 307-pixel height. |
+| `Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Cut out and scaled to his size in `../items/`. On the sheet they are drawn much larger than him: the sword is 514 pixels long against his 307-pixel height. |
 
 ## Known flaws in the sheets
 

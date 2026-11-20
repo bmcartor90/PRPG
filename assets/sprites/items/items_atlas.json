@@ -1,0 +1,55 @@
+{
+ "image": "items_atlas.png",
+ "scaledForStandingHeightPx": 307,
+ "note": "Items are separate pictures laid over the character, so one sword works with every animation. Each is already scaled to match the Lucca atlas. x, y, w, h locate it in the image. gripX, gripY is the point his hand holds, relative to the item's top-left; rotate the item about this point.",
+ "items": {
+  "sword": {
+   "x": 3,
+   "y": 3,
+   "w": 190,
+   "h": 38,
+   "gripX": 30.5,
+   "gripY": 19.2
+  },
+  "sheath": {
+   "x": 196,
+   "y": 3,
+   "w": 165,
+   "h": 24,
+   "gripX": 82.4,
+   "gripY": 11.8
+  },
+  "shield": {
+   "x": 364,
+   "y": 3,
+   "w": 136,
+   "h": 136,
+   "gripX": 68.1,
+   "gripY": 67.9
+  },
+  "shieldBack": {
+   "x": 503,
+   "y": 3,
+   "w": 135,
+   "h": 136,
+   "gripX": 67.7,
+   "gripY": 68.1
+  },
+  "shieldEdge": {
+   "x": 641,
+   "y": 3,
+   "w": 39,
+   "h": 136,
+   "gripX": 19.4,
+   "gripY": 68.1
+  },
+  "staff": {
+   "x": 683,
+   "y": 3,
+   "w": 342,
+   "h": 18,
+   "gripX": 171.0,
+   "gripY": 8.9
+  }
+ }
+}
