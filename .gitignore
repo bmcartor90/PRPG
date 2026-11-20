@@ -1,0 +1,26 @@
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+build~/
+# Unity writes .meta files into the simulation package when it opens the game project.
+sim/**/*.meta
+# The Unity project's generated folders.
+game/Library/
+game/Temp/
+game/Logs/
+game/obj/
+game/UserSettings/
+game/*.csproj
+game/*.sln
+game/Assets/Scenes/
+game/Assets/Scenes.meta
+# Built game and build logs.
+/build/
+/build-logs/
+game/Packages/packages-lock.json
+game/ProjectSettings/*
+!game/ProjectSettings/ProjectVersion.txt
+game/Assets/**/*.meta
+game/Assets/*.meta
