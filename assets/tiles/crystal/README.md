@@ -27,3 +27,12 @@
 - **Usable as fill and cliff face.** Each block has a dark outline. Trimmed by about 10 pixels it tiles side to side with no visible seam; top to bottom leaves a faint light line, which a short blend at the seam removes.
 - Same resolution problem as the platforms: a block is about 440 pixels wide, so its scale against the characters has to be chosen rather than read off.
 - Still missing: a walkable top edge (the surface you stand on), and inside and outside corners.
+
+# Ground edge set
+
+`source/Meshy_AI_crystal_ground_edge_tileset.png`: 1536 x 864, transparent, clean alpha. 9 pieces: top surface (plain and with crystals), two outside corners, two cliff-face columns, two inside corners, an underside with stalactites.
+
+- **Keep.** The top surface tiles left to right with only a faint join. The cliff columns need their joins blended to stack.
+- Brighter and more saturated than the wall set; toned down when cut.
+- The outside corners carry an overhang on their open side, and the cliff columns are outlined on both sides, so each is cut to the part that is needed.
+- In the lab (`tools/sprites/lab_art.py`): the top surface becomes `edge_top.png`, drawn along every piece of solid ground and sheared to follow slopes, with its row 3 on the walking line; a cliff column becomes `edge_face.png`, drawn down every cliff face. Corners and the underside are not used yet.

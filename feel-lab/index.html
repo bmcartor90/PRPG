@@ -1203,9 +1203,11 @@ const ITEMS = {"sword":[3,3,190,38,30.5,19.2],"sheath":[196,3,165,24,82.4,11.8],
 // Each scaffold piece is [x, y, w, h, yOnSheet] in scaffold.png; yOnSheet places it against the shared walking surface, surfaceY.
 const SCAFFOLD = {"pxPerTile":151,"surfaceY":59,"pieces":{"deckLeft":[2,2,340,162,44],"deckMid":[344,2,538,63,58],"deckRight":[884,2,341,162,44],"postMid":[1227,2,45,247,227],"ladder":[1274,2,108,295,510],"rope":[1384,2,112,306,509],"ropeTop":[1498,2,129,276,511]}};
 const ROCK_PX_PER_TILE = 160, FAR_PARALLAX = 0.12;
-const ART = {far:new Image(), rock:new Image(), scaffold:new Image(), ready:0, pat:null};
-for (const [k, src] of [['far', 'cavern_far.jpg'], ['rock', 'rock.png'], ['scaffold', 'scaffold.png']]){ ART[k].onload = () => { ART.ready++; }; ART[k].src = src; }
-const artOn = () => opts.art && ART.ready === 3;
+const ART = {far:new Image(), rock:new Image(), scaffold:new Image(), edgeTop:new Image(), edgeFace:new Image(), ready:0, pat:null};
+const ART_FILES = [['far', 'cavern_far.jpg'], ['rock', 'rock.png'], ['scaffold', 'scaffold.png'], ['edgeTop', 'edge_top.png'], ['edgeFace', 'edge_face.png']];
+for (const [k, src] of ART_FILES){ ART[k].onload = () => { ART.ready++; }; ART[k].src = src; }
+const artOn = () => opts.art && ART.ready === ART_FILES.length;
+const EDGE_SURFACE_ROW = 3;   // the row of edge_top.png that lies on the walking surface
 const ITEM_PX_PER_TILE = 307/1.9;
 const itemImg = new Image();
 let itemsReady = false;
@@ -1274,6 +1276,27 @@ function pickFrame(p){
   if (sp < 0.4) return F.walk[0];
   if (running) return F.run[Math.floor(anim.dist/RUN_CYCLE*6) % 6];
   return F.walk[1 + Math.floor(anim.dist/WALK_CYCLE*4) % 4];
+}
+// Rock edges: a face strip down every cliff (drawn with open air on its left, mirrored for the other side), then the top-surface
+// strip along every piece of solid ground, sheared to follow slopes. Both are anchored to the world so they do not swim.
+function drawEdges(X, Y, s){
+  const k = s/ROCK_PX_PER_TILE;
+  if (!ART.patTop){ ART.patTop = ctx.createPattern(ART.edgeTop, 'repeat-x'); ART.patFace = ctx.createPattern(ART.edgeFace, 'repeat-y'); }
+  if (!ART.patTop || !ART.patTop.setTransform) return;
+  const fw = ART.edgeFace.width*k;
+  for (const W of CLIFFS){
+    const y0 = Y(W.top), y1 = Y(W.bottom === -Infinity ? -40 : W.bottom);
+    ctx.save(); ctx.translate(X(W.x), 0); if (W.face > 0) ctx.scale(-1, 1);
+    ART.patFace.setTransform(new DOMMatrix([k, 0, 0, k, 0, Y(0)])); ctx.fillStyle = ART.patFace; ctx.fillRect(0, y0, fw, y1 - y0);
+    ctx.restore();
+  }
+  for (const L of LINES) if (L.solid){
+    const x1 = X(L.x1), x2 = X(L.x2), ya = Y(L.y1), sl = (Y(L.y2) - ya)/(x2 - x1);
+    ctx.save(); ctx.transform(1, sl, 0, 1, x1, ya);
+    ART.patTop.setTransform(new DOMMatrix([k, 0, 0, k, X(0) - x1, -EDGE_SURFACE_ROW*k])); ctx.fillStyle = ART.patTop;
+    ctx.fillRect(0, -EDGE_SURFACE_ROW*k, x2 - x1, ART.edgeTop.height*k);
+    ctx.restore();
+  }
 }
 // Scaffold deck along a flat jump-through surface: middle sections repeated, end caps clipped so short decks still get both ends;
 // posts down to the ground under each end.
@@ -1442,8 +1465,9 @@ function render(alpha){
   for (const L of LINES) if (L.solid && !L.slab){
     ctx.beginPath(); ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); ctx.lineTo(X(L.x2), Y(-40)); ctx.lineTo(X(L.x1), Y(-40)); ctx.closePath(); ctx.fill();
   }
+  if (art) drawEdges(X, Y, s);
   ctx.strokeStyle = art ? '#0b0914' : '#8a8a8a'; ctx.lineWidth = Math.max(1.5, lw*(art ? 0.8 : 0.6)); ctx.lineCap = 'butt'; ctx.beginPath();
-  for (const W of CLIFFS){ ctx.moveTo(X(W.x), Y(W.top)); ctx.lineTo(X(W.x), Y(W.bottom === -Infinity ? -40 : W.bottom)); }
+  if (!art) for (const W of CLIFFS){ ctx.moveTo(X(W.x), Y(W.top)); ctx.lineTo(X(W.x), Y(W.bottom === -Infinity ? -40 : W.bottom)); }
   for (const U of ROOFS){ ctx.moveTo(X(U.x1), Y(U.y1)); ctx.lineTo(X(U.x2), Y(U.y2)); }
   ctx.stroke();
   // Scaffolds: thin posts underneath, so they read as something built that you can jump up through.
@@ -1456,7 +1480,7 @@ function render(alpha){
   ctx.stroke();
   ctx.strokeStyle = art ? '#b4c2f2' : '#fff'; ctx.lineWidth = art ? Math.max(1.5, lw*0.55) : lw; ctx.lineCap = 'round';   // with art: a pale rim on rock tops; scaffold decks draw their own
   ctx.setLineDash([]); ctx.beginPath();
-  for (const L of LINES) if (!isSteep(L, P) && !(art && !L.solid && L.y1 === L.y2)){ ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); }
+  for (const L of LINES) if (!isSteep(L, P) && !(art && (L.solid || L.y1 === L.y2))){ ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); }
   ctx.stroke();
   ctx.lineCap = 'butt'; ctx.setLineDash([lw*3, lw*2.5]); ctx.beginPath();   // too steep to stand on
   for (const L of LINES) if (isSteep(L, P)){ ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); }

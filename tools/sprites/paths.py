@@ -45,6 +45,7 @@ SHEETS={
  '9bb47414':'props/doors/source/Meshy_AI_active_portal_loop_animation_sheet.png',
  '87dfda67':'props/doors/source/Meshy_AI_modular_stone_arch_door_states_sheet_1.png',
  '60f35940':'props/doors/source/Meshy_AI_portal_vortex_isolated_circle.png',
+ 'c88628f8':'tiles/crystal/source/Meshy_AI_crystal_ground_edge_tileset.png',
  '6d34fc5c':'props/doors/source/Meshy_AI_shimmering_portal_loop_sheet.png',
 }
 def SRC(i):

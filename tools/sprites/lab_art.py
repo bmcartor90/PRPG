@@ -15,6 +15,17 @@ def wrap(a,axis,band):
     a[:band]=a[:band]*t+a[n-band:]*(1-t); a=a[:n-band]; return np.moveaxis(a,0,axis)
 r=wrap(wrap(r,1,40),0,40)*0.72   # darker than the art itself, so the characters stand out against it
 Image.fromarray(r.clip(0,255).astype(np.uint8)).save(f'{LAB}/rock.png',optimize=True)
+# Ground edges from the edge set, toned down to sit with the rock fill (the edge set came out brighter and more saturated than the wall set).
+E=np.asarray(Image.open(SRC('c88628f8')).convert('RGBA')).astype(float)
+def edge(x0,y0,x1,y1):
+    c=E[y0:y1,x0:x1].copy(); g=c[...,:3].mean(-1,keepdims=True); c[...,:3]=(c[...,:3]*0.8+g*0.2)*0.78; return c   # a little less saturated, darker
+TOP_ROWS=120
+t=edge(48+3,181,48+362-3,181+TOP_ROWS); t=wrap(t,1,30)                      # top surface strip, repeats left to right
+t[-45:,:,3]*=np.linspace(1,0,45)[:,None]                                     # fades into the rock fill below
+Image.fromarray(t.clip(0,255).astype(np.uint8),'RGBA').save(f'{LAB}/edge_top.png',optimize=True)
+f=edge(49,472+4,49+70,472+313-4); f=wrap(f,0,40)                             # cliff face strip, open air on its left, repeats top to bottom
+f[:,-30:,3]*=np.linspace(1,0,30)[None,:]
+Image.fromarray(f.clip(0,255).astype(np.uint8),'RGBA').save(f'{LAB}/edge_face.png',optimize=True)
 # Scaffold: pack the pieces the lab uses into one image.
 S=Image.open(f'{A}/tiles/scaffold/source/Meshy_AI_miner_scaffold_tileset.png').convert('RGBA'); P=json.load(open(f'{A}/tiles/scaffold/scaffold_pieces.json'))
 names=['deckLeft','deckMid','deckRight','postMid','ladder','rope','ropeTop']; out={}; ims=[]; X=2
