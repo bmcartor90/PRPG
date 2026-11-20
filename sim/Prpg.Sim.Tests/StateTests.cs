@@ -23,7 +23,7 @@ namespace Prpg.Sim.Tests
                 B(p.Stamina), B(p.Exhaust), p.Winded.ToString(), p.Spent.ToString(), p.Crouch.ToString(), p.Mode.ToString(),
                 p.HangLine.ToString(), p.HangSide.ToString(), B(p.HangProg), B(p.HangY0), p.Climb.ToString(),
                 B(p.GrabLock), p.Lunge.ToString(), B(p.Prone), p.HeldLeft.ToString(), p.HeldRight.ToString(),
-                p.SwapHand.ToString(), B(p.SwapT), B(p.SwapTotal),
+                p.SwapHand.ToString(), B(p.SwapT), B(p.SwapTotal), B(p.Duck), p.DownWas.ToString(),
             });
         }
 
@@ -151,7 +151,7 @@ namespace Prpg.Sim.Tests
         [Fact]
         public void RandomStateIsPartOfSaveAndRestore()
         {
-            var sim = Simulation.Start(Repo.Map(), Repo.Lucca(), 20, 0, 99, 100);
+            var sim = Simulation.Start(Repo.Map(), Repo.Lucca(), Repo.World(), 20, 0, 99, 100);
             var saved = sim.Save();
             var a = new[] { sim.State.RunRng.NextUInt(), sim.State.BattleRng.NextUInt() };
             sim.Restore(saved);
@@ -162,7 +162,7 @@ namespace Prpg.Sim.Tests
         [Fact]
         public void SeedsRoundTripAsText()
         {
-            var sim = Simulation.Start(Repo.Map(), Repo.Lucca(), 20, 0, 0x75BCD15UL, ulong.MaxValue);
+            var sim = Simulation.Start(Repo.Map(), Repo.Lucca(), Repo.World(), 20, 0, 0x75BCD15UL, ulong.MaxValue);
             Assert.True(SimState.TryParseSeed(sim.State.RunSeedText, out var run));
             Assert.True(SimState.TryParseSeed(sim.State.BattleSeedText, out var battle));
             Assert.Equal(0x75BCD15UL, run);

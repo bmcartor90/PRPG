@@ -30,6 +30,7 @@ namespace Prpg.Sim
         public double SlideSteer;
         public double SlideJump;
         public double FootWidth;
+        public double BodyWidth;
         public double StaminaMax;
         public double JumpCost;
         public double RunDrain;
@@ -54,16 +55,46 @@ namespace Prpg.Sim
         public double DrawTime;
         public double ClimbSprint;
         public double ClimbSprintCost;
+        public double DuckTime;
+        public double DuckKeep;
+        public double DuckCost;
+        public double DuckHeight;
 
-        /// <summary>Every parameter name, in the order the file and the tuning panel list them.</summary>
-        public static readonly string[] Names = {
-            "jumpHeight", "apexTime", "fallMult", "cutMult", "terminal", "walkSpeed", "runSpeed", "accelTime",
-            "stopTime", "turnTime", "airControl", "coyoteMs", "bufferMs", "hardCut", "walkLimit", "upCost",
-            "downBoost", "slideFriction", "slideSteer", "slideJump", "footWidth", "staminaMax", "jumpCost", "runDrain",
-            "walkRegen", "crouchRegen", "exhaustTime", "charHeight", "armReach", "lungeLean", "lungeCost", "proneTime",
-            "pullTime", "pullCost", "climbSpeed", "weight", "climbEffort", "hangCost", "multLadder", "multRope",
-            "multWall", "oneHand", "drawTime", "climbSprint", "climbSprintCost"
+        // Fixed numbers: no slider in the lab, but still per-character tuning (the lab's BODY table).
+        public double CatchOut;   // tiles outside a ledge end that still catch it
+        public double CatchUnder;   // tiles under a ledge (inside its end) that still catch it
+        public double CatchMinDrop;   // the ledge must be at least this far above his feet to be caught
+        public double HangOut;   // where he hangs: this far outside the ledge end
+        public double HangIn;   // where a pull-up puts him: this far in from the end
+        public double HangEase;   // share of the remaining distance he closes each tick while settling into the hang
+        public double ClimbReach;   // tiles either side of a climbable that still catch it, and of a platform at its top or bottom
+        public double ClimbJumpSpeed;   // sprint-jumping off a climbable leaves at this share of run speed
+        public double SlideDownSpeed;   // sliding down a ladder or rope is this many times climb speed
+        public double DropGrabLock;   // seconds after letting go before he can grab again
+        public double JumpGrabLock;   // seconds after jumping off a climbable before he can grab again
+        public double WindedUntil;   // after exhaustion he cannot sprint until this share of the stamina bar is back
+        public double SprintShare;   // he counts as sprinting above walk speed plus this share of the gap up to run speed
+        public double DuckStopShare;   // a dodge slide ends early below this share of walk speed
+
+        /// <summary>The numbers the lab has sliders for, in file order.</summary>
+        public static readonly string[] SliderNames = {
+            "jumpHeight", "apexTime", "fallMult", "cutMult", "terminal", "walkSpeed", "runSpeed",
+            "accelTime", "stopTime", "turnTime", "airControl", "coyoteMs", "bufferMs", "hardCut",
+            "walkLimit", "upCost", "downBoost", "slideFriction", "slideSteer", "slideJump", "footWidth",
+            "bodyWidth", "staminaMax", "jumpCost", "runDrain", "walkRegen", "crouchRegen", "exhaustTime",
+            "charHeight", "armReach", "lungeLean", "lungeCost", "proneTime", "pullTime", "pullCost",
+            "climbSpeed", "weight", "climbEffort", "hangCost", "multLadder", "multRope", "multWall",
+            "oneHand", "drawTime", "climbSprint", "climbSprintCost", "duckTime", "duckKeep", "duckCost",
+            "duckHeight"
         };
+        /// <summary>Per-character numbers with no slider in the lab (its BODY table).</summary>
+        public static readonly string[] FixedNames = {
+            "catchOut", "catchUnder", "catchMinDrop", "hangOut", "hangIn", "hangEase", "climbReach",
+            "climbJumpSpeed", "slideDownSpeed", "dropGrabLock", "jumpGrabLock", "windedUntil", "sprintShare", "duckStopShare"
+        };
+        /// <summary>Every parameter name, in the order the file and the tuning panel list them.</summary>
+        public static readonly string[] Names = Concat(SliderNames, FixedNames);
+        static string[] Concat(string[] a, string[] b) { var r = new string[a.Length + b.Length]; a.CopyTo(r, 0); b.CopyTo(r, a.Length); return r; }
         public static bool IsSwitch(string name) => Array.IndexOf(new[] { "hardCut" }, name) >= 0;
 
         public double Get(string name)
@@ -91,6 +122,7 @@ namespace Prpg.Sim
                 case "slideSteer": return SlideSteer;
                 case "slideJump": return SlideJump;
                 case "footWidth": return FootWidth;
+                case "bodyWidth": return BodyWidth;
                 case "staminaMax": return StaminaMax;
                 case "jumpCost": return JumpCost;
                 case "runDrain": return RunDrain;
@@ -115,6 +147,24 @@ namespace Prpg.Sim
                 case "drawTime": return DrawTime;
                 case "climbSprint": return ClimbSprint;
                 case "climbSprintCost": return ClimbSprintCost;
+                case "duckTime": return DuckTime;
+                case "duckKeep": return DuckKeep;
+                case "duckCost": return DuckCost;
+                case "duckHeight": return DuckHeight;
+                case "catchOut": return CatchOut;
+                case "catchUnder": return CatchUnder;
+                case "catchMinDrop": return CatchMinDrop;
+                case "hangOut": return HangOut;
+                case "hangIn": return HangIn;
+                case "hangEase": return HangEase;
+                case "climbReach": return ClimbReach;
+                case "climbJumpSpeed": return ClimbJumpSpeed;
+                case "slideDownSpeed": return SlideDownSpeed;
+                case "dropGrabLock": return DropGrabLock;
+                case "jumpGrabLock": return JumpGrabLock;
+                case "windedUntil": return WindedUntil;
+                case "sprintShare": return SprintShare;
+                case "duckStopShare": return DuckStopShare;
                 default: throw new ArgumentException("Unknown movement parameter " + name);
             }
         }
@@ -144,6 +194,7 @@ namespace Prpg.Sim
                 case "slideSteer": SlideSteer = v; return true;
                 case "slideJump": SlideJump = v; return true;
                 case "footWidth": FootWidth = v; return true;
+                case "bodyWidth": BodyWidth = v; return true;
                 case "staminaMax": StaminaMax = v; return true;
                 case "jumpCost": JumpCost = v; return true;
                 case "runDrain": RunDrain = v; return true;
@@ -168,6 +219,24 @@ namespace Prpg.Sim
                 case "drawTime": DrawTime = v; return true;
                 case "climbSprint": ClimbSprint = v; return true;
                 case "climbSprintCost": ClimbSprintCost = v; return true;
+                case "duckTime": DuckTime = v; return true;
+                case "duckKeep": DuckKeep = v; return true;
+                case "duckCost": DuckCost = v; return true;
+                case "duckHeight": DuckHeight = v; return true;
+                case "catchOut": CatchOut = v; return true;
+                case "catchUnder": CatchUnder = v; return true;
+                case "catchMinDrop": CatchMinDrop = v; return true;
+                case "hangOut": HangOut = v; return true;
+                case "hangIn": HangIn = v; return true;
+                case "hangEase": HangEase = v; return true;
+                case "climbReach": ClimbReach = v; return true;
+                case "climbJumpSpeed": ClimbJumpSpeed = v; return true;
+                case "slideDownSpeed": SlideDownSpeed = v; return true;
+                case "dropGrabLock": DropGrabLock = v; return true;
+                case "jumpGrabLock": JumpGrabLock = v; return true;
+                case "windedUntil": WindedUntil = v; return true;
+                case "sprintShare": SprintShare = v; return true;
+                case "duckStopShare": DuckStopShare = v; return true;
                 default: return false;
             }
         }

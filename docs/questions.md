@@ -1,15 +1,21 @@
 # Questions and assumptions
 
-One line each: the question, and what the code assumes until Brad answers.
+One line each: the question, and what the code assumes until Brad answers. Answers live in `answers.md`.
 
 ## Step 1: simulation
 
-1. **Trace count.** The spec says 16 traces; `feel-lab/traces/` has 15 runs plus `_world.json`. Assumed 15 is right; all 15 pass.
-2. **"Grounded" in the lab vs the design.** The lab's `grounded` is true while sliding down a too-steep slope, and the traces record it that way. The code calls that `OnGround` and uses `Grounded` for the design term (standing on walkable ground). Assumed **sliding is not anchored**, since gravity is acting on him. Confirm.
-3. **Fixed numbers that are not in `movement.json`.** The lab hard-codes these, so the port does too, unchanged: body radius 0.45, ground-snap distance 0.3, hang offsets 0.3 out / 0.4 in, ledge catch 0.8 outside / 0.6 under, ledge-end join 0.05, climbable reach 0.6, step-off tolerance 0.15, jump off a climbable at 0.8 × run speed, grab lock 0.3 s after letting go and 0.45 s after jumping off, hang ease 35% per tick, sliding down a rope or ladder at 3 × climb speed, winded until 25% stamina, pull-up moves sideways in its last 40%, respawn below y = -7. Should any of these become per-character numbers (the ledge catch distances look like they could be)?
-4. **Respawn below y = -7** is a lab convenience. Ported as is. Keep it for the game, or replace it later with the faint/fall rules?
-5. **`movement.json` shape** is `{"characters": {"Lucca": {...}}}` so each character has its own numbers. Assumed that is fine.
-6. **Not ported:** the lab's jump trail and "last jump" readout. They only feed the lab's on-screen measurements and do not affect movement.
-7. **Cross-machine exactness.** Slope angles use the platform's sin, cos and atan2 once, when a map loads. On Linux .NET the port matches the lab bit for bit. Windows or PlayStation could differ in the last bit on sloped lines. That does not affect how it feels; it would matter only if a recorded run must replay identically on another machine. Assumed not needed yet; fixable later by computing those values ourselves.
-8. **Random number generator:** PCG32 with 64-bit seeds, shown as `RUN-` / `BTL-` plus 16 hex digits. The format is a placeholder and can change until someone shares a seed.
-9. **Long stalls:** if the screen freezes, the simulation catches up at most 8 ticks per frame and then drops the rest of the lost time rather than racing. Assumed fine.
+1. **Trace count.** Answered: 22. All 22 pass.
+2. **"Grounded" twice.** Answered: `OnGround` (lab) and `Grounded` (design). Sliding is not anchored (recommended; awaiting Brad). Built that way.
+3. **Fixed numbers.** Answered. The lab's `BODY` numbers are in `data/movement.json` with each character's other numbers; `WORLD` numbers are in `data/world.json`.
+4. **Respawn below the map.** Kept as is (recommended; awaiting Brad).
+5. **`movement.json` keyed by character.** Answered. Nina added: Lucca's numbers with `charHeight` 1.7.
+6. **Jump trail and readout not ported.** Answered.
+7. **Exactness across machines.** Still open. The spec's map format changed this round, which `answers.md` named as the moment to store each slope's sine and cosine in the map file. Not done yet: it would mean hand-written maps carry computed numbers that must agree with the coordinates. Proposal: do it when a map editor or exporter writes the map files, so no person types them. Until then it is a known limit: on another platform, sloped lines may differ in the last bit.
+8. **Seed format.** Answered: placeholder.
+9. **Catch-up after a stall.** Answered.
+
+## Step 1, second round (cliffs, scaffolds, dodge slide)
+
+10. **Numbers still written into the lab's code.** Not in `BODY` or `WORLD`, so ported as constants, unchanged: cliff derivation looks 0.01 beyond a ground end and treats ground within 0.05 as continuing; a cliff only blocks feet more than 0.02 below its top; he counts as running above walk speed + 0.1 (the dodge slide uses `sprintShare` instead); crouching needs speed under 0.2; uphill top speed never drops below 10%; a pull-up starts moving him sideways after 60% of it. Should these join the tables?
+11. **Line order.** The lab keeps one list of lines in the order the level code made them, mixing ground and scaffolds, and that order settles ties. The map file splits ground from scaffolds, so the code numbers ground first, then scaffolds. All 22 traces still match exactly. Assumed fine; a map with exact ties between a ground line and a scaffold could in principle behave differently from the lab.
+12. **`feel-lab/README.md` says 20 traces;** there are 22. Not edited, since `feel-lab/` is off limits to me.

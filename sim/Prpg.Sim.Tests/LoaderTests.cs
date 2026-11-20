@@ -9,7 +9,7 @@ namespace Prpg.Sim.Tests
         [Fact]
         public void MapIgnoresFieldsItDoesNotKnow()
         {
-            var m = Map.Load(@"{""width"": 10, ""areas"": [{""id"": 1}], ""monsters"": null, ""lines"": [[0, 0, 10, 0]], ""climbables"": []}");
+            var m = Map.Load(@"{""width"": 10, ""areas"": [{""id"": 1}], ""monsters"": null, ""ground"": [[0, 0, 10, 0]], ""climbables"": []}");
             Assert.Single(m.Lines);
             Assert.Equal(10, m.Width);
         }
@@ -17,7 +17,7 @@ namespace Prpg.Sim.Tests
         [Fact]
         public void MapAcceptsFractionalHeights()
         {
-            var m = Map.Load(@"{""width"": 10, ""lines"": [[0, 1.66, 4, 1.66]], ""climbables"": [{""kind"": ""Rope"", ""x"": 2.5, ""y1"": 0, ""y2"": 1.66, ""colour"": ""red""}]}");
+            var m = Map.Load(@"{""width"": 10, ""scaffolds"": [[0, 1.66, 4, 1.66]], ""climbables"": [{""kind"": ""Rope"", ""x"": 2.5, ""y1"": 0, ""y2"": 1.66, ""colour"": ""red""}]}");
             Assert.Equal(1.66, m.Lines[0].Y1);
             Assert.Equal(ClimbKind.Rope, m.Climbables[0].Kind);
         }

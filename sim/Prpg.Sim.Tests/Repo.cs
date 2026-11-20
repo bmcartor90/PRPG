@@ -22,6 +22,7 @@ namespace Prpg.Sim.Tests
 
         public static Map Map() => Sim.Map.Load(Read("data", "maps", "test.json"));
         public static Movement Lucca() => MovementFile.Load(Read("data", "movement.json"), "Lucca");
+        public static WorldRules World() => WorldRules.Load(Read("data", "world.json"));
 
         public static IEnumerable<string> TraceNames() =>
             Directory.GetFiles(Path.Combine(Root, "feel-lab", "traces"), "*.json")
@@ -41,7 +42,7 @@ namespace Prpg.Sim.Tests
         public static Trace Load(string name)
         {
             var o = (JsonObject)Json.Parse(Repo.Read("feel-lab", "traces", name + ".json"));
-            var t = new Trace { Name = name, StartX = o.Number("startX") };
+            var t = new Trace { Name = name, StartX = o.Number("startX"), StartY = o.Number("startY") };
             // Rebuild per-tick input exactly as make-traces.js does.
             bool prevJump = false;
             foreach (JsonObject seg in o.Array("inputs"))
@@ -70,6 +71,7 @@ namespace Prpg.Sim.Tests
             return t;
         }
 
-        public Simulation Start(Map map, Movement m) => Simulation.Start(map, m, StartX, Simulation.GroundLineAt(map, StartX), 12345, 67890);
+        public double StartY;
+        public Simulation Start(Map map, Movement m) => Simulation.Start(map, m, Repo.World(), StartX, Simulation.GroundLineAt(map, StartX), 12345, 67890);
     }
 }

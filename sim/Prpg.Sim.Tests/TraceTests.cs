@@ -23,6 +23,7 @@ namespace Prpg.Sim.Tests
             var map = Repo.Map();
             var sim = t.Start(map, Repo.Lucca());
             Assert.Equal(t.States.Count, t.Inputs.Count);
+            Assert.Equal(t.StartY, sim.State.Player.Y);
             for (int i = 0; i < t.Inputs.Count; i++)
             {
                 sim.Step(t.Inputs[i]);
@@ -40,6 +41,7 @@ namespace Prpg.Sim.Tests
                 Assert.True((double)e[6] == (p.OnGround ? 1 : 0), $"{where}: grounded {p.OnGround}, lab {e[6]}");
                 Assert.True((double)e[7] == (p.HeldLeft ? 1 : 0), $"{where}: left hand {p.HeldLeft}, lab {e[7]}");
                 Assert.True((double)e[8] == (p.HeldRight ? 1 : 0), $"{where}: right hand {p.HeldRight}, lab {e[8]}");
+                Assert.True((double)e[9] == (p.DodgeSliding ? 1 : 0), $"{where}: dodge slide {p.DodgeSliding}, lab {e[9]}");
             }
         }
 
@@ -50,15 +52,46 @@ namespace Prpg.Sim.Tests
         }
 
         [Fact]
-        public void ThereAreFifteenTraces() => Assert.Equal(15, Repo.TraceNames().Count());
+        public void ThereAreTwentyTwoTraces() => Assert.Equal(22, Repo.TraceNames().Count());
+
+        [Fact]
+        public void CliffsMatchTheLab()
+        {
+            var w = (JsonObject)Json.Parse(Repo.Read("feel-lab", "traces", "_world.json"));
+            var lab = w.Array("cliffs").Cast<JsonObject>().Select(c =>
+                $"{c.Number("x"):R} {c.Number("top"):R} {(c.Get("bottom") == null ? "out" : c.Number("bottom").ToString("R"))} {c.String("openSide")}").ToList();
+            var ours = Repo.Map().Cliffs.Select(c =>
+                $"{c.X:R} {c.Top:R} {(double.IsNegativeInfinity(c.Bottom) ? "out" : c.Bottom.ToString("R"))} {(c.Face < 0 ? "left" : "right")}").ToList();
+            Assert.Equal(lab, ours);
+        }
+
+        [Fact]
+        public void NinaIsLuccaButShorter()
+        {
+            var text = Repo.Read("data", "movement.json");
+            var lucca = MovementFile.Load(text, "Lucca");
+            var nina = MovementFile.Load(text, "Nina");
+            foreach (var n in Movement.Names)
+                if (n == "charHeight") Assert.Equal(1.7, nina.Get(n));
+                else Assert.True(lucca.Get(n) == nina.Get(n), n);
+        }
 
         [Fact]
         public void DataFilesMatchTheLabWorld()
         {
             var w = (JsonObject)Json.Parse(Repo.Read("feel-lab", "traces", "_world.json"));
-            var labParams = Movement.FromJson(w.Object("params"));
+            var labParams = w.Object("params");
             var lucca = Repo.Lucca();
-            foreach (var n in Movement.Names) Assert.True(labParams.Get(n) == lucca.Get(n), "movement.json differs from the lab on " + n);
+            Assert.Equal(Movement.SliderNames, labParams.Keys.ToArray());
+            foreach (var n in labParams.Keys) Assert.True(labParams.Number(n) == lucca.Get(n), "movement.json differs from the lab on " + n);
+
+            var fixedChar = w.Object("fixed").Object("character");
+            foreach (var n in fixedChar.Keys) Assert.True(fixedChar.Number(n) == lucca.Get(n), "movement.json differs from the lab's BODY table on " + n);
+            Assert.Equal(Movement.FixedNames, fixedChar.Keys.ToArray());
+            var fixedWorld = w.Object("fixed").Object("world");
+            var world = Repo.World();
+            Assert.Equal(WorldRules.Names, fixedWorld.Keys.ToArray());
+            foreach (var n in fixedWorld.Keys) Assert.True(fixedWorld.Number(n) == world.Get(n), "world.json differs from the lab's WORLD table on " + n);
 
             var labMap = Map.FromJson(w.Object("world"));
             var map = Repo.Map();
@@ -67,7 +100,7 @@ namespace Prpg.Sim.Tests
             for (int i = 0; i < map.Lines.Count; i++)
             {
                 var a = labMap.Lines[i]; var b = map.Lines[i];
-                Assert.True(a.X1 == b.X1 && a.Y1 == b.Y1 && a.X2 == b.X2 && a.Y2 == b.Y2, "line " + i + " differs");
+                Assert.True(a.Solid == b.Solid && a.X1 == b.X1 && a.Y1 == b.Y1 && a.X2 == b.X2 && a.Y2 == b.Y2, "line " + i + " differs");
             }
             Assert.Equal(labMap.Climbables.Count, map.Climbables.Count);
             for (int i = 0; i < map.Climbables.Count; i++)

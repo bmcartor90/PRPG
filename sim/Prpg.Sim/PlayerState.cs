@@ -35,6 +35,9 @@ namespace Prpg.Sim
         public int SwapHand = -1;            // hand with a draw or sheathe in progress (0 left, 1 right), or -1
         public double SwapT, SwapTotal;
 
+        public double Duck;                  // dodge slide time left (0 when not sliding)
+        public bool DownWas;                 // down was held last tick, so a press can be told from a hold
+
         public bool Held(int hand) => hand == 0 ? HeldLeft : HeldRight;
         public void SetHeld(int hand, bool v) { if (hand == 0) HeldLeft = v; else HeldRight = v; }
 
@@ -46,8 +49,9 @@ namespace Prpg.Sim
         public bool Anchored(Map map, Movement p) => Mode != Mode.Normal || (OnGround && !Sliding(map, p));
         /// <summary>Anchored and standing on walkable ground.</summary>
         public bool Grounded(Map map, Movement p) => Mode == Mode.Normal && OnGround && !Sliding(map, p);
-        /// <summary>Anything that is not grounded.</summary>
-        public bool InDynamicAction(Map map, Movement p) => !Grounded(map, p);
+        /// <summary>Anything that is not grounded. The dodge slide counts too, although he is on walkable ground.</summary>
+        public bool InDynamicAction(Map map, Movement p) => !Grounded(map, p) || Duck > 0;
+        public bool DodgeSliding => Duck > 0;
 
         public PlayerState Clone() => (PlayerState)MemberwiseClone();
 

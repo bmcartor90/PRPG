@@ -88,14 +88,15 @@ namespace Prpg.Sim
     {
         public readonly Map Map;
         public Movement Movement;          // the tuning panel may replace numbers between ticks
+        public WorldRules World;
         public SimState State;
 
-        public Simulation(Map map, Movement movement, SimState state)
+        public Simulation(Map map, Movement movement, WorldRules world, SimState state)
         {
-            Map = map; Movement = movement; State = state;
+            Map = map; Movement = movement; World = world; State = state;
         }
 
-        public static Simulation Start(Map map, Movement movement, double x, int line, ulong runSeed, ulong battleSeed)
+        public static Simulation Start(Map map, Movement movement, WorldRules world, double x, int line, ulong runSeed, ulong battleSeed)
         {
             var s = new SimState
             {
@@ -106,20 +107,22 @@ namespace Prpg.Sim
                 BattleRng = Rng.FromSeed(battleSeed),
                 Player = PlayerState.Make(map, x, line),
             };
-            return new Simulation(map, movement, s);
+            return new Simulation(map, movement, world, s);
         }
 
-        /// <summary>The first flat line at ground height under x, as the lab's trace recorder picks it.</summary>
+        /// <summary>The highest solid ground under x (the first one, on a tie), as the lab's trace recorder picks it.</summary>
         public static int GroundLineAt(Map map, double x)
         {
+            Line best = null;
             foreach (var L in map.Lines)
-                if (x >= L.X1 && x <= L.X2 && L.Sign == 0 && Math.Abs(L.Y1) < 1e-9) return L.Index;
-            throw new ArgumentException("No ground-level line under x = " + x);
+                if (L.Solid && x >= L.X1 && x <= L.X2 && (best == null || L.YAt(x) > best.YAt(x))) best = L;
+            if (best == null) throw new ArgumentException("No solid ground under x = " + x);
+            return best.Index;
         }
 
         public void Step(Input input)
         {
-            Mover.Step(State.Player, Movement, input, Map);
+            Mover.Step(State.Player, Movement, World, input, Map);
             State.Frame++;
         }
 

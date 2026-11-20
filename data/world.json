@@ -1,0 +1,9 @@
+{
+  "about": "Numbers that belong to the game, not to a character. Tiles.",
+  "snap": 0.3,
+  "join": 0.05,
+  "stepOff": 0.15,
+  "edgeMargin": 0.45,
+  "respawnBelow": -7,
+  "safeInset": 0.6
+}
