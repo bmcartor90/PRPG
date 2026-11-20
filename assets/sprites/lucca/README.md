@@ -19,6 +19,9 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 | `Meshy_AI_Lucca_Rope_and_Climb_Sheet.png` | Rope climb (4), rope hang (1), one-handed rope (1), rope slide (1), ladder from behind (3), ladder rest (1), wall climb (2), wall hang (1) | Transparent | Yes |
 | `Meshy_AI_Lucca_Weapon_Draw_Sheet.png` | Draw sword (4), shield from back (2), draw staff (4), sword and shield (2) | Transparent | No. The items are painted into him, so this is a reference for where items sit in his hands. |
 | `Meshy_AI_Lucca_Invisible_Weapons_Sheet.png` | The same 12 poses with empty fists | Black | Yes. The sword and shield draws are used in the lab; the staff and guard frames are cut but not used yet. |
+| `Meshy_AI_Lucca_Moving_Draws_Sheet.png` | Walking: sword draw (4), shield fetch (2). Running: the same six. Empty fists. | Transparent | Yes |
+| `Meshy_AI_Lucca_Draw_Opposite_Hand_Sheet.png` | Standing sword draw (4), shield fetch and carry (2), the same two again (2) | Transparent | Frames 5 and 6 only. It was meant to show the far arm doing the work and shows the near arm instead. |
+| `Meshy_AI_Lucca_Moving_Draws_Inverted_Sheet.png` | Same as the moving draws sheet | Transparent | No. It was meant to swap arms and did not, so it duplicates the other sheet. |
 | `Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Cut out and scaled to his size in `../items/`. On the sheet they are drawn much larger than him: the sword is 514 pixels long against his 307-pixel height. |
 
 ## Known flaws in the sheets
@@ -49,4 +52,11 @@ He faces right in every side-view frame. Mirror the frame to face left.
 
 The art faces right and is turned slightly towards the viewer, so the fist on the side he faces away from (the back fist) is his right hand. When the frame is mirrored to face left, that same fist is anatomically his left. So an item in his right hand is pinned to the back fist when he faces right and to the front fist when he faces left.
 
-The draw frames have the same problem and no fix yet: mirrored, they show the wrong arm doing the drawing. That needs a second set of draw frames.
+## Drawing and sheathing
+
+Meshy only ever animates the arm nearer the viewer, however the request is worded. Three sheets asked for the far arm and none delivered it. So the rule is:
+
+- **Near arm** (his right facing right, his left facing left): the draw is animated. Facing right that is the sword; facing left it is the shield, using the mirrored `nearShield`, `walkDrawShield` and `runDrawShield` frames.
+- **Far arm:** no animation. The item appears in that fist halfway through the draw time. The arm is mostly behind his body anyway.
+
+Sheathing is the draw played backwards. `drawShield`, `drawStaff` and `guard` are cut into the atlas but not used yet.

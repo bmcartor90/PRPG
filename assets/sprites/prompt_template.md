@@ -35,6 +35,7 @@ Row 2, ...
 - **Describe every frame, not just the animation.** "Alternate arms" came back with the same arm raised twice. Write "frame 1 left arm up, frame 2 right arm up".
 - **Do not ask for exact pixel sizes.** Meshy does not honour them. A request for a 32 x 48 box produced a figure 137 x 307.
 - **Keep to 12 to 16 frames a sheet.** More than that and the frames shrink and drift.
+- **Meshy only animates the arm nearer the viewer.** Three sheets asked for the far arm to act ("front arm", "rear arm", and an inverted version) and all three came back with the near arm doing it. Do not spend requests on far-arm actions; design around it.
 - **Items go on their own sheet**, drawn flat and side-on, one view per item, nothing overlapping.
 
 ## Checking a sheet when it comes back
