@@ -43,7 +43,8 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 - `handX`, `handY`: present on hanging, pull-up and rope frames. The point where his gripping hand is. On a ledge or rope, pin this point to the ledge or rope instead of pinning his feet.
 - `standingHeightPx`: how tall he is standing upright, in atlas pixels. Scale the art so this equals his height in the game.
 
-- `backFist`, `frontFist`: on standing, walking, running, jumping, sliding, crouching and draw frames. Where his two fists are, for pinning held items. Hanging and climbing frames do not have these yet.
+- `backFist`, `frontFist`: on every frame. Where his two fists are, for pinning held items. On frames seen from behind (ladder, wall), where he has no facing, `backFist` is simply his right hand: the one on the right of the unmirrored picture.
+- One-handed hangs (`hang1`, `rope1`) grip with a fixed hand: `hang1` with his right, `rope1` with his left (the same for every character). Until frames gripping with the other hand exist, put a held item in the free fist even if it belongs to the gripping hand.
 - `itemPose`: on draw frames. Where the item being drawn is and how it is turned.
 
 He faces right in every side-view frame. Mirror the frame to face left.

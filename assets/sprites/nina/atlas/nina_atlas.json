@@ -392,7 +392,15 @@
     "anchorX": 68.7,
     "anchorY": 362.2,
     "handX": 73,
-    "handY": 12
+    "handY": 12,
+    "backFist": [
+     37,
+     34
+    ],
+    "frontFist": [
+     108,
+     31
+    ]
    },
    {
     "x": 1761,
@@ -402,7 +410,15 @@
     "anchorX": 85.2,
     "anchorY": 297.2,
     "handX": 63,
-    "handY": 13
+    "handY": 13,
+    "backFist": [
+     27,
+     34
+    ],
+    "frontFist": [
+     99,
+     31
+    ]
    }
   ],
   "pull": [
@@ -414,7 +430,15 @@
     "anchorX": 72.5,
     "anchorY": 280.4,
     "handX": 70,
-    "handY": 12
+    "handY": 12,
+    "backFist": [
+     34,
+     32
+    ],
+    "frontFist": [
+     107,
+     31
+    ]
    },
    {
     "x": 158,
@@ -424,7 +448,15 @@
     "anchorX": 83.9,
     "anchorY": 316.1,
     "handX": 97,
-    "handY": 110
+    "handY": 110,
+    "backFist": [
+     52,
+     105
+    ],
+    "frontFist": [
+     149,
+     102
+    ]
    },
    {
     "x": 343,
@@ -434,7 +466,15 @@
     "anchorX": 94.7,
     "anchorY": 315.0,
     "handX": 165,
-    "handY": 146
+    "handY": 146,
+    "backFist": [
+     62,
+     140
+    ],
+    "frontFist": [
+     171,
+     137
+    ]
    },
    {
     "x": 548,
@@ -442,7 +482,12 @@
     "w": 231,
     "h": 233,
     "anchorX": 129.5,
-    "anchorY": 222.6
+    "anchorY": 222.6,
+    "backFist": [
+     138,
+     207
+    ],
+    "frontFist": null
    }
   ],
   "hang1": [
@@ -454,7 +499,15 @@
     "anchorX": 75.7,
     "anchorY": 346.5,
     "handX": 57,
-    "handY": 13
+    "handY": 13,
+    "backFist": [
+     57,
+     36
+    ],
+    "frontFist": [
+     125,
+     223
+    ]
    }
   ],
   "lunge": [
@@ -464,7 +517,15 @@
     "w": 318,
     "h": 275,
     "anchorX": 147.9,
-    "anchorY": 264.6
+    "anchorY": 264.6,
+    "backFist": [
+     266,
+     46
+    ],
+    "frontFist": [
+     290,
+     59
+    ]
    },
    {
     "x": 1248,
@@ -472,7 +533,15 @@
     "w": 388,
     "h": 138,
     "anchorX": 208.2,
-    "anchorY": 127.1
+    "anchorY": 127.1,
+    "backFist": [
+     342,
+     62
+    ],
+    "frontFist": [
+     353,
+     72
+    ]
    }
   ],
   "prone": [
@@ -482,7 +551,15 @@
     "w": 374,
     "h": 105,
     "anchorX": 200.4,
-    "anchorY": 94.5
+    "anchorY": 94.5,
+    "backFist": [
+     322,
+     66
+    ],
+    "frontFist": [
+     335,
+     74
+    ]
    }
   ],
   "getup": [
@@ -492,7 +569,15 @@
     "w": 229,
     "h": 191,
     "anchorX": 119.8,
-    "anchorY": 180.6
+    "anchorY": 180.6,
+    "backFist": [
+     136,
+     170
+    ],
+    "frontFist": [
+     192,
+     168
+    ]
    },
    {
     "x": 233,
@@ -500,7 +585,12 @@
     "w": 176,
     "h": 285,
     "anchorX": 95.4,
-    "anchorY": 274.1
+    "anchorY": 274.1,
+    "backFist": [
+     54,
+     162
+    ],
+    "frontFist": null
    }
   ],
   "rope": [
@@ -512,7 +602,15 @@
     "anchorX": 79.4,
     "anchorY": 322.0,
     "handX": 120,
-    "handY": 78
+    "handY": 78,
+    "backFist": [
+     121,
+     79
+    ],
+    "frontFist": [
+     122,
+     41
+    ]
    },
    {
     "x": 572,
@@ -522,7 +620,15 @@
     "anchorX": 75.8,
     "anchorY": 392.0,
     "handX": 108,
-    "handY": 150
+    "handY": 150,
+    "backFist": [
+     108,
+     151
+    ],
+    "frontFist": [
+     120,
+     32
+    ]
    },
    {
     "x": 729,
@@ -532,7 +638,12 @@
     "anchorX": 68.2,
     "anchorY": 253.0,
     "handX": 104,
-    "handY": 48
+    "handY": 48,
+    "backFist": [
+     105,
+     39
+    ],
+    "frontFist": null
    },
    {
     "x": 874,
@@ -542,7 +653,15 @@
     "anchorX": 68.7,
     "anchorY": 377.0,
     "handX": 99,
-    "handY": 147
+    "handY": 147,
+    "backFist": [
+     99,
+     148
+    ],
+    "frontFist": [
+     108,
+     30
+    ]
    }
   ],
   "ropeHang": [
@@ -554,7 +673,15 @@
     "anchorX": 72.1,
     "anchorY": 317.0,
     "handX": 101,
-    "handY": 94
+    "handY": 94,
+    "backFist": [
+     94,
+     104
+    ],
+    "frontFist": [
+     97,
+     91
+    ]
    }
   ],
   "rope1": [
@@ -566,7 +693,15 @@
     "anchorX": 108.3,
     "anchorY": 366.0,
     "handX": 156,
-    "handY": 36
+    "handY": 36,
+    "backFist": [
+     26,
+     198
+    ],
+    "frontFist": [
+     156,
+     31
+    ]
    }
   ],
   "ropeSlide": [
@@ -578,7 +713,15 @@
     "anchorX": 92.5,
     "anchorY": 337.0,
     "handX": 125,
-    "handY": 151
+    "handY": 151,
+    "backFist": [
+     125,
+     152
+    ],
+    "frontFist": [
+     115,
+     70
+    ]
    }
   ],
   "drawSword": [
@@ -1053,7 +1196,15 @@
     "w": 160,
     "h": 347,
     "anchorX": 78.1,
-    "anchorY": 337.0
+    "anchorY": 337.0,
+    "backFist": [
+     119,
+     26
+    ],
+    "frontFist": [
+     20,
+     111
+    ]
    },
    {
     "x": 1245,
@@ -1061,7 +1212,15 @@
     "w": 158,
     "h": 312,
     "anchorX": 80.0,
-    "anchorY": 302.0
+    "anchorY": 302.0,
+    "backFist": [
+     137,
+     59
+    ],
+    "frontFist": [
+     24,
+     60
+    ]
    },
    {
     "x": 1405,
@@ -1069,7 +1228,15 @@
     "w": 166,
     "h": 346,
     "anchorX": 83.1,
-    "anchorY": 336.0
+    "anchorY": 336.0,
+    "backFist": [
+     125,
+     25
+    ],
+    "frontFist": [
+     22,
+     113
+    ]
    }
   ],
   "ladderRest": [
@@ -1079,7 +1246,15 @@
     "w": 160,
     "h": 314,
     "anchorX": 81.9,
-    "anchorY": 304.0
+    "anchorY": 304.0,
+    "backFist": [
+     134,
+     71
+    ],
+    "frontFist": [
+     28,
+     71
+    ]
    }
   ],
   "wall": [
@@ -1089,7 +1264,15 @@
     "w": 211,
     "h": 336,
     "anchorX": 102.3,
-    "anchorY": 326.0
+    "anchorY": 326.0,
+    "backFist": [
+     159,
+     28
+    ],
+    "frontFist": [
+     26,
+     107
+    ]
    },
    {
     "x": 2,
@@ -1097,7 +1280,15 @@
     "w": 183,
     "h": 340,
     "anchorX": 87.6,
-    "anchorY": 330.0
+    "anchorY": 330.0,
+    "backFist": [
+     130,
+     26
+    ],
+    "frontFist": [
+     21,
+     113
+    ]
    }
   ],
   "wallHang": [
@@ -1107,7 +1298,15 @@
     "w": 250,
     "h": 263,
     "anchorX": 125.2,
-    "anchorY": 253.0
+    "anchorY": 253.0,
+    "backFist": [
+     201,
+     29
+    ],
+    "frontFist": [
+     48,
+     29
+    ]
    }
   ]
  }

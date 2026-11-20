@@ -13,4 +13,5 @@ py fists.py                   > /dev/null
 py fists_nina.py
 py fists_ramorand.py
 py repo_sync.py
+py lab_data.py
 node "$T/smoke.js"

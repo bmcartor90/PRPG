@@ -21,6 +21,14 @@ F=dict(
   nearShield=[(54,41,145,179),(92,144,139,179)],
   runDrawSword=[(112,121,208,157),(110,117,178,144),(244,93,N,N),(88,141,200,139)],
   runDrawShield=[(99,41,208,155),(151,136,191,128)])
+# Hanging, climbing, lunge and get-up frames, read by eye from grid.py contact sheets. Side views follow the same rule as above
+# (back = the fist on the side away from the way they face = right hand, unmirrored). From-behind frames (ladder, wall) have
+# no facing, so there back is simply the right hand, which is the hand on the right of the unmirrored picture.
+F.update(dict(
+  hang=[(44,31,97,29),(46,33,103,31)], hang1=[(66,35,132,224)], pull=[(42,27,107,24),(48,104,140,104),(59,123,161,124),(126,196,N,N)],
+  lunge=[(248,32,273,51),(334,50,347,67)], prone=[(272,82,298,73)], getup=[(122,160,188,155),(54,141,N,N)],
+  rope=[(106,75,104,40),(97,140,100,30),(105,52,84,34),(95,142,92,36)], ropeHang=[(89,93,82,43)], rope1=[(28,180,130,24)], ropeSlide=[(117,153,124,136)],
+  ladder=[(118,30,24,109),(132,51,29,56),(110,32,23,117)], ladderRest=[(126,63,30,63)], wall=[(154,28,28,107),(122,23,22,108)], wallHang=[(197,21,46,27)]))
 fists={k:[list(q) for q in v] for k,v in F.items()}
 POSE=dict(drawSword=[None,[60,129,37,0],[153,102,-19,0],[48,176,38,0]], drawShield=[[55,128,0,1],None],
           walkDrawSword=[None,[84,132,37,0],[180,99,-19,0],[52,176,38,0]], runDrawSword=[None,[110,117,37,0],[244,93,-19,0],[88,141,152,0]],
