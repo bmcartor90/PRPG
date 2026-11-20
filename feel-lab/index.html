@@ -1237,7 +1237,8 @@ function render(alpha){
     const SH = SPRITE.standH, mx = f[2]/2 - ax, my = f[3]/2 - ay;   // the middle of his body, in the sprite's own coordinates
     const holding = player.mode !== 'normal', fromBehind = frameFlip !== 0, sw = player.swap;
     // An item shows when it is held, or part-way through a draw or sheathe.
-    const showing = (hand) => itemsReady && (sw && sw.hand === hand ? (f.pose !== undefined || swapProgress(player) > 0.5) : player.held[hand]);
+    const showing = (hand) => itemsReady && (sw && sw.hand === hand ? (f.pose !== undefined || swapProgress(player) > 0.05) : player.held[hand]);
+    const glide = () => { const u = swapProgress(player); return u*u*(3 - 2*u); };   // eases in and out
     const before = [], after = [];                 // items drawn behind him, and in front of him
     if (f.fists){
       // His right hand (sword) is the back fist when he faces right and the front fist when he faces left; the shield is on the other.
@@ -1246,12 +1247,17 @@ function render(alpha){
         return x === null ? {x:(front ? 0.62 : 0.38)*f[2] - ax, y:0.52*f[3] - ay, hidden:true} : {x:x - ax, y:y - ay, hidden:false}; };
       if (showing(1)){
         if (sw && sw.hand === 1 && f.pose !== undefined){ if (f.pose) (f.pose[3] ? before : after).push(['sword', f.pose[0] - ax, f.pose[1] - ay, f.pose[2], 1]); }
-        else { const front = !right, h = fist(front);    // carried low; trailing behind him or pointing ahead when he runs or jumps
-          (h.hidden ? before : after).push(['sword', h.x, h.y, fast ? (front ? 12 : 152) : 38, 1]); }
+        else { const front = !right, h = fist(front), ang = fast ? (front ? 12 : 152) : 38;   // carried low; trailing behind him or pointing ahead when he runs or jumps
+          if (sw && sw.hand === 1){ const e = glide(), x0 = 0.03*SH, y0 = -0.52*SH;            // no arm animation for this draw: the sword slides from his hip to his fist
+            (e < 0.6 || h.hidden ? before : after).push(['sword', x0 + (h.x - x0)*e, y0 + (h.y - y0)*e, 70 + (ang - 70)*e, 1]); }
+          else (h.hidden ? before : after).push(['sword', h.x, h.y, ang, 1]); }
       }
       if (showing(0)){
         if (sw && sw.hand === 0 && f.pose !== undefined && f.pose){ (f.pose[3] ? before : after).push(['shield', f.pose[0] - ax, f.pose[1] - ay, f.pose[2], 0.55]); }
-        else { const h = fist(right); (h.hidden ? before : after).push(['shield', h.x + 4, h.y - 14, 0, 0.55]); }
+        else { const h = fist(right);
+          if (sw && sw.hand === 0){ const e = glide(), x0 = -0.10*SH, y0 = -0.62*SH;           // likewise the shield slides round from his back
+            (e < 0.6 || h.hidden ? before : after).push(['shield', x0 + (h.x + 4 - x0)*e, y0 + (h.y - 14 - y0)*e, 0, 0.55]); }
+          else (h.hidden ? before : after).push(['shield', h.x + 4, h.y - 14, 0, 0.55]); }
       }
     } else {
       // Hanging and climbing frames have no fist positions yet, so items sit at a fixed spot on his body.

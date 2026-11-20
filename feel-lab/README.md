@@ -8,6 +8,10 @@ It is a test bench, not the game. Its levels are there to measure things, and it
 
 Inside `index.html`, everything between `/*SIM-START*/` and `/*SIM-END*/` is the movement simulation. It runs at a fixed 60 steps a second and does not touch the screen, so it can be run on its own.
 
+## Traces
+
+`traces/` holds 16 recorded runs of the simulation: the inputs for every tick and the resulting position, velocity, stamina and state. `traces/_world.json` has the parameters and the map they ran on. A port of the simulation is correct when it reproduces these. `checks/make-traces.js` regenerates them and is where to add scenarios.
+
 ## Checks
 
 `checks/` holds scripts that pull the simulation out of the page and run scenarios through it. Run one with `node checks/slopes.js`.

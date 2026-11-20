@@ -57,6 +57,6 @@ The art faces right and is turned slightly towards the viewer, so the fist on th
 Meshy only ever animates the arm nearer the viewer, however the request is worded. Three sheets asked for the far arm and none delivered it. So the rule is:
 
 - **Near arm** (his right facing right, his left facing left): the draw is animated. Facing right that is the sword; facing left it is the shield, using the mirrored `nearShield`, `walkDrawShield` and `runDrawShield` frames.
-- **Far arm:** no animation. The item appears in that fist halfway through the draw time. The arm is mostly behind his body anyway.
+- **Far arm:** no arm animation. The item slides from where it is stowed (sword at his hip, shield on his back) to that fist over the draw time, passing behind his body for the first part.
 
 Sheathing is the draw played backwards. `drawShield`, `drawStaff` and `guard` are cut into the atlas but not used yet.
