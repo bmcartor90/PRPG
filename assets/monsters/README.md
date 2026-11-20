@@ -2,7 +2,18 @@
 
 One folder per monster, sheets as received in `source/`. None are cut or in the lab yet: the lab has no monsters.
 
-Both sheets so far have a mostly transparent background with a semi-transparent grey or white haze in it. Cutting at alpha above 240 drops the haze and leaves clean figures.
+## Size in the game (agreed 2026-11-19)
+
+Scaled at the characters' 160 pixels a tile unless noted:
+
+| Monster | Size |
+|---|---|
+| Fat rabbit | as drawn: about 1.2 tiles tall crouching |
+| Cave mole | as drawn: about 1.5 to 1.7 tiles tall upright |
+| Assassin vine | as drawn: ceiling chunk about 1.1 tiles wide, reaching 3.6 tiles down at full stretch |
+| Crystal golem | scaled up about 1.5 times to about 2.6 tiles tall, so it towers over the heroes (a little softer than they are) |
+
+The first sheets have a mostly transparent background with a semi-transparent grey or white haze in it. Cutting at alpha above 240 drops the haze and leaves clean figures.
 
 ## Assassin vine (`assassin-vine/`)
 
