@@ -26,6 +26,11 @@ Image.fromarray(t.clip(0,255).astype(np.uint8),'RGBA').save(f'{LAB}/edge_top.png
 f=edge(49,472+4,49+70,472+313-4); f=wrap(f,0,40)                             # cliff face strip, open air on its left, repeats top to bottom
 f[:,-30:,3]*=np.linspace(1,0,30)[None,:]
 Image.fromarray(f.clip(0,255).astype(np.uint8),'RGBA').save(f'{LAB}/edge_face.png',optimize=True)
+# Climbable back walls: the very rough and slightly rough panels, outline trimmed, joins blended so they repeat both ways.
+B=np.asarray(Image.open(SRC('c4b0841c')).convert('RGB')).astype(float)
+for name,(x,y,w,h) in (('wall_very_rough',(92,30,273,381)),('wall_slightly_rough',(93,444,268,386))):
+    p=wrap(wrap(B[y+8:y+h-8,x+8:x+w-8],1,24),0,24)*0.85
+    Image.fromarray(p.clip(0,255).astype(np.uint8)).save(f'{LAB}/{name}.png',optimize=True)
 # Scaffold: pack the pieces the lab uses into one image.
 S=Image.open(f'{A}/tiles/scaffold/source/Meshy_AI_miner_scaffold_tileset.png').convert('RGBA'); P=json.load(open(f'{A}/tiles/scaffold/scaffold_pieces.json'))
 names=['deckLeft','deckMid','deckRight','postMid','ladder','rope','ropeTop']; out={}; ims=[]; X=2

@@ -1203,8 +1203,8 @@ const ITEMS = {"sword":[3,3,190,38,30.5,19.2],"sheath":[196,3,165,24,82.4,11.8],
 // Each scaffold piece is [x, y, w, h, yOnSheet] in scaffold.png; yOnSheet places it against the shared walking surface, surfaceY.
 const SCAFFOLD = {"pxPerTile":151,"surfaceY":59,"pieces":{"deckLeft":[2,2,340,162,44],"deckMid":[344,2,538,63,58],"deckRight":[884,2,341,162,44],"postMid":[1227,2,45,247,227],"ladder":[1274,2,108,295,510],"rope":[1384,2,112,306,509],"ropeTop":[1498,2,129,276,511]}};
 const ROCK_PX_PER_TILE = 160, FAR_PARALLAX = 0.12;
-const ART = {far:new Image(), rock:new Image(), scaffold:new Image(), edgeTop:new Image(), edgeFace:new Image(), ready:0, pat:null};
-const ART_FILES = [['far', 'cavern_far.jpg'], ['rock', 'rock.png'], ['scaffold', 'scaffold.png'], ['edgeTop', 'edge_top.png'], ['edgeFace', 'edge_face.png']];
+const ART = {far:new Image(), rock:new Image(), scaffold:new Image(), edgeTop:new Image(), edgeFace:new Image(), wall:new Image(), ready:0, pat:null};
+const ART_FILES = [['far', 'cavern_far.jpg'], ['rock', 'rock.png'], ['scaffold', 'scaffold.png'], ['edgeTop', 'edge_top.png'], ['edgeFace', 'edge_face.png'], ['wall', 'wall_slightly_rough.png']];
 for (const [k, src] of ART_FILES){ ART[k].onload = () => { ART.ready++; }; ART[k].src = src; }
 const artOn = () => opts.art && ART.ready === ART_FILES.length;
 const EDGE_SURFACE_ROW = 3;   // the row of edge_top.png that lies on the walking surface
@@ -1325,7 +1325,12 @@ function drawScaffoldArt(L, X, Y, s){
 function drawClimbArt(C, X, Y, s){
   const k = s/SCAFFOLD.pxPerTile, Q = SCAFFOLD.pieces, x = X(C.x), ya = Y(C.y1), yb = Y(C.y2);
   ctx.save(); ctx.beginPath(); ctx.rect(x - s, yb - 0.6*s, 2*s, ya - yb + 0.6*s); ctx.clip();
-  if (C.kind === 'Ladder'){
+  if (C.kind === 'Wall'){                        // the slightly rough back wall: gilded holds mark it as climbable
+    if (!ART.patWall) ART.patWall = ctx.createPattern(ART.wall, 'repeat');
+    const kw = s/ROCK_PX_PER_TILE, w = 0.9*s;
+    if (ART.patWall && ART.patWall.setTransform){ ART.patWall.setTransform(new DOMMatrix([kw, 0, 0, kw, x - w/2, Y(0)])); ctx.fillStyle = ART.patWall; ctx.fillRect(x - w/2, yb, w, ya - yb); }
+    ctx.strokeStyle = '#0b0914'; ctx.lineWidth = Math.max(1.5, s*0.05); ctx.strokeRect(x - w/2, yb, w, ya - yb);
+  } else if (C.kind === 'Ladder'){
     const q = Q.ladder, w = q[2]*k, h = q[3]*k;
     for (let y = ya - h; y > yb - h; y -= h - 8*k) scafPiece('ladder', x - w/2, y, k);
   } else {
@@ -1436,7 +1441,7 @@ function render(alpha){
   ctx.font = '500 ' + Math.max(10, s*0.34) + 'px "IBM Plex Mono", Consolas, monospace'; ctx.textAlign = 'center';
   for (const C of CLIMBS){
     const x = X(C.x), ya = Y(C.y1), yb = Y(C.y2);
-    if (art && C.kind !== 'Wall'){ drawClimbArt(C, X, Y, s); ctx.fillText((C.kind === 'Wall' ? 'brick wall' : C.kind.toLowerCase()) + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5)); continue; }
+    if (art){ drawClimbArt(C, X, Y, s); ctx.fillText((C.kind === 'Wall' ? 'brick wall' : C.kind.toLowerCase()) + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5)); continue; }
     ctx.lineWidth = Math.max(1.5, s*0.05); ctx.beginPath();
     if (C.kind === 'Ladder'){
       ctx.moveTo(x - 0.3*s, ya); ctx.lineTo(x - 0.3*s, yb); ctx.moveTo(x + 0.3*s, ya); ctx.lineTo(x + 0.3*s, yb);

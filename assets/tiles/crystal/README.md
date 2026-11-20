@@ -45,3 +45,12 @@
 - Stacked, the ladder and rope repeat cleanly. The very rough strip's ledges line up well enough. The slightly rough strip's gold line does not meet itself at the join; it needs a hand fix where the strips meet.
 - Strip widths differ (about 140 to 220 pixels), so each is pinned to the cliff by its rock edge, not centred.
 - Not in the lab: climbing a cliff face is not in the simulation yet.
+
+# Climbable back walls
+
+`source/Meshy_AI_climbable_backwall_tileset.png`: 1536 x 864, transparent, clean alpha. Two climbable rock walls seen face-on, each as a panel, a top edge, a left edge and a right edge: very rough (big gilded ledges) in row 1, slightly rough (gilded cracks tracing a route) in row 2.
+
+- **Keep.** Both panels repeat both ways with soft joins once the outline is trimmed. The two tiers are easy to tell apart.
+- The gold is on the orange side of gold. Classy enough at game scale; noted in case it reads loud.
+- The left and right edge pieces have a dark vertical groove painted down them, which looks like a seam. Use the panels and top edges; ignore the side edges or trim the groove.
+- In the lab, the slightly rough panel (`wall_slightly_rough.png`) replaces the line-drawn brick wall. The very rough panel is cut (`wall_very_rough.png`) but nothing uses it yet.
