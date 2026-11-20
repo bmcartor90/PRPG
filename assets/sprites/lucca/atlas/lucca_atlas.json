@@ -1,7 +1,8 @@
 {
  "image": "lucca_atlas.png",
  "standingHeightPx": 307.0,
- "note": "Each frame: x, y, w, h locate it in the image. anchorX, anchorY is the point under his feet, relative to the frame's top-left. handX, handY (when present) is where his gripping hand is, used to pin him to a ledge or rope instead. backFist and frontFist (when present) are [x, y] of his two fists, for pinning held items: back is the fist on the side he faces away from, front the one on the side he faces, null when hidden behind his body. Facing right the back fist is his right hand; mirrored to face left, his right hand is the front fist. itemPose (draw frames only) is [x, y, angleDegrees, behindHim] for the item on its way out, null when it is not visible yet.",
+ "heightInTiles": 1.9,
+ "note": "Each frame: x, y, w, h locate it in the image. anchorX, anchorY is the point under the feet, relative to the frame's top-left. handX, handY (when present) is where the gripping hand is, used to pin the character to a ledge or rope instead. backFist and frontFist (when present) are [x, y] of the two fists, for pinning held items: back is the fist on the side they face away from, front the one on the side they face, null when hidden behind the body. Facing right the back fist is the right hand; mirrored to face left, the right hand is the front fist. itemPose (draw frames only) is [x, y, angleDegrees, behindThem] for the item on its way out, null when it is not visible yet.",
  "animations": {
   "walk": [
    {

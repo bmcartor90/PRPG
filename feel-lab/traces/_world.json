@@ -47,8 +47,40 @@
   "oneHand": 0.65,
   "drawTime": 0.35,
   "climbSprint": 1.75,
-  "climbSprintCost": 3
+  "climbSprintCost": 3,
+  "duckTime": 0.35,
+  "duckKeep": 0.7,
+  "duckCost": 5,
+  "duckHeight": 0.9
  },
+ "fixedNote": "Numbers the lab has no slider for. They are still tuning, not code: character numbers belong beside params, world numbers belong to the game.",
+ "fixed": {
+  "character": {
+   "catchOut": 0.8,
+   "catchUnder": 0.6,
+   "catchMinDrop": 0.3,
+   "hangOut": 0.3,
+   "hangIn": 0.4,
+   "hangEase": 0.35,
+   "climbReach": 0.6,
+   "climbJumpSpeed": 0.8,
+   "slideDownSpeed": 3,
+   "dropGrabLock": 0.3,
+   "jumpGrabLock": 0.45,
+   "windedUntil": 0.25,
+   "sprintShare": 0.25,
+   "duckStopShare": 0.5
+  },
+  "world": {
+   "snap": 0.3,
+   "join": 0.05,
+   "stepOff": 0.15,
+   "edgeMargin": 0.45,
+   "respawnBelow": -7,
+   "safeInset": 0.6
+  }
+ },
+ "groundedNote": "The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.",
  "world": {
   "width": 344,
   "ground": [

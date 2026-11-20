@@ -1,0 +1,1114 @@
+{
+ "image": "nina_atlas.png",
+ "standingHeightPx": 322.0,
+ "heightInTiles": 1.7,
+ "note": "Each frame: x, y, w, h locate it in the image. anchorX, anchorY is the point under the feet, relative to the frame's top-left. handX, handY (when present) is where the gripping hand is, used to pin the character to a ledge or rope instead. backFist and frontFist (when present) are [x, y] of the two fists, for pinning held items: back is the fist on the side they face away from, front the one on the side they face, null when hidden behind the body. Facing right the back fist is the right hand; mirrored to face left, the right hand is the front fist. itemPose (draw frames only) is [x, y, angleDegrees, behindThem] for the item on its way out, null when it is not visible yet.",
+ "animations": {
+  "walk": [
+   {
+    "x": 2,
+    "y": 2,
+    "w": 152,
+    "h": 342,
+    "anchorX": 83.8,
+    "anchorY": 332.0,
+    "backFist": [
+     69,
+     191
+    ],
+    "frontFist": [
+     127,
+     185
+    ]
+   },
+   {
+    "x": 156,
+    "y": 2,
+    "w": 187,
+    "h": 341,
+    "anchorX": 94.9,
+    "anchorY": 331.0,
+    "backFist": [
+     73,
+     196
+    ],
+    "frontFist": [
+     153,
+     182
+    ]
+   },
+   {
+    "x": 345,
+    "y": 2,
+    "w": 192,
+    "h": 342,
+    "anchorX": 99.7,
+    "anchorY": 332.0,
+    "backFist": [
+     71,
+     190
+    ],
+    "frontFist": [
+     163,
+     179
+    ]
+   },
+   {
+    "x": 539,
+    "y": 2,
+    "w": 176,
+    "h": 342,
+    "anchorX": 96.3,
+    "anchorY": 332.0,
+    "backFist": [
+     79,
+     192
+    ],
+    "frontFist": [
+     145,
+     185
+    ]
+   },
+   {
+    "x": 717,
+    "y": 2,
+    "w": 219,
+    "h": 341,
+    "anchorX": 110.5,
+    "anchorY": 331.0,
+    "backFist": [
+     74,
+     187
+    ],
+    "frontFist": [
+     167,
+     178
+    ]
+   },
+   {
+    "x": 938,
+    "y": 2,
+    "w": 157,
+    "h": 342,
+    "anchorX": 89.5,
+    "anchorY": 332.0,
+    "backFist": [
+     72,
+     191
+    ],
+    "frontFist": [
+     132,
+     184
+    ]
+   }
+  ],
+  "run": [
+   {
+    "x": 1097,
+    "y": 2,
+    "w": 235,
+    "h": 295,
+    "anchorX": 119.7,
+    "anchorY": 285.0,
+    "backFist": [
+     65,
+     123
+    ],
+    "frontFist": [
+     213,
+     119
+    ]
+   },
+   {
+    "x": 1334,
+    "y": 2,
+    "w": 251,
+    "h": 294,
+    "anchorX": 130.6,
+    "anchorY": 284.0,
+    "backFist": [
+     76,
+     120
+    ],
+    "frontFist": [
+     230,
+     99
+    ]
+   },
+   {
+    "x": 1587,
+    "y": 2,
+    "w": 234,
+    "h": 294,
+    "anchorX": 122.6,
+    "anchorY": 284.0,
+    "backFist": [
+     81,
+     113
+    ],
+    "frontFist": [
+     213,
+     105
+    ]
+   },
+   {
+    "x": 2,
+    "y": 346,
+    "w": 261,
+    "h": 288,
+    "anchorX": 137.0,
+    "anchorY": 278.0,
+    "backFist": [
+     100,
+     118
+    ],
+    "frontFist": [
+     224,
+     110
+    ]
+   },
+   {
+    "x": 265,
+    "y": 346,
+    "w": 239,
+    "h": 295,
+    "anchorX": 121.4,
+    "anchorY": 285.0,
+    "backFist": [
+     69,
+     118
+    ],
+    "frontFist": [
+     218,
+     102
+    ]
+   },
+   {
+    "x": 506,
+    "y": 346,
+    "w": 257,
+    "h": 290,
+    "anchorX": 132.5,
+    "anchorY": 280.0,
+    "backFist": [
+     75,
+     123
+    ],
+    "frontFist": [
+     221,
+     119
+    ]
+   }
+  ],
+  "jump": [
+   {
+    "x": 765,
+    "y": 346,
+    "w": 210,
+    "h": 234,
+    "anchorX": 115.6,
+    "anchorY": 224.0,
+    "backFist": [
+     49,
+     119
+    ],
+    "frontFist": null
+   },
+   {
+    "x": 977,
+    "y": 346,
+    "w": 197,
+    "h": 275,
+    "anchorX": 100.7,
+    "anchorY": 265.0,
+    "backFist": [
+     43,
+     116
+    ],
+    "frontFist": null
+   },
+   {
+    "x": 1176,
+    "y": 346,
+    "w": 193,
+    "h": 295,
+    "anchorX": 95.3,
+    "anchorY": 285.0,
+    "backFist": [
+     28,
+     108
+    ],
+    "frontFist": [
+     171,
+     106
+    ]
+   },
+   {
+    "x": 1371,
+    "y": 346,
+    "w": 204,
+    "h": 300,
+    "anchorX": 102.4,
+    "anchorY": 290.0,
+    "backFist": [
+     36,
+     103
+    ],
+    "frontFist": [
+     184,
+     116
+    ]
+   },
+   {
+    "x": 1577,
+    "y": 346,
+    "w": 187,
+    "h": 238,
+    "anchorX": 93.3,
+    "anchorY": 228.0,
+    "backFist": [
+     28,
+     114
+    ],
+    "frontFist": [
+     149,
+     116
+    ]
+   },
+   {
+    "x": 1766,
+    "y": 346,
+    "w": 241,
+    "h": 261,
+    "anchorX": 114.3,
+    "anchorY": 251.0,
+    "backFist": [
+     26,
+     57
+    ],
+    "frontFist": [
+     189,
+     109
+    ]
+   },
+   {
+    "x": 2,
+    "y": 648,
+    "w": 228,
+    "h": 226,
+    "anchorX": 101.9,
+    "anchorY": 216.0,
+    "backFist": [
+     29,
+     110
+    ],
+    "frontFist": null
+   }
+  ],
+  "slide": [
+   {
+    "x": 232,
+    "y": 648,
+    "w": 333,
+    "h": 168,
+    "anchorX": 137.4,
+    "anchorY": 158.0,
+    "backFist": [
+     30,
+     117
+    ],
+    "frontFist": [
+     206,
+     84
+    ]
+   },
+   {
+    "x": 567,
+    "y": 648,
+    "w": 318,
+    "h": 166,
+    "anchorX": 130.6,
+    "anchorY": 156.0,
+    "backFist": [
+     22,
+     114
+    ],
+    "frontFist": null
+   },
+   {
+    "x": 887,
+    "y": 648,
+    "w": 362,
+    "h": 159,
+    "anchorX": 143.4,
+    "anchorY": 149.0,
+    "backFist": [
+     32,
+     140
+    ],
+    "frontFist": [
+     185,
+     71
+    ]
+   }
+  ],
+  "crouch": [
+   {
+    "x": 1251,
+    "y": 648,
+    "w": 188,
+    "h": 175,
+    "anchorX": 99.6,
+    "anchorY": 165.0,
+    "backFist": [
+     37,
+     126
+    ],
+    "frontFist": [
+     160,
+     156
+    ]
+   },
+   {
+    "x": 1441,
+    "y": 648,
+    "w": 182,
+    "h": 166,
+    "anchorX": 102.8,
+    "anchorY": 156.0,
+    "backFist": [
+     47,
+     144
+    ],
+    "frontFist": null
+   }
+  ],
+  "hang": [
+   {
+    "x": 1625,
+    "y": 648,
+    "w": 134,
+    "h": 373,
+    "anchorX": 68.7,
+    "anchorY": 362.2,
+    "handX": 73,
+    "handY": 12
+   },
+   {
+    "x": 1761,
+    "y": 648,
+    "w": 225,
+    "h": 308,
+    "anchorX": 85.2,
+    "anchorY": 297.2,
+    "handX": 63,
+    "handY": 13
+   }
+  ],
+  "pull": [
+   {
+    "x": 2,
+    "y": 1023,
+    "w": 154,
+    "h": 291,
+    "anchorX": 72.5,
+    "anchorY": 280.4,
+    "handX": 70,
+    "handY": 12
+   },
+   {
+    "x": 158,
+    "y": 1023,
+    "w": 183,
+    "h": 327,
+    "anchorX": 83.9,
+    "anchorY": 316.1,
+    "handX": 97,
+    "handY": 110
+   },
+   {
+    "x": 343,
+    "y": 1023,
+    "w": 203,
+    "h": 326,
+    "anchorX": 94.7,
+    "anchorY": 315.0,
+    "handX": 165,
+    "handY": 146
+   },
+   {
+    "x": 548,
+    "y": 1023,
+    "w": 231,
+    "h": 233,
+    "anchorX": 129.5,
+    "anchorY": 222.6
+   }
+  ],
+  "hang1": [
+   {
+    "x": 781,
+    "y": 1023,
+    "w": 145,
+    "h": 357,
+    "anchorX": 75.7,
+    "anchorY": 346.5,
+    "handX": 57,
+    "handY": 13
+   }
+  ],
+  "lunge": [
+   {
+    "x": 928,
+    "y": 1023,
+    "w": 318,
+    "h": 275,
+    "anchorX": 147.9,
+    "anchorY": 264.6
+   },
+   {
+    "x": 1248,
+    "y": 1023,
+    "w": 388,
+    "h": 138,
+    "anchorX": 208.2,
+    "anchorY": 127.1
+   }
+  ],
+  "prone": [
+   {
+    "x": 1638,
+    "y": 1023,
+    "w": 374,
+    "h": 105,
+    "anchorX": 200.4,
+    "anchorY": 94.5
+   }
+  ],
+  "getup": [
+   {
+    "x": 2,
+    "y": 1382,
+    "w": 229,
+    "h": 191,
+    "anchorX": 119.8,
+    "anchorY": 180.6
+   },
+   {
+    "x": 233,
+    "y": 1382,
+    "w": 176,
+    "h": 285,
+    "anchorX": 95.4,
+    "anchorY": 274.1
+   }
+  ],
+  "rope": [
+   {
+    "x": 411,
+    "y": 1382,
+    "w": 159,
+    "h": 332,
+    "anchorX": 79.4,
+    "anchorY": 322.0,
+    "handX": 120,
+    "handY": 78
+   },
+   {
+    "x": 572,
+    "y": 1382,
+    "w": 155,
+    "h": 402,
+    "anchorX": 75.8,
+    "anchorY": 392.0,
+    "handX": 108,
+    "handY": 150
+   },
+   {
+    "x": 729,
+    "y": 1382,
+    "w": 143,
+    "h": 263,
+    "anchorX": 68.2,
+    "anchorY": 253.0,
+    "handX": 104,
+    "handY": 48
+   },
+   {
+    "x": 874,
+    "y": 1382,
+    "w": 143,
+    "h": 387,
+    "anchorX": 68.7,
+    "anchorY": 377.0,
+    "handX": 99,
+    "handY": 147
+   }
+  ],
+  "ropeHang": [
+   {
+    "x": 1019,
+    "y": 1382,
+    "w": 148,
+    "h": 327,
+    "anchorX": 72.1,
+    "anchorY": 317.0,
+    "handX": 101,
+    "handY": 94
+   }
+  ],
+  "rope1": [
+   {
+    "x": 1169,
+    "y": 1382,
+    "w": 199,
+    "h": 376,
+    "anchorX": 108.3,
+    "anchorY": 366.0,
+    "handX": 156,
+    "handY": 36
+   }
+  ],
+  "ropeSlide": [
+   {
+    "x": 1370,
+    "y": 1382,
+    "w": 158,
+    "h": 347,
+    "anchorX": 92.5,
+    "anchorY": 337.0,
+    "handX": 125,
+    "handY": 151
+   }
+  ],
+  "drawSword": [
+   {
+    "x": 1530,
+    "y": 1382,
+    "w": 183,
+    "h": 342,
+    "anchorX": 99.8,
+    "anchorY": 332.3,
+    "backFist": [
+     125,
+     150
+    ],
+    "frontFist": [
+     134,
+     178
+    ],
+    "itemPose": null
+   },
+   {
+    "x": 1715,
+    "y": 1382,
+    "w": 192,
+    "h": 342,
+    "anchorX": 100.0,
+    "anchorY": 332.3,
+    "backFist": [
+     72,
+     144
+    ],
+    "frontFist": [
+     158,
+     182
+    ],
+    "itemPose": [
+     72,
+     144,
+     37,
+     0
+    ]
+   },
+   {
+    "x": 2,
+    "y": 1786,
+    "w": 225,
+    "h": 342,
+    "anchorX": 108.5,
+    "anchorY": 332.3,
+    "backFist": [
+     196,
+     103
+    ],
+    "frontFist": null,
+    "itemPose": [
+     196,
+     103,
+     -19,
+     0
+    ]
+   },
+   {
+    "x": 229,
+    "y": 1786,
+    "w": 190,
+    "h": 342,
+    "anchorX": 98.7,
+    "anchorY": 332.3,
+    "backFist": [
+     60,
+     189
+    ],
+    "frontFist": [
+     155,
+     190
+    ],
+    "itemPose": [
+     60,
+     189,
+     38,
+     0
+    ]
+   }
+  ],
+  "drawShield": [
+   {
+    "x": 421,
+    "y": 1786,
+    "w": 199,
+    "h": 342,
+    "anchorX": 103.5,
+    "anchorY": 332.3,
+    "backFist": [
+     57,
+     53
+    ],
+    "frontFist": [
+     166,
+     190
+    ],
+    "itemPose": [
+     70,
+     135,
+     0,
+     1
+    ]
+   },
+   {
+    "x": 622,
+    "y": 1786,
+    "w": 191,
+    "h": 343,
+    "anchorX": 101.8,
+    "anchorY": 333.3,
+    "backFist": [
+     143,
+     138
+    ],
+    "frontFist": [
+     158,
+     197
+    ],
+    "itemPose": null
+   }
+  ],
+  "drawStaff": [
+   {
+    "x": 815,
+    "y": 1786,
+    "w": 192,
+    "h": 332,
+    "anchorX": 99.7,
+    "anchorY": 322.2
+   },
+   {
+    "x": 1009,
+    "y": 1786,
+    "w": 193,
+    "h": 331,
+    "anchorX": 105.1,
+    "anchorY": 321.2
+   },
+   {
+    "x": 1204,
+    "y": 1786,
+    "w": 217,
+    "h": 331,
+    "anchorX": 121.1,
+    "anchorY": 321.2
+   },
+   {
+    "x": 1423,
+    "y": 1786,
+    "w": 232,
+    "h": 331,
+    "anchorX": 114.7,
+    "anchorY": 321.2
+   }
+  ],
+  "guard": [
+   {
+    "x": 1657,
+    "y": 1786,
+    "w": 212,
+    "h": 330,
+    "anchorX": 112.2,
+    "anchorY": 320.2
+   },
+   {
+    "x": 2,
+    "y": 2131,
+    "w": 219,
+    "h": 327,
+    "anchorX": 117.6,
+    "anchorY": 317.1
+   }
+  ],
+  "nearShield": [
+   {
+    "x": 421,
+    "y": 1786,
+    "w": 199,
+    "h": 342,
+    "anchorX": 103.5,
+    "anchorY": 332.3,
+    "backFist": [
+     57,
+     53
+    ],
+    "frontFist": [
+     166,
+     190
+    ],
+    "itemPose": [
+     70,
+     135,
+     0,
+     1
+    ]
+   },
+   {
+    "x": 622,
+    "y": 1786,
+    "w": 191,
+    "h": 343,
+    "anchorX": 101.8,
+    "anchorY": 333.3,
+    "backFist": [
+     143,
+     138
+    ],
+    "frontFist": [
+     158,
+     197
+    ],
+    "itemPose": null
+   }
+  ],
+  "walkDrawSword": [
+   {
+    "x": 223,
+    "y": 2131,
+    "w": 204,
+    "h": 343,
+    "anchorX": 104.8,
+    "anchorY": 332.5,
+    "backFist": [
+     134,
+     157
+    ],
+    "frontFist": [
+     167,
+     185
+    ],
+    "itemPose": null
+   },
+   {
+    "x": 429,
+    "y": 2131,
+    "w": 205,
+    "h": 343,
+    "anchorX": 102.6,
+    "anchorY": 332.5,
+    "backFist": [
+     90,
+     141
+    ],
+    "frontFist": [
+     164,
+     181
+    ],
+    "itemPose": [
+     90,
+     141,
+     37,
+     0
+    ]
+   },
+   {
+    "x": 636,
+    "y": 2131,
+    "w": 228,
+    "h": 343,
+    "anchorX": 107.6,
+    "anchorY": 332.5,
+    "backFist": [
+     201,
+     104
+    ],
+    "frontFist": [
+     147,
+     187
+    ],
+    "itemPose": [
+     201,
+     104,
+     -19,
+     0
+    ]
+   },
+   {
+    "x": 866,
+    "y": 2131,
+    "w": 213,
+    "h": 343,
+    "anchorX": 101.6,
+    "anchorY": 332.5,
+    "backFist": [
+     58,
+     187
+    ],
+    "frontFist": [
+     162,
+     184
+    ],
+    "itemPose": [
+     58,
+     187,
+     38,
+     0
+    ]
+   }
+  ],
+  "walkDrawShield": [
+   {
+    "x": 1081,
+    "y": 2131,
+    "w": 197,
+    "h": 343,
+    "anchorX": 97.2,
+    "anchorY": 332.5,
+    "backFist": [
+     45,
+     48
+    ],
+    "frontFist": [
+     161,
+     185
+    ],
+    "itemPose": [
+     65,
+     135,
+     0,
+     1
+    ]
+   },
+   {
+    "x": 1280,
+    "y": 2131,
+    "w": 210,
+    "h": 343,
+    "anchorX": 98.0,
+    "anchorY": 332.5,
+    "backFist": [
+     116,
+     157
+    ],
+    "frontFist": [
+     149,
+     183
+    ],
+    "itemPose": null
+   }
+  ],
+  "runDrawSword": [
+   {
+    "x": 1492,
+    "y": 2131,
+    "w": 258,
+    "h": 324,
+    "anchorX": 135.4,
+    "anchorY": 314.2,
+    "backFist": [
+     125,
+     128
+    ],
+    "frontFist": [
+     226,
+     166
+    ],
+    "itemPose": null
+   },
+   {
+    "x": 1752,
+    "y": 2131,
+    "w": 226,
+    "h": 324,
+    "anchorX": 126.3,
+    "anchorY": 314.2,
+    "backFist": [
+     120,
+     125
+    ],
+    "frontFist": [
+     194,
+     151
+    ],
+    "itemPose": [
+     120,
+     125,
+     37,
+     0
+    ]
+   },
+   {
+    "x": 2,
+    "y": 2476,
+    "w": 292,
+    "h": 312,
+    "anchorX": 146.3,
+    "anchorY": 301.9,
+    "backFist": [
+     265,
+     97
+    ],
+    "frontFist": null,
+    "itemPose": [
+     265,
+     97,
+     -19,
+     0
+    ]
+   },
+   {
+    "x": 296,
+    "y": 2476,
+    "w": 273,
+    "h": 321,
+    "anchorX": 145.0,
+    "anchorY": 311.1,
+    "backFist": [
+     99,
+     149
+    ],
+    "frontFist": [
+     214,
+     146
+    ],
+    "itemPose": [
+     99,
+     149,
+     152,
+     0
+    ]
+   }
+  ],
+  "runDrawShield": [
+   {
+    "x": 571,
+    "y": 2476,
+    "w": 246,
+    "h": 325,
+    "anchorX": 133.0,
+    "anchorY": 315.2,
+    "backFist": [
+     109,
+     46
+    ],
+    "frontFist": [
+     223,
+     165
+    ],
+    "itemPose": [
+     125,
+     125,
+     0,
+     1
+    ]
+   },
+   {
+    "x": 819,
+    "y": 2476,
+    "w": 262,
+    "h": 322,
+    "anchorX": 137.2,
+    "anchorY": 312.1,
+    "backFist": [
+     162,
+     144
+    ],
+    "frontFist": [
+     206,
+     135
+    ],
+    "itemPose": null
+   }
+  ],
+  "ladder": [
+   {
+    "x": 1083,
+    "y": 2476,
+    "w": 160,
+    "h": 347,
+    "anchorX": 78.1,
+    "anchorY": 337.0
+   },
+   {
+    "x": 1245,
+    "y": 2476,
+    "w": 158,
+    "h": 312,
+    "anchorX": 80.0,
+    "anchorY": 302.0
+   },
+   {
+    "x": 1405,
+    "y": 2476,
+    "w": 166,
+    "h": 346,
+    "anchorX": 83.1,
+    "anchorY": 336.0
+   }
+  ],
+  "ladderRest": [
+   {
+    "x": 1573,
+    "y": 2476,
+    "w": 160,
+    "h": 314,
+    "anchorX": 81.9,
+    "anchorY": 304.0
+   }
+  ],
+  "wall": [
+   {
+    "x": 1735,
+    "y": 2476,
+    "w": 211,
+    "h": 336,
+    "anchorX": 102.3,
+    "anchorY": 326.0
+   },
+   {
+    "x": 2,
+    "y": 2825,
+    "w": 183,
+    "h": 340,
+    "anchorX": 87.6,
+    "anchorY": 330.0
+   }
+  ],
+  "wallHang": [
+   {
+    "x": 187,
+    "y": 2825,
+    "w": 250,
+    "h": 263,
+    "anchorX": 125.2,
+    "anchorY": 253.0
+   }
+  ]
+ }
+}

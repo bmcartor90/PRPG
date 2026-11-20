@@ -51,6 +51,23 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 
 ---
 
+## Ramorand
+
+- **Reference picture:** `references/ramorand_anchor.png` (first frame of his walk sheet)
+- **Archetype:** not yet decided
+- **Height in the game:** not yet decided
+- **Size on a sheet:** about 319 pixels tall standing, on a 1536 x 864 sheet, and much broader than Lucca
+- **Hair:** bald, with a short dark beard
+- **Outfit:** full silver plate armour with a high collar; long navy cape; navy tabard with silver trim hanging from the belt
+- **Legs and boots:** dark trousers under plate greaves and plate boots
+- **Skin:** dark brown
+- **Hands:** bare fists, no gauntlets over the hands
+- **Distinguishing features:** the cape trails behind him in every frame
+- **Style:** chunky pixel art, crisp dark outline (same as Lucca)
+- **Sheets so far:** see `ramorand/README.md`
+
+---
+
 ## Template for a new character
 
 Copy this block, fill it in, and add a reference picture to `references/` once the first sheet comes back.

@@ -291,6 +291,13 @@ Notes on Mind:
 - **You can climb down a rope from the platform at its top,** the same way you can a ladder.
 - **You can rest on a ladder** and regenerate stamina there, if your hands are empty.
 
+### Dodge slide
+
+- Press down while sprinting and he drops into a slide for a moment. It is for dodging things.
+- He is low during it (0.9 tiles against his standing 1.9), cannot steer, and loses speed. It ends by itself, or with a jump.
+- Lab starting numbers: 0.35 seconds, 70% of speed kept at the end (about 3.2 tiles covered from a full sprint), 5 stamina.
+- Nothing checks his height yet. It will matter once hazards and enemies exist.
+
 ### Stat scale
 
 - The stamina and movement costs in the lab are what the game should feel like at **100 / 100 / 100** (Body / Agility / Mind).

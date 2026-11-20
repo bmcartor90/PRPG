@@ -13,7 +13,7 @@ This is the brief for the programmer. Read it fully before writing code. `design
 One character running, jumping, climbing and handling his gear on one test map, with the foundations the rest of the game depends on built correctly underneath. It should feel the same as the feel lab.
 
 **In:**
-- All movement in the feel lab: walking, running, jumping, slopes and slides, stamina, ledge grab and pull-up, ladders, ropes and walls, the lunge, and drawing and sheathing each hand.
+- All movement in the feel lab: walking, running, jumping, slopes and slides, stamina, ledge grab and pull-up, ladders, ropes and walls, the lunge, the dodge slide, and drawing and sheathing each hand.
 - The test map: the lab's level, rebuilt as a data file.
 - Lucca drawn with his sprites and item overlays.
 - Controller and keyboard input.
@@ -60,14 +60,17 @@ The lab is the reference. Port its behaviour, not its code style.
 - **Cliff faces are derived, not authored.** `buildCliffs` in the lab works them out from the ground lines; port that rule. `_world.json` lists the result so the port can be checked. The top corner of a cliff is a ledge and can be grabbed and pulled up onto like any other.
 - **Ceilings do not exist yet.** Ground always runs to the bottom of the map, so there is never anything to hit from below. Caves and overhangs will need them later; do not build them now.
 - **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
+- **Dodge slide:** pressing down while sprinting drops him into a short slide: low, no steering, losing speed, ended by time, by slowing too far, or by a jump. "Press" means down was not held on the previous tick, so the simulation state remembers whether down was held. `heightNow` in the lab gives his height during it; nothing uses that yet.
+- **Numbers the lab has no slider for** are still tuning, not code. They are the `BODY` and `WORLD` tables at the top of the lab's simulation and are listed in `_world.json` under `fixed`. Load the `character` ones from `data/movement.json` with the rest of that character's numbers, and the `world` ones from their own data file.
+- **Two meanings of "grounded".** The lab's `grounded`, and the grounded column in the traces, is true whenever he is on a surface, including sliding down one too steep to stand on. The design's Grounded means standing on walkable ground. Keep them as two names: `OnGround` for the lab's meaning and `Grounded` for the design's.
 - **Three terms from the design that the code should name explicitly,** because later systems depend on them:
-  - *Anchored:* gravity is not acting on him (standing, hanging, climbing).
+  - *Anchored:* gravity is not acting on him (standing, hanging, climbing). Sliding down a too-steep slope is not anchored.
   - *Grounded:* anchored and standing on walkable ground.
-  - *Dynamic action:* anything that is not grounded.
+  - *Dynamic action:* anything that is not grounded. The dodge slide also counts as one, although he is on walkable ground.
 
 ### How to know the port is right
 
-`feel-lab/traces/` holds 20 recorded runs of the lab's simulation. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
+`feel-lab/traces/` holds 22 recorded runs of the lab's simulation. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
 
 - Write a test that replays each trace's inputs through the C# simulation and compares every tick.
 - Positions, velocities and stamina must match to within 0.000001. Mode, grounded and hands must match exactly.
@@ -112,7 +115,8 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 
 - **View:** 24 tiles wide by 13.5 tall on every display, scaled to fit, with the camera following Lucca.
 - **Scaling:** smooth, never snapped to whole pixels. The art is a pixel style but is not on a pixel grid. He stands 1.9 tiles tall; `standingHeightPx` in the atlas JSON is his height in atlas pixels.
-- **Sprites:** `assets/sprites/lucca/atlas/`. The README one folder up explains every field, including the foot anchor, the hand anchor for ledge and rope frames, and the fist positions.
+- **Characters:** Lucca and Nina both have complete frame sets, with the same animation names. Each has their own numbers in `data/movement.json`; today the only difference is height (1.9 and 1.7 tiles). Build the first map with Lucca and make the character a setting, not a constant.
+- **Sprites:** `assets/sprites/lucca/atlas/` and `assets/sprites/nina/atlas/`. The Lucca README explains every field, including the foot anchor, the hand anchor for ledge and rope frames, and the fist positions.
 - **Which frame when:** `pickFrame` in `feel-lab/index.html` is the reference. Port its choices.
 - **Items:** `assets/sprites/items/`. The sword and shield are separate pictures pinned to his fists. Read "Which hand is which" and "Drawing and sheathing" in the Lucca README before touching this; the handedness rule is easy to get backwards. The lab's drawing code just after `pickFrame` is the reference.
 - Surfaces can be plain white lines for now, as in the lab: dashed for too steep to stand on, ground filled in dark beneath with its cliff faces drawn, scaffolds with thin posts. Tile art comes later.

@@ -11,7 +11,7 @@ const PARAMS = {jumpHeight:4, apexTime:0.40, fallMult:1.6, cutMult:3, terminal:2
   airControl:0.65, coyoteMs:80, bufferMs:100, hardCut:false, walkLimit:50, upCost:20, downBoost:15, slideFriction:0.75, slideSteer:0.3, slideJump:1, footWidth:0.6, bodyWidth:0.6,
   staminaMax:100, jumpCost:30, runDrain:2, walkRegen:12, crouchRegen:60, exhaustTime:1.2, charHeight:1.9, armReach:0.1, lungeLean:0.8, lungeCost:15, proneTime:0.6,
   pullTime:1, pullCost:40, climbSpeed:2, weight:1, climbEffort:10, hangCost:3, multLadder:0.5, multRope:1.5, multWall:8, oneHand:0.65, drawTime:0.35,
-  climbSprint:1.75, climbSprintCost:3};
+  climbSprint:1.75, climbSprintCost:3, duckTime:0.35, duckKeep:0.7, duckCost:5, duckHeight:0.9};
 
 // Each scenario: where he starts (x, standing on the solid ground there) and a list of [ticks, held inputs].
 // dir: -1 left, 1 right. hand: 0 or 1 presses that hand's draw/sheathe key on the first tick of the segment.
@@ -55,6 +55,10 @@ const SCENARIOS = [
    steps:[[2,{}],[45,{jump:true}],[20,{}],[120,R],[250,{up:true}],[60,R]]},
   {name:'gap-with-walls', about:'Hop short into the 4-wide gap without grabbing and hit the far face; then the same jump holding grab.', x:60.5,
    steps:[[2,{}],[26,{dir:1,jump:true}],[150,R],[2,{}],[26,{dir:1,jump:true,grab:true}],[60,{dir:1,grab:true}],[80,{grab:true,up:true}],[30,{}]]},
+  {name:'dodge-slide', about:'Sprint, press down to dodge-slide, keep holding down to end in a crouch. Then press down while only walking, which does nothing.', x:120,
+   steps:[[70,RUN],[30,{...RUN,down:true}],[50,{down:true}],[20,{}],[40,R],[20,{dir:1,down:true}],[30,{}]]},
+  {name:'dodge-slide-jump-and-edge', about:'Sprint, slide, jump out of it. Then sprint and slide off the end of the ground into a gap.', x:20,
+   steps:[[70,RUN],[7,{...RUN,down:true}],[25,{...RUN,jump:true}],[40,RUN],[60,{}],[1,{}],[52,RUN],[40,{...RUN,down:true}],[120,{}]]},
   {name:'draw-and-sheathe', about:'Draw both hands, sheathe the left, while walking.', x:20,
    steps:[[1,{hand:1}],[30,{}],[1,{hand:0,dir:1}],[40,R],[1,{hand:0}],[40,{}]]},
 ];
@@ -71,25 +75,30 @@ const run = new Function('PARAMS', 'SCENARIOS', sim + level + `
       step(p, PARAMS, {dir:h.dir || 0, run:!!h.run, jumpHeld:jump, jumpPressed:jump && !prevJump, up:!!h.up, down:!!h.down, grab:!!h.grab,
                        swapHand:(t === 0 && h.hand !== undefined) ? h.hand : -1}, LINES, WORLD_W, CLIMBS, CLIFFS);
       prevJump = jump; modes.add(p.mode + (p.grounded ? '/ground' : '/air') + (p.prone > 0 ? '/prone' : '') + (p.exhaust > 0 ? '/exhausted' : ''));
-      states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0]);
+      if (p.duck > 0) modes.add('dodge-slide');
+      states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0, p.duck > 0 ? 1 : 0]);
     }
     out.push({name:sc.name, about:sc.about, modes:[...modes], states, startY:yAt(ground, sc.x)});
   }
   const seg = (M) => [M.x1, M.y1, M.x2, M.y2];
   return {out, world:{width:WORLD_W, ground:LINES.filter(M => M.solid).map(seg), scaffolds:LINES.filter(M => !M.solid).map(seg),
     climbables:CLIMBS.map(c => ({kind:c.kind, x:c.x, y1:c.y1, y2:c.y2}))},
+    fixed:{character:BODY, world:WORLD},
     cliffs:CLIFFS.map(c => ({x:c.x, top:c.top, bottom:c.bottom === -Infinity ? null : c.bottom, openSide:c.face < 0 ? 'left' : 'right'}))};
 `);
 const res = run(PARAMS, SCENARIOS);
 const dir = path.join(__dirname, '..', 'traces');
 fs.mkdirSync(dir, {recursive:true});
-fs.writeFileSync(path.join(dir, '_world.json'), JSON.stringify({ticksPerSecond:60, units:'tiles; y is up', params:PARAMS, world:res.world,
+fs.writeFileSync(path.join(dir, '_world.json'), JSON.stringify({ticksPerSecond:60, units:'tiles; y is up', params:PARAMS,
+  fixedNote:'Numbers the lab has no slider for. They are still tuning, not code: character numbers belong beside params, world numbers belong to the game.', fixed:res.fixed,
+  groundedNote:'The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.',
+  world:res.world,
   cliffsNote:'Derived from ground, not authored: listed so a port can check its own derivation. bottom null means the face runs down out of the map.', cliffs:res.cliffs}, null, 1));
 for (let i = 0; i < SCENARIOS.length; i++){
   const sc = SCENARIOS[i], o = res.out[i];
   fs.writeFileSync(path.join(dir, sc.name + '.json'), JSON.stringify({name:sc.name, about:sc.about, startX:sc.x, startY:o.startY,
     inputs:sc.steps.map(([ticks, h]) => ({ticks, ...h})),
-    stateColumns:['x', 'y', 'vx', 'vy', 'stamina', 'mode', 'grounded', 'leftHandHolding', 'rightHandHolding'], states:o.states}));
+    stateColumns:['x', 'y', 'vx', 'vy', 'stamina', 'mode', 'grounded', 'leftHandHolding', 'rightHandHolding', 'dodgeSliding'], states:o.states}));
   const last = o.states[o.states.length - 1];
   console.log(sc.name.padEnd(34), String(o.states.length).padStart(4), 'ticks  end x', last[0].toFixed(2), 'y', last[1].toFixed(2), ' ', o.modes.join(' '));
 }
