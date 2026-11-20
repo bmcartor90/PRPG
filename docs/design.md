@@ -190,11 +190,13 @@ These have to be built in from the start, because they are painful to add later:
 Mostly for towns. A staircase can lead up and back, with the characters shrinking as they climb, so a higher part of the map reads as farther away.
 
 - **It is a drawing rule only.** The map and all movement stay in ordinary tiles. Nothing about jumping, speed or reach changes; things above a certain height are simply drawn smaller, so movement on screen shrinks by the same ratio without being touched.
-- **A whole band of height.** A map names the height where depth starts, the height where it finishes, and how small things get. Below the start everything is full size; above the finish everything is at the smaller size.
+- **Three depths: full size, 75%, and 56.25%** (75% of 75%). A map can step back once or twice.
+- **Each step is a whole band of height.** A map names the height where the step starts and the height where it finishes. Below the start everything is at the nearer size; above the finish everything is at the farther size.
 - **In between, size changes steadily.** A character shrinks steadily as he climbs the stairs and grows steadily as he comes back down.
 - **Above the start height the whole map is "back".** Such a map cannot also have a "front" at that height.
 - **Foreground pieces do not scale.** Some scenery sits in front of the play area, and characters pass behind it: a tree close to the camera, say. It stays the same size however high it reaches, because it is not going back as it goes up.
-- Not decided: how small the back gets, and what happens when the leader is hidden behind a foreground piece.
+- **A foreground piece fades to partly see-through while the leader is behind it,** so he is never lost.
+- **The foreground slides past about 15% faster than the play area,** as things near a camera do. To be tuned by eye.
 
 ### Background
 
