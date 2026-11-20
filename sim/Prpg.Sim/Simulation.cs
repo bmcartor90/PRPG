@@ -110,12 +110,12 @@ namespace Prpg.Sim
             return new Simulation(map, movement, world, s);
         }
 
-        /// <summary>The highest solid ground under x (the first one, on a tie), as the lab's trace recorder picks it.</summary>
+        /// <summary>The highest ground (not floating rock) under x (the first one, on a tie), as the lab's trace recorder picks it.</summary>
         public static int GroundLineAt(Map map, double x)
         {
             Line best = null;
             foreach (var L in map.Lines)
-                if (L.Solid && x >= L.X1 && x <= L.X2 && (best == null || L.YAt(x) > best.YAt(x))) best = L;
+                if (L.Solid && !L.Slab && x >= L.X1 && x <= L.X2 && (best == null || L.YAt(x) > best.YAt(x))) best = L;
             if (best == null) throw new ArgumentException("No solid ground under x = " + x);
             return best.Index;
         }

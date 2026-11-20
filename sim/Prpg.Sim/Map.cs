@@ -13,13 +13,14 @@ namespace Prpg.Sim
     {
         public readonly int Index;
         public readonly bool Solid;
+        public readonly bool Slab;     // the top of floating rock (solid, but it brings its own faces)
         public readonly double X1, Y1, X2, Y2;
         public readonly double Th, Cos, Sin, Deg;
         public readonly int Sign;      // +1 rises to the right, -1 falls, 0 flat
 
-        public Line(int index, bool solid, double x1, double y1, double x2, double y2)
+        public Line(int index, bool solid, bool slab, double x1, double y1, double x2, double y2)
         {
-            Index = index; Solid = solid; X1 = x1; Y1 = y1; X2 = x2; Y2 = y2;
+            Index = index; Solid = solid; Slab = slab; X1 = x1; Y1 = y1; X2 = x2; Y2 = y2;
             Th = Math.Atan2(Math.Abs(y2 - y1), x2 - x1);
             Cos = Math.Cos(Th);
             Sin = Math.Sin(Th);
@@ -43,9 +44,18 @@ namespace Prpg.Sim
         }
     }
 
+    /// <summary>An underside of floating rock, x1 &lt; x2. Rising into it stops his rise; it also blocks walking in where it is too low.</summary>
+    public sealed class Underside
+    {
+        public readonly double X1, Y1, X2, Y2;
+        public Underside(double x1, double y1, double x2, double y2) { X1 = x1; Y1 = y1; X2 = x2; Y2 = y2; }
+        public double YAt(double x) => Y1 + (Y2 - Y1) * (x - X1) / (X2 - X1);
+    }
+
     /// <summary>
     /// A cliff face: where solid ground ends or steps down. Blocks sideways movement for anyone whose feet are below Top.
-    /// Derived from the ground, never authored.
+    /// Derived from the ends of ground lines and from the upright edges of floating rock, never authored.
+    /// Faces of floating rock have a real bottom: he passes under them when his head is below it.
     /// </summary>
     public sealed class Cliff
     {
@@ -56,7 +66,8 @@ namespace Prpg.Sim
 
     /// <summary>
     /// A map: surfaces and climbables, and the cliff faces derived from the ground.
-    /// Lines are numbered ground first, then scaffolds, each in file order. Order matters: it settles ties.
+    /// Lines are numbered ground first, then the tops of floating rock, then scaffolds, each in file order.
+    /// Order matters: it settles ties, and it is the lab's order.
     /// </summary>
     public sealed class Map
     {
@@ -65,15 +76,22 @@ namespace Prpg.Sim
         public readonly List<Line> Lines = new List<Line>();
         public readonly List<Climbable> Climbables = new List<Climbable>();
         public readonly List<Cliff> Cliffs = new List<Cliff>();
+        public readonly List<Underside> Undersides = new List<Underside>();
+        public double UnitsPerTile = 1;
 
         /// <summary>Reads a map file. Fields it does not know are ignored, so the format can grow.</summary>
         public static Map Load(string json, WorldRules world) => FromJson(Json.Parse(json) as JsonObject ?? throw new FormatException("A map must be a JSON object"), world);
 
         public static Map FromJson(JsonObject o, WorldRules world)
         {
-            var m = new Map { Name = o.String("name") ?? "", Width = o.Number("width") };
-            AddLines(m, o.Array("ground"), true);
-            AddLines(m, o.Array("scaffolds"), false);
+            // Coordinates are whole numbers of a unit; the file says how many make a tile (6 for editor maps).
+            double u = o.Has("unitsPerTile") ? o.Number("unitsPerTile") : 1;
+            if (!(u > 0)) throw new FormatException("unitsPerTile must be positive");
+            var m = new Map { Name = o.String("name") ?? "", UnitsPerTile = u, Width = o.Number("width") / u };
+            AddLines(m, o.Array("ground"), true, u);
+            var faces = new List<Cliff>();
+            foreach (var item in o.Array("floatingRock") ?? new List<object>()) m.AddSlab(item as List<object> ?? throw new FormatException("Each floating rock must be a list of points"), u, faces);
+            AddLines(m, o.Array("scaffolds"), false, u);
             var climbs = o.Array("climbables") ?? new List<object>();
             foreach (var item in climbs)
             {
@@ -86,22 +104,46 @@ namespace Prpg.Sim
                     case "Wall": kind = ClimbKind.Wall; break;
                     default: throw new FormatException("Unknown climbable kind \"" + c.String("kind") + "\"");
                 }
-                m.Climbables.Add(new Climbable(m.Climbables.Count, kind, c.Number("x"), c.Number("y1"), c.Number("y2")));
+                m.Climbables.Add(new Climbable(m.Climbables.Count, kind, c.Number("x") / u, c.Number("y1") / u, c.Number("y2") / u));
             }
             m.BuildCliffs(world);
+            m.Cliffs.AddRange(faces);
             return m;
         }
 
-        static void AddLines(Map m, List<object> lines, bool solid)
+        static void AddLines(Map m, List<object> lines, bool solid, double u)
         {
             if (lines == null) return;
             foreach (var item in lines)
             {
                 var a = item as List<object> ?? throw new FormatException("Each line must be [x1, y1, x2, y2]");
                 if (a.Count != 4) throw new FormatException("Each line must be [x1, y1, x2, y2]");
-                double x1 = (double)a[0], y1 = (double)a[1], x2 = (double)a[2], y2 = (double)a[3];
+                double x1 = (double)a[0] / u, y1 = (double)a[1] / u, x2 = (double)a[2] / u, y2 = (double)a[3] / u;
                 if (!(x2 > x1)) throw new FormatException("Line " + m.Lines.Count + " must have x1 < x2 (vertical lines are not surfaces)");
-                m.Lines.Add(new Line(m.Lines.Count, solid, x1, y1, x2, y2));
+                m.Lines.Add(new Line(m.Lines.Count, solid, false, x1, y1, x2, y2));
+            }
+        }
+
+        // The lab's makeSlab: walk the clockwise outline. Left-to-right edges are surfaces, right-to-left edges are undersides,
+        // upright edges are faces with a bottom.
+        void AddSlab(List<object> points, double u, List<Cliff> faces)
+        {
+            int n = points.Count;
+            if (n < 3) throw new FormatException("A floating rock needs at least three points");
+            var px = new double[n]; var py = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                var pt = points[i] as List<object>;
+                if (pt == null || pt.Count != 2) throw new FormatException("Each floating rock point must be [x, y]");
+                px[i] = (double)pt[0] / u; py[i] = (double)pt[1] / u;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                int j = (i + 1) % n;
+                double ax = px[i], ay = py[i], bx = px[j], by = py[j];
+                if (bx > ax) Lines.Add(new Line(Lines.Count, true, true, ax, ay, bx, by));
+                else if (bx < ax) Undersides.Add(new Underside(bx, by, ax, ay));
+                else if (by != ay) faces.Add(new Cliff(ax, Math.Max(ay, by), Math.Min(ay, by), by < ay ? 1 : -1));
             }
         }
 
@@ -114,7 +156,7 @@ namespace Prpg.Sim
             Cliffs.Clear();
             foreach (var M in Lines)
             {
-                if (!M.Solid) continue;
+                if (!M.Solid || M.Slab) continue;          // floating rock brings its own faces
                 foreach (int side in Sides)
                 {
                     double ex = side < 0 ? M.X1 : M.X2, ey = side < 0 ? M.Y1 : M.Y2, bx = ex + side * W.CliffProbe;
@@ -122,7 +164,7 @@ namespace Prpg.Sim
                     bool covered = false;
                     foreach (var N in Lines)
                     {
-                        if (N == M || !N.Solid || bx < N.X1 || bx > N.X2) continue;
+                        if (N == M || !N.Solid || N.Slab || bx < N.X1 || bx > N.X2) continue;
                         double ny = N.YAt(bx);
                         if (ny >= ey - W.CliffLevel) { covered = true; break; }
                         if (ny > below) below = ny;

@@ -270,6 +270,7 @@ namespace Prpg.Sim
         public static void Step(PlayerState p, Movement P, WorldRules W, Input inp, Map map)
         {
             var lines = map.Lines;
+            var roofs = map.Undersides;
             double worldW = map.Width;
             var d = Derive(P);
             p.Px = p.X; p.Py = p.Y; p.PLift = p.Lift;
@@ -343,6 +344,7 @@ namespace Prpg.Sim
             if (p.OnGround)
             {
                 var L = lines[p.Line];
+                double duck0 = p.Duck;
                 if (IsSteep(L, P))
                 {
                     double pull = d.GFall * L.Sin * (1 - P.SlideFriction);
@@ -421,6 +423,12 @@ namespace Prpg.Sim
                 {
                     p.Y = L.YAt(p.X);
                 }
+                // Rock overhead: if this step would put his head into an underside, he does not take it.
+                // He always counts at full standing height, even in a dodge slide.
+                if (roofs.Count > 0 && RoofOver(P, W, roofs, p.X, p.Y) < p.Y + P.CharHeight && RoofOver(P, W, roofs, p.Px, p.Py) >= p.Py + P.CharHeight)
+                {
+                    p.X = p.Px; p.Y = p.Py; p.Vx = 0; p.Vy = 0; p.OnGround = true; p.Line = L.Index; p.Coyote = 0; p.Duck = duck0 > 0 ? 0 : p.Duck;
+                }
                 ax = p.X; ay = p.Y;
             }
             else
@@ -430,6 +438,10 @@ namespace Prpg.Sim
                 if (p.X < W.EdgeMargin) { p.X = W.EdgeMargin; p.Vx = 0; }
                 if (p.X > worldW - W.EdgeMargin) { p.X = worldW - W.EdgeMargin; p.Vx = 0; }
                 HitCliffs(p, P, W, map, p.Px, p.Py);
+                if (roofs.Count > 0 && RoofOver(P, W, roofs, p.X, p.Py) < p.Py + P.CharHeight && RoofOver(P, W, roofs, p.Px, p.Py) >= p.Py + P.CharHeight)
+                {
+                    p.X = p.Px; p.Vx = 0;                     // drifting sideways into an overhang: stopped, as at a face
+                }
             }
 
             // Jump: a press counts now, or shortly before landing (buffer); the ground counts shortly after leaving it (coyote).
@@ -483,6 +495,12 @@ namespace Prpg.Sim
                 else g = d.GFall;
                 double v1 = Math.Max(p.Vy - g * DT, -P.Terminal);
                 double y1 = ay + 0.5 * (p.Vy + v1) * DT;
+                // Hitting his head: rising into an underside stops the rise dead. Sideways speed is untouched.
+                if (roofs.Count > 0 && y1 > ay)
+                {
+                    double c = RoofOver(P, W, roofs, p.X, ay);
+                    if (y1 + P.CharHeight > c) { y1 = Math.Max(ay, c - P.CharHeight); v1 = 0; p.Jumping = false; p.Cutting = true; }
+                }
 
                 // One-way lines: pass up through them, land on them from above, with any part of the footing.
                 Line land = null; double landY = double.NegativeInfinity;
@@ -529,6 +547,21 @@ namespace Prpg.Sim
             Tail(p, P, W, map);
         }
 
+        // The lowest underside over his body at (x, y), or +infinity if there is open air above. Only rock above his feet counts.
+        static double RoofOver(Movement P, WorldRules W, List<Underside> roofs, double x, double y)
+        {
+            double low = double.PositiveInfinity;
+            double hb = P.BodyWidth / 2;
+            foreach (var U in roofs)
+            {
+                double lo = Math.Max(U.X1, x - hb), hi = Math.Min(U.X2, x + hb);
+                if (lo >= hi - 1e-9) continue;
+                double u = Math.Min(U.YAt(lo), U.YAt(hi));
+                if (u > y + W.CliffTop && u < low) low = u;
+            }
+            return low;
+        }
+
         // Stop him at a cliff face. x0 and y0 are where he was before this tick's sideways move.
         static void HitCliffs(PlayerState p, Movement P, WorldRules W, Map map, double x0, double y0)
         {
@@ -536,6 +569,7 @@ namespace Prpg.Sim
             foreach (var c in map.Cliffs)
             {
                 if (y0 >= c.Top - W.CliffTop) continue;          // feet at or above the top: over it, not against it
+                if (y0 + P.CharHeight <= c.Bottom + W.CliffTop) continue;   // head below the bottom of the face: he passes under it
                 if (c.Face < 0) { if (x0 <= c.X && p.X + hb > c.X) { p.X = c.X - hb; if (p.Vx > 0) p.Vx = 0; } }
                 else { if (x0 >= c.X && p.X - hb < c.X) { p.X = c.X + hb; if (p.Vx < 0) p.Vx = 0; } }
             }

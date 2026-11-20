@@ -52,7 +52,7 @@ namespace Prpg.Sim.Tests
         }
 
         [Fact]
-        public void ThereAreTwentyTwoTraces() => Assert.Equal(22, Repo.TraceNames().Count());
+        public void ThereAreTwentyEightTraces() => Assert.Equal(28, Repo.TraceNames().Count());
 
         [Fact]
         public void CliffsMatchTheLab()
@@ -62,6 +62,15 @@ namespace Prpg.Sim.Tests
                 $"{c.Number("x"):R} {c.Number("top"):R} {(c.Get("bottom") == null ? "out" : c.Number("bottom").ToString("R"))} {c.String("openSide")}").ToList();
             var ours = Repo.Map().Cliffs.Select(c =>
                 $"{c.X:R} {c.Top:R} {(double.IsNegativeInfinity(c.Bottom) ? "out" : c.Bottom.ToString("R"))} {(c.Face < 0 ? "left" : "right")}").ToList();
+            Assert.Equal(lab, ours);
+        }
+
+        [Fact]
+        public void UndersidesMatchTheLab()
+        {
+            var w = (JsonObject)Json.Parse(Repo.Read("feel-lab", "traces", "_world.json"));
+            var lab = w.Array("undersides").Cast<List<object>>().Select(a => string.Join(" ", a.Select(v => ((double)v).ToString("R")))).ToList();
+            var ours = Repo.Map().Undersides.Select(u => $"{u.X1:R} {u.Y1:R} {u.X2:R} {u.Y2:R}").ToList();
             Assert.Equal(lab, ours);
         }
 

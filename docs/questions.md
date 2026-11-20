@@ -27,9 +27,9 @@ One line each: the question, and what the code assumes until Brad answers. Answe
 
 ## Map editor brief (`map-editor-brief.md`)
 
-15. **Sixths in the map file.** Proposal, approved by Brad: store every coordinate as a whole number of sixths (7 means 7/6 of a tile); the game converts on load. Please record it in the spec's map format.
-16. **Floating rock.** Closed ground traces break today's rule that nothing is under ground. The lab needs new cliff logic as well as the underside (ceiling) rule, with recordings for both. Waiting on them.
-17. **Doors use interact, not up.** Decided by Brad. Up also mounts ladders, so a door near a ladder would be ambiguous. Please update the brief and `design.md`.
+15. **Sixths in the map file.** Done: `unitsPerTile` in the file (60 for the test map, 6 for editor maps); the loader converts.
+16. **Floating rock.** Done: ported with undersides and faces; all 28 traces match bit for bit.
+17. **Doors use interact, not up.** Decided and recorded.
 18. **Big maps.** Engineering, no design change: the simulation will only check surfaces near him. Ties still go by file order; the traces will prove nothing changed.
 19. **Top edge with no partner.** Until ceilings exist, it stops upward speed like an invisible lid. Brad says ceilings are coming soon; then it is just a ceiling.
 
