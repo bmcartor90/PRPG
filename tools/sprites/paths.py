@@ -36,6 +36,8 @@ SHEETS={
  'ab22f874':'tiles/crystal/source/Meshy_AI_crystal_cavern_solid_wall_tileset.png',
  '0c686896':'props/doors/source/Meshy_AI_environment_doors_and_openings_sheet.png',
  '17425c7e':'props/doors/source/Meshy_AI_locked_doors_and_dormant_portal_sheet.png',
+ '0058dca7':'monsters/assassin-vine/source/Meshy_AI_assassin_vine_monster_sheet.png',
+ '7b9e35c8':'monsters/fat-rabbit/source/Meshy_AI_fat_rabbit_monster_sheet.png',
  '6d34fc5c':'props/doors/source/Meshy_AI_shimmering_portal_loop_sheet.png',
 }
 def SRC(i):
