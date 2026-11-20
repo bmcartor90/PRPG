@@ -326,6 +326,7 @@ Notes on Mind:
 - **Body also works automatically, not as an option:** a higher Body gives a bigger stamina bar (always the full bar), shortens exhaustion, and raises the share of climb speed kept when climbing one-handed.
 - **On no stat:** walkable limit, draw and sheathe time, walking recovery, crouched recovery, walk speed, every stamina cost, gravity, jump cut, coyote time and jump buffer. Height and reach belong to the character.
 - **Walkable limit may become an ability that Mind unlocks.**
+- **Each of the six options is set separately,** at sleep, to any level from 1 up to what its stat allows. Agility at level 5 can run Jump at 5 and Speed at 3. This is so players can tune the game to their own comfort.
 - **Between levels, movement does not change.** A stat that sits between two levels (Agility 107, say) plays as the lower level. What a stat gains between levels is combat stats or discrete abilities.
 - **One exception: the stamina bar equals Body exactly,** point for point. Body 107 is 107 stamina.
 
@@ -346,7 +347,7 @@ Notes on Mind:
 | Exhaustion (s), automatic | 1.4 | 1.2 | 1.05 | 0.9 | 0.8 | 0.7 | 0.6 |
 | One-handed share of climb speed, automatic | 60% | 65% | 70% | 74% | 78% | 82% | 85% |
 
-**Not yet decided:** whether each of the six options is set separately at sleep, to any level up to what its stat allows.
+The structure above is settled. The values in the table are a first proposal and have not been tried in play.
 - At these numbers stamina feels costly, and it is not the free-jumping Mario dream. That is accepted: it is the starting point, not the ceiling.
 
 ### Draw and sheathe
