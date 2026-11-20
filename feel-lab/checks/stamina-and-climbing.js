@@ -1,7 +1,7 @@
 const fs=require('fs');
 const html=fs.readFileSync(require('path').join(__dirname,'..','index.html'),'utf8');
 const script=html.split('<script>')[1].split('</script>')[0];
-fs.writeFileSync('all.js',script);
+fs.writeFileSync(require('path').join(require('os').tmpdir(),'feel-lab-all.js'),script);
 const sim=script.split('/*SIM-START*/')[1].split('/*SIM-END*/')[0];
 const level=script.split('// ---------- Level ----------')[1].split('// ---------- Parameters ----------')[0];
 eval(sim+level+`
