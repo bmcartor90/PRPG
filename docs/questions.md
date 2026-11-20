@@ -45,3 +45,11 @@ One line each: the question, and what the code assumes until Brad answers. Answe
 24. **Development keys.** 1 to 7 (sections), T (retry), Tab (character), F1, F5 and Esc are not in the design's layout. They are for testing and come out when menus exist.
 25. **The character is a setting,** remembered between runs and changed with Tab. Changing character keeps the position and swaps movement numbers and art.
 26. **Seeds** are random at start-up and shown in the help line (F5 copies them). There is no way to type one in yet.
+
+## Map editor, version one
+
+27. **First map size.** Brad asked for 1.5 screens tall and 3 wide: 72 by 20.25 tiles. New maps start at 72 by 20, because 20.25 tiles is 121.5 sixths, not a whole number. The panel resizes in steps of 12 tiles wide and 6 tall.
+28. **Not in version one:** doors and edge exits (Brad: not needed yet), typing exact numbers, slope angle values in the file, the top-edge lid, and a "minimum abilities" set for the reach overlay.
+29. **Map height** is a new field in the map file (`height`), and the start point is `start: [x, y]`. The game's camera stops at the top of a map that has a height.
+30. **Ground traces** are stored in the file too (`groundTraces`) so the editor gets back exactly what was drawn; the game reads only `ground`.
+31. **Reach overlay** shows standing and running jumps both ways and a straight-up jump, all with grab held, so they stop on the first ledge or climbable they reach. The running jump starts at full run speed, as if after a run-up. The lunge is not drawn yet.

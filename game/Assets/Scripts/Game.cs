@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Prpg.Game.MapEditing;
 using Prpg.Sim;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,8 +8,8 @@ using UnityEngine.InputSystem;
 namespace Prpg.Game
 {
     /// <summary>
-    /// The first build: one character on the test map. Owns the simulation, runs it at exactly 60 ticks a second,
-    /// and draws between the last two ticks. Created at start-up from code, so the scene can stay empty.
+    /// The game: one character on a map. Owns the simulation, runs it at exactly 60 ticks a second, and draws between
+    /// the last two ticks. Also hosts the map editor (F4). Created at start-up from code, so the scene can stay empty.
     /// </summary>
     public sealed class Game : MonoBehaviour
     {
@@ -18,6 +19,8 @@ namespace Prpg.Game
         // Section starts on the test map, as the lab's number keys.
         static readonly double[] Sections = { 3, 36, 115, 163, 229, 294, 346, 381 };
 
+        enum Mode { Play, Edit, EditPlay }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot()
         {
@@ -25,8 +28,9 @@ namespace Prpg.Game
             new GameObject("PRPG").AddComponent<Game>();
         }
 
+        Mode mode = Mode.Play;
         Simulation sim;
-        Map map;
+        Map testMap;
         WorldRules world;
         string movementText;
         Controls controls;
@@ -35,15 +39,19 @@ namespace Prpg.Game
         Camera cam, backdrop;
         MapView mapView;
         CharacterView view;
+        MapEditor editor;
         ItemAtlas items;
         JsonObject characterArt;
         readonly List<string> characterOrder = new List<string>();
         readonly Dictionary<string, CharacterAtlas> atlases = new Dictionary<string, CharacterAtlas>();
         string character;
         int section;
+        double placeX, placeY;          // where "retry" puts him when playing an editor map
         double camX, camY, camPx, camPy;
         string error;
         bool showHelp = true;
+
+        Map CurrentMap => sim.Map;
 
         void Awake()
         {
@@ -57,7 +65,7 @@ namespace Prpg.Game
         void Load()
         {
             world = WorldRules.Load(Paths.ReadData("world.json"));
-            map = Map.Load(Paths.ReadData("maps", "test.json"), world);
+            testMap = Map.Load(Paths.ReadData("maps", "test.json"), world);
             movementText = Paths.ReadData("movement.json");
 
             var chars = (JsonObject)Json.Parse(Paths.ReadData("characters.json"));
@@ -69,12 +77,11 @@ namespace Prpg.Game
             if (!characterOrder.Contains(character)) character = characterOrder[0];
             var movement = MovementFile.Load(movementText, character);
 
-            ulong runSeed = NewSeed(), battleSeed = NewSeed();
             double x = Sections[0];
-            sim = Simulation.Start(map, movement, world, x, Simulation.GroundLineAt(map, x), runSeed, battleSeed);
+            sim = Simulation.Start(testMap, movement, world, x, Simulation.GroundLineAt(testMap, x), NewSeed(), NewSeed());
             controls = new Controls();
 
-            // Cameras: one clears the whole window to the lab's surround colour, the other draws the 16:9 view.
+            // Cameras: one clears the whole window to the lab's surround colour, the other draws the view.
             backdrop = new GameObject("Backdrop").AddComponent<Camera>();
             backdrop.clearFlags = CameraClearFlags.SolidColor;
             backdrop.backgroundColor = new Color32(0x1b, 0x1b, 0x1b, 255);
@@ -90,8 +97,12 @@ namespace Prpg.Game
 
             var material = DefaultSpriteMaterial();
             mapView = new MapView(transform, material);
-            mapView.Build(map, movement);
             view = new CharacterView(transform);
+            editor = new MapEditor(cam, mapView, material, world, transform)
+            {
+                CurrentMovement = () => sim.Movement,
+                PlayAt = PlayFromEditor,
+            };
             ApplyCharacter();
             Warp(0);
         }
@@ -122,60 +133,151 @@ namespace Prpg.Game
             }
             sim.Movement = MovementFile.Load(movementText, character);
             view.SetCharacter(atlas, items, art.String("sword"), art.String("shield"));
-            mapView.Build(map, sim.Movement);
+            mapView.Build(CurrentMap, sim.Movement);
             PlayerPrefs.SetString("character", character);
+        }
+
+        // ---- Modes ----
+
+        /// <summary>A fresh simulation on another map, keeping the seeds and the character's numbers.</summary>
+        void UseMap(Map m)
+        {
+            var old = sim.State;
+            sim = new Simulation(m, sim.Movement, world, new SimState
+            {
+                RunSeed = old.RunSeed, BattleSeed = old.BattleSeed,
+                RunRng = Rng.FromSeed(old.RunSeed), BattleRng = Rng.FromSeed(old.BattleSeed),
+                Player = new PlayerState(),
+            });
+            mapView.Build(m, sim.Movement);
         }
 
         void Warp(int i)
         {
             section = i;
             sim.Warp(Sections[i]);
+            AfterPlace();
+        }
+
+        void AfterPlace()
+        {
             anim.Reset();
             controls.ClearQueues();
             var p = sim.State.Player;
-            camX = camPx = Math.Min(Math.Max(p.X - ViewW * 0.42, 0), Math.Max(0, map.Width - ViewW));
-            camY = camPy = 0;
+            CameraTarget(p, out camX, out camY);
+            camPx = camX; camPy = camY;
         }
+
+        void OpenEditor()
+        {
+            mode = Mode.Edit;
+            view.SetVisible(false);
+            editor.SetVisible(true);
+            if (editor.Doc == null)
+            {
+                var names = MapEditor.MapNames();
+                string last = PlayerPrefs.GetString("editorMap", names.Count > 0 ? names[0] : "first");
+                editor.Open(last);
+            }
+            else mapView.Build(editor.CurrentMap, sim.Movement);
+        }
+
+        void LeaveEditor()
+        {
+            editor.SaveNow();
+            editor.SetVisible(false);
+            view.SetVisible(true);
+            mode = Mode.Play;
+            UseMap(testMap);
+            Warp(section);
+        }
+
+        void PlayFromEditor(Map m, double x, double y)
+        {
+            mode = Mode.EditPlay;
+            editor.SetVisible(false);
+            view.SetVisible(true);
+            UseMap(m);
+            placeX = x; placeY = y;
+            sim.PlaceAt(x, y);
+            AfterPlace();
+        }
+
+        void BackToEditor()
+        {
+            mode = Mode.Edit;
+            view.SetVisible(false);
+            editor.SetVisible(true);
+            mapView.Build(editor.CurrentMap, sim.Movement);
+        }
+
+        // ---- Frame loop ----
 
         void Update()
         {
             if (error != null || sim == null) return;
-            DevKeys();
-            controls.Poll();
-            stepper.Advance(Time.unscaledDeltaTime,
-                () => controls.Sample(sim.State.Player.SwapHand >= 0),
-                inp =>
+            try
+            {
+                var kb = Keyboard.current;
+                bool typing = GUIUtility.keyboardControl != 0;
+                if (kb != null && !typing)
                 {
-                    sim.Step(inp);
-                    anim.AfterTick(sim.State.Player, sim.Movement, map, inp.Dir);
-                    CameraTick();
-                });
+                    if (kb[Key.Tab].wasPressedThisFrame)
+                    {
+                        character = characterOrder[(characterOrder.IndexOf(character) + 1) % characterOrder.Count];
+                        ApplyCharacter();
+                        if (mode == Mode.Edit) mapView.Build(editor.CurrentMap, sim.Movement);
+                    }
+                    if (kb[Key.F4].wasPressedThisFrame) { if (mode == Mode.Play) OpenEditor(); else LeaveEditor(); return; }
+                }
+
+                if (mode == Mode.Edit) { editor.Update(); return; }
+
+                if (kb != null && !typing) PlayKeys(kb);
+                if (mode == Mode.Edit) return;
+                controls.Poll();
+                stepper.Advance(Time.unscaledDeltaTime,
+                    () => controls.Sample(sim.State.Player.SwapHand >= 0),
+                    inp =>
+                    {
+                        sim.Step(inp);
+                        anim.AfterTick(sim.State.Player, sim.Movement, CurrentMap, inp.Dir);
+                        CameraTick();
+                    });
+            }
+            catch (Exception e) { error = e.ToString(); Debug.LogException(e); }
         }
 
-        void DevKeys()
+        void PlayKeys(Keyboard kb)
         {
-            var kb = Keyboard.current;
-            if (kb == null) return;
-            Key[] digits = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8 };
-            for (int i = 0; i < digits.Length && i < Sections.Length; i++) if (kb[digits[i]].wasPressedThisFrame) Warp(i);
-            if (kb[Key.T].wasPressedThisFrame) Warp(section);
-            if (kb[Key.Tab].wasPressedThisFrame)
+            if (mode == Mode.Play)
             {
-                character = characterOrder[(characterOrder.IndexOf(character) + 1) % characterOrder.Count];
-                ApplyCharacter();
+                Key[] digits = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8 };
+                for (int i = 0; i < digits.Length && i < Sections.Length; i++) if (kb[digits[i]].wasPressedThisFrame) Warp(i);
+                if (kb[Key.T].wasPressedThisFrame) Warp(section);
+            }
+            else
+            {
+                if (kb[Key.T].wasPressedThisFrame) { sim.PlaceAt(placeX, placeY); AfterPlace(); }
+                if (kb[Key.F2].wasPressedThisFrame || kb[Key.F3].wasPressedThisFrame || controls.Pause.WasPressedThisFrame()) { BackToEditor(); return; }
             }
             if (kb[Key.F1].wasPressedThisFrame) showHelp = !showHelp;
             if (kb[Key.F5].wasPressedThisFrame) GUIUtility.systemCopyBuffer = sim.State.RunSeedText + " " + sim.State.BattleSeedText;
-            if (controls.Pause.WasPressedThisFrame()) Application.Quit();
         }
 
         // The lab's camera: leads the character a little, and keeps his head on screen when he goes up.
+        void CameraTarget(PlayerState p, out double tx, out double ty)
+        {
+            var m = CurrentMap;
+            tx = Math.Min(Math.Max(p.X - ViewW * 0.42, 0), Math.Max(0, m.Width - ViewW));
+            ty = Math.Max(0, p.Y - Math.Max(0.5, ViewH - FloorPad - sim.Movement.CharHeight - 1.0));
+            if (!double.IsInfinity(m.Height)) ty = Math.Max(0, Math.Min(ty, m.Height - ViewH + FloorPad));
+        }
+
         void CameraTick()
         {
-            var p = sim.State.Player;
             camPx = camX; camPy = camY;
-            double tx = Math.Min(Math.Max(p.X - ViewW * 0.42, 0), Math.Max(0, map.Width - ViewW));
-            double ty = Math.Max(0, p.Y - Math.Max(0.5, ViewH - FloorPad - sim.Movement.CharHeight - 1.0));
+            CameraTarget(sim.State.Player, out double tx, out double ty);
             camX += (tx - camX) * 0.2;
             camY += (ty - camY) * 0.18;
         }
@@ -183,11 +285,17 @@ namespace Prpg.Game
         void LateUpdate()
         {
             if (error != null || sim == null) return;
-            double a = stepper.Alpha;
-            FitView();
-            double cx = camPx + (camX - camPx) * a, cy = camPy + (camY - camPy) * a;
-            cam.transform.position = new Vector3((float)(cx + ViewW / 2), (float)(cy - FloorPad + ViewH / 2), -10);
-            view.Draw(sim.State.Player, sim.Movement, map, anim, sim.State.Frame, a);
+            try
+            {
+                if (mode == Mode.Edit) { editor.ApplyCamera(); editor.DrawOverlay(); return; }
+                double a = stepper.Alpha;
+                FitView();
+                cam.orthographicSize = ViewH / 2;
+                double cx = camPx + (camX - camPx) * a, cy = camPy + (camY - camPy) * a;
+                cam.transform.position = new Vector3((float)(cx + ViewW / 2), (float)(cy - FloorPad + ViewH / 2), -10);
+                view.Draw(sim.State.Player, sim.Movement, CurrentMap, anim, sim.State.Frame, a);
+            }
+            catch (Exception e) { error = e.ToString(); Debug.LogException(e); }
         }
 
         // 24 by 13.5 tiles on every display: the largest 16:9 area that fits, smoothly scaled.
@@ -198,14 +306,24 @@ namespace Prpg.Game
             else { float h = screen / target; cam.rect = new Rect(0, (1 - h) / 2, 1, h); }
         }
 
+        void OnApplicationQuit() { editor?.SaveNow(); }
+
         void OnGUI()
         {
             if (error != null)
             {
-                GUI.Label(new Rect(20, 20, Screen.width - 40, Screen.height - 40), "PRPG could not start:\n\n" + error);
+                GUI.Label(new Rect(20, 20, Screen.width - 40, Screen.height - 40), "PRPG hit an error. Send Claude this text (it is also in Player.log):\n\n" + error);
                 return;
             }
             if (sim == null) return;
+            if (mode == Mode.Edit)
+            {
+                editor.OnGUI(sim.Movement, character);
+                var ks = new GUIStyle(GUI.skin.label) { fontSize = Math.Max(11, Screen.height / 80), alignment = TextAnchor.LowerRight };
+                ks.normal.textColor = new Color32(0xc0, 0xc0, 0xc0, 255);
+                GUI.Label(new Rect(0, 0, Screen.width - 10, Screen.height - 6), MapEditor.KeysLine + "\n" + character, ks);
+                return;
+            }
             var r = cam.pixelRect;
             float unit = r.height / ViewH;                         // screen pixels per tile
             float x0 = r.x + 0.5f * unit, y0 = (Screen.height - r.yMax) + 0.45f * unit;
@@ -229,8 +347,10 @@ namespace Prpg.Game
 
             if (showHelp)
             {
-                string help = "Arrows move  Space jump  D sprint  F grab  Q/W left/right hand\n"
-                            + "1-8 sections  T retry  Tab character  F5 copy seeds  F1 hide  Esc quit\n"
+                string keys = mode == Mode.Play
+                    ? "1-8 sections  T retry  Tab character  F4 map editor  F5 copy seeds  F1 hide"
+                    : "Playing " + (editor.Doc != null ? editor.Doc.Name : "") + ":  T retry  F2 or Esc back to the editor  Tab character  F1 hide";
+                string help = "Arrows move  Space jump  D sprint  F grab  Q/W left/right hand\n" + keys + "\n"
                             + sim.State.RunSeedText + "  " + sim.State.BattleSeedText;
                 var hs = new GUIStyle(style) { alignment = TextAnchor.UpperRight };
                 hs.normal.textColor = new Color32(0x8f, 0x8f, 0x8f, 255);

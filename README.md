@@ -30,4 +30,14 @@ A 2D sidescroller platforming RPG. Working title.
 2. Double-click `build.bat`. The first run takes several minutes while Unity imports the project; later runs are quicker.
 3. It opens the `build` folder. Run `PRPG.exe`.
 
-In the game: arrows move, Space jumps, D sprints, F grabs, Q and W draw or sheathe the left and right hand. A controller works too (layout in `docs/design.md`). Number keys 1 to 7 jump to the test map's sections, T restarts the section, Tab changes character, F5 copies the seeds, F1 hides the help, Esc quits.
+In the game: arrows move, Space jumps, D sprints, F grabs, Q and W draw or sheathe the left and right hand. A controller works too (layout in `docs/design.md`). Number keys 1 to 8 jump to the test map's sections, T restarts the section, Tab changes character, F5 copies the seeds, F1 hides the help, Esc quits.
+
+## The map editor
+
+F4 in the game opens it; F4 again goes back to the test map. Maps are saved to `data/maps/<name>.json` after every change (with a `.bak` of the version you opened), so commit them like any other file. The panel on the left lists the tools and their keys; the line at the bottom right lists the rest.
+
+- **G ground:** click points along a surface. Enter ends it as ground filled to the bottom; clicking the first point again closes it into floating rock.
+- **S scaffold**, **C climbable** (1 ladder, 2 rope, 3 rough rock, 4 smooth rock; start the drag on a cliff face to put it on the face), **P start point**.
+- **V select:** drag corners or whole shapes, Delete, Ctrl+D to copy, Ctrl+Z / Ctrl+Y.
+- **R ruler**, **O reach:** click where he stands to see his jumps from there, worked out by the real movement code.
+- **F2** plays from the cursor, **F3** from the start point; F2 or Esc comes back to the editor where you were.

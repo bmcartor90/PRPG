@@ -35,6 +35,8 @@ namespace Prpg.Game
             return r;
         }
 
+        public void SetVisible(bool on) => root.gameObject.SetActive(on);
+
         public void SetCharacter(CharacterAtlas a, ItemAtlas it, string sword, string shield)
         {
             atlas = a; itemAtlas = it; swordName = sword; shieldName = shield;

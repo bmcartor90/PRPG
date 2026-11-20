@@ -126,6 +126,27 @@ namespace Prpg.Sim
             State.Frame++;
         }
 
+        /// <summary>
+        /// Puts him at (x, y), standing if a surface is right under his feet, otherwise in the air to fall from there.
+        /// For the editor's "play from here". His safe spot is the surface below, if any.
+        /// </summary>
+        public void PlaceAt(double x, double y)
+        {
+            var p = State.Player;
+            if (Map.Lines.Count == 0) { p.X = p.Px = x; p.Y = p.Py = y; p.OnGround = false; p.Line = -1; return; }
+            int below = Map.SurfaceBelow(x, y, Movement);
+            if (below >= 0 && y - Map.Lines[below].YAt(x) < 0.25)
+            {
+                Mover.Respawn(p, Map, x, below);
+                p.SafeX = x; p.SafeLine = below;
+                return;
+            }
+            int safe = below >= 0 ? below : 0;
+            Mover.Respawn(p, Map, Map.Lines[safe].ClampX(x), safe);
+            p.SafeX = p.X; p.SafeLine = safe;
+            p.X = p.Px = x; p.Y = p.Py = y; p.OnGround = false; p.Line = -1;
+        }
+
         /// <summary>Lab-style warp: stand him on the highest ground at x and make that his safe spot. A test convenience.</summary>
         public void Warp(double x)
         {

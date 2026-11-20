@@ -85,6 +85,9 @@ namespace Prpg.Sim
         /// <summary>Each floating rock's outline in tiles, as listed in the file (clockwise). For drawing.</summary>
         public readonly List<double[][]> FloatingRock = new List<double[][]>();
         public double UnitsPerTile = 1;
+        public double Height = double.PositiveInfinity;   // tiles; maps made in the editor say how tall they are
+        public bool HasStart;
+        public double StartX, StartY;                       // the start point, if the map has one
 
         /// <summary>Reads a map file. Fields it does not know are ignored, so the format can grow.</summary>
         public static Map Load(string json, WorldRules world) => FromJson(Json.Parse(json) as JsonObject ?? throw new FormatException("A map must be a JSON object"), world);
@@ -95,6 +98,8 @@ namespace Prpg.Sim
             double u = o.Has("unitsPerTile") ? o.Number("unitsPerTile") : 1;
             if (!(u > 0)) throw new FormatException("unitsPerTile must be positive");
             var m = new Map { Name = o.String("name") ?? "", UnitsPerTile = u, Width = o.Number("width") / u };
+            if (o.Has("height")) m.Height = o.Number("height") / u;
+            if (o.Array("start") is List<object> st && st.Count == 2) { m.HasStart = true; m.StartX = (double)st[0] / u; m.StartY = (double)st[1] / u; }
             AddLines(m, o.Array("ground"), true, u);
             var faces = new List<Cliff>();
             foreach (var item in o.Array("floatingRock") ?? new List<object>()) m.AddSlab(item as List<object> ?? throw new FormatException("Each floating rock must be a list of points"), u, faces);
@@ -125,6 +130,19 @@ namespace Prpg.Sim
             m.BuildCliffs(world);
             m.Cliffs.AddRange(faces);
             return m;
+        }
+
+        /// <summary>The highest surface he could stand on directly under (x, y), within a hair above y; -1 if none.</summary>
+        public int SurfaceBelow(double x, double y, Movement P)
+        {
+            Line best = null;
+            foreach (var L in Lines)
+            {
+                if (x < L.X1 || x > L.X2 || Mover.IsSteep(L, P)) continue;
+                double ly = L.YAt(x);
+                if (ly <= y + 0.05 && (best == null || ly > best.YAt(x))) best = L;
+            }
+            return best == null ? -1 : best.Index;
         }
 
         static void AddLines(Map m, List<object> lines, bool solid, double u)
