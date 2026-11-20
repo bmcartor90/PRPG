@@ -140,7 +140,7 @@ Arrow keys on the right hand, actions under the left.
 ## Art and view
 
 - **Art approach (decided):** keep the current sprite style and drop the strict pixel grid. The sprite sheets are not true indexed pixel art to begin with, which is why they came out at a different size than the 32 × 48 box that was requested. They are treated as high-resolution illustrations in a pixel style and scaled smoothly to each screen.
-- **View (proposed, not yet confirmed):** 24 × 13.5 tiles on every display, with art at 160 pixels per tile on 4K and 80 on 1080p. The character stands about 1.9 tiles tall, so the existing sheets show at full size on 4K and half size on 1080p.
+- **View (decided):** 24 × 13.5 tiles on every display, with art at 160 pixels per tile on 4K and 80 on 1080p. The character stands about 1.9 tiles tall, so the existing sheets show at full size on 4K and half size on 1080p.
 
 ## Movement baseline for the first build
 
@@ -148,7 +148,9 @@ The starting numbers are the Platformer Feel Lab's defaults, not an earlier tune
 
 > jump height 4.0 tiles, time to apex 0.40 s, fall gravity ×1.60, jump cut ×3.0, terminal velocity 20 tiles/s, walk speed 5.5 tiles/s, run speed 10.0 tiles/s, speed-up time 0.45 s, stop time 0.30 s, turn time 0.35 s, air control ×0.65, walkable limit 50°, uphill cost 20%, downhill boost 15%, slide friction ×0.75, slide steering ×0.30, foot width 0.60 tiles, coyote time 80 ms, jump buffer 100 ms, slide jump kick away, gravity lock on
 
-Stamina, ledge grab and climbing numbers are being prototyped in the lab and are not settled.
+Stamina, ledge grab, climbing, lunge and hand numbers also start from the lab's defaults; the full list is in `feel-lab/traces/_world.json`.
+
+**Scope of the first build (decided):** movement, climbing, stamina and hands on one test map, in Unity, with the simulation written as plain C# that runs without Unity. Imagine is out as a feature; save-and-restore, the seeds and the frame counter are in as foundations. No battles, party, stats or enemies. The details are in `build-spec.md`.
 
 ## Day-one engine requirements
 

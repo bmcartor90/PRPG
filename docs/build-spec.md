@@ -104,7 +104,7 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 
 ## Drawing
 
-- **View:** 24 tiles wide by 13.5 tall on every display, scaled to fit, with the camera following Lucca. *(Proposed; Brad has not confirmed this number.)*
+- **View:** 24 tiles wide by 13.5 tall on every display, scaled to fit, with the camera following Lucca.
 - **Scaling:** smooth, never snapped to whole pixels. The art is a pixel style but is not on a pixel grid. He stands 1.9 tiles tall; `standingHeightPx` in the atlas JSON is his height in atlas pixels.
 - **Sprites:** `assets/sprites/lucca/atlas/`. The README one folder up explains every field, including the foot anchor, the hand anchor for ledge and rope frames, and the fist positions.
 - **Which frame when:** `pickFrame` in `feel-lab/index.html` is the reference. Port its choices.
