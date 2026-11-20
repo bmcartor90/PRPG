@@ -36,3 +36,12 @@
 - Brighter and more saturated than the wall set; toned down when cut.
 - The outside corners carry an overhang on their open side, and the cliff columns are outlined on both sides, so each is cut to the part that is needed.
 - In the lab (`tools/sprites/lab_art.py`): the top surface becomes `edge_top.png`, drawn along every piece of solid ground and sheared to follow slopes, with its row 3 on the walking line; a cliff column becomes `edge_face.png`, drawn down every cliff face. Corners and the underside are not used yet.
+
+# Climbable cliff edges
+
+`source/Meshy_AI_climbable_cliff_edge_tileset.png`: 1536 x 864, transparent, clean alpha. Four climbables on a vertical cliff face seen side-on, rock on the left and open air on the right (mirror for the other side). Each has a top piece (row 1) finishing it at the cliff top and a repeating strip (row 2): ladder bolted to the rock, rope pinned with pitons under a ring anchor, very rough rock (big gilded ledges, easy), slightly rough rock (a thin gilded crack tracing the route, hard).
+
+- **Keep.** Rock matches the edge set; the gold-leaf cue reads clearly without shouting.
+- Stacked, the ladder and rope repeat cleanly. The very rough strip's ledges line up well enough. The slightly rough strip's gold line does not meet itself at the join; it needs a hand fix where the strips meet.
+- Strip widths differ (about 140 to 220 pixels), so each is pinned to the cliff by its rock edge, not centred.
+- Not in the lab: climbing a cliff face is not in the simulation yet.
