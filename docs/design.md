@@ -322,8 +322,8 @@ Notes on Mind:
 - **Each movement number belongs to one stat, or to none.**
 - **Agility's options:** Jump, Speed, Acceleration, Air control.
 - **Acceleration is one option that moves three numbers together:** how fast he speeds up, stops and turns.
-- **Body's options:** Stamina, Pull-up, Climb.
-- **Body also works automatically, not as an option:** a higher Body shortens exhaustion, and raises the share of climb speed kept when climbing one-handed.
+- **Body's options:** Pull-up, Climb.
+- **Body also works automatically, not as an option:** a higher Body gives a bigger stamina bar (always the full bar), shortens exhaustion, and raises the share of climb speed kept when climbing one-handed.
 - **On no stat:** walkable limit, draw and sheathe time, walking recovery, crouched recovery, walk speed, every stamina cost, gravity, jump cut, coyote time and jump buffer. Height and reach belong to the character.
 - **Walkable limit may become an ability that Mind unlocks.**
 
@@ -338,9 +338,9 @@ Notes on Mind:
 | **Acceleration:** stop time (s) | 0.33 | 0.30 | 0.28 | 0.26 | 0.24 | 0.23 | 0.22 |
 | **Acceleration:** turn time (s) | 0.39 | 0.35 | 0.32 | 0.30 | 0.28 | 0.26 | 0.25 |
 | **Air control** | 0.60 | 0.65 | 0.70 | 0.74 | 0.78 | 0.82 | 0.85 |
-| **Stamina:** the bar | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
 | **Pull-up:** time (s) | 1.25 | 1.00 | 0.85 | 0.73 | 0.64 | 0.56 | 0.50 |
 | **Climb:** speed (tiles/s) | 1.7 | 2.0 | 2.4 | 2.7 | 3.0 | 3.3 | 3.5 |
+| Stamina bar, automatic | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
 | Exhaustion (s), automatic | 1.4 | 1.2 | 1.05 | 0.9 | 0.8 | 0.7 | 0.6 |
 | One-handed share of climb speed, automatic | 60% | 65% | 70% | 74% | 78% | 82% | 85% |
 
