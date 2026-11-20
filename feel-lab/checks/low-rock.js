@@ -1,0 +1,34 @@
+// Low rock: crouching, crawling and sliding under rock he cannot stand under. Prints measurements; read them against the notes.
+const fs=require('fs');
+const html=fs.readFileSync(require('path').join(__dirname,'..','index.html'),'utf8');
+const script=html.split('<script>')[1].split('</script>')[0];
+const sim=script.split('/*SIM-START*/')[1].split('/*SIM-END*/')[0];
+const level=script.split('// ---------- Level ----------')[1].split('// ---------- Parameters ----------')[0];
+const P=JSON.parse(fs.readFileSync(require('path').join(__dirname,'..','traces','_world.json'),'utf8')).params;
+new Function('P', sim+level+`
+const I=(o)=>Object.assign({dir:0,run:false,jumpHeld:false,jumpPressed:false,up:false,down:false,grab:false,swapHand:-1},o);
+const at=(x)=>{ let best=null; for(const L of LINES) if(L.solid&&!L.slab&&x>=L.x1&&x<=L.x2&&(!best||yAt(L,x)>yAt(best,x))) best=L; return makePlayer(x,best); };
+let pj=false; const S=(p,i)=>{ const j=!!i.jump; step(p,P,I({dir:i.dir||0,run:!!i.run,jumpHeld:j,jumpPressed:j&&!pj,up:!!i.up,down:!!i.down,grab:!!i.grab}),LINES,WORLD_W,CLIMBS,CLIFFS,ROOFS); pj=j; };
+const go=(p,seq)=>{ p.peak=p.y; p.fast=0; p.everTall=false; for(const [n,i] of seq) for(let t=0;t<n;t++){ S(p,i); if(p.y>p.peak) p.peak=p.y; if(Math.abs(p.vx)>p.fast) p.fast=Math.abs(p.vx); if(p.x>388-P.bodyWidth/2&&p.x<396+P.bodyWidth/2&&!p.low) p.everTall=true; } return p; };
+const f=(p)=>'x '+p.x.toFixed(2)+' y '+p.y.toFixed(2)+' vx '+p.vx.toFixed(2)+(p.low?' low':' tall')+(p.duck>0?' sliding':'')+(p.grounded?' grounded':' air');
+let p;
+p=go(at(384),[[90,{dir:1}]]); console.log('1 walk at the low rock (underside 1)   ', f(p), '(expect stopped at x 387.70, tall)');
+p=go(at(384),[[90,{dir:1,run:true}]]); console.log('2 sprint at it                         ', f(p), '(expect stopped at x 387.70, tall)');
+p=go(at(386),[[60,{dir:1,down:true}]]); console.log('3 hold down and walk                   ', f(p), '(expect low, vx 2.00, x near 388)');
+go(p,[[60,{dir:1,down:true}]]); console.log('  and on under the rock                ', f(p), '(expect low, about 2 tiles further)');
+go(p,[[30,{}]]); console.log('  let go of everything                 ', f(p), '(expect still low, vx 0)');
+pj=false; go(p,[[20,{jump:true}],[10,{}]]); console.log('  press jump                           ', f(p), 'peak', p.peak.toFixed(2), '(expect grounded, peak 0.00)');
+go(p,[[60,{dir:1,run:true}]]); console.log('  hold run, no down                    ', f(p), 'fastest', p.fast.toFixed(2), '(expect low, fastest 2.00: he cannot run under there)');
+go(p,[[200,{dir:1}]]); console.log('  walk on out                          ', f(p), 'ever tall under the rock:', p.everTall, '(expect tall, past 396.3, false)');
+p=go(at(381),[[45,{dir:1,run:true}],[1,{dir:1,run:true,down:true}]]); console.log('4 sprint, then press down              ', f(p), '(expect sliding, low)');
+go(p,[[25,{dir:1,run:true}]]); console.log('  slide carries in, down released      ', f(p), '(expect under the rock, low)');
+go(p,[[60,{dir:1,run:true}]]); console.log('  keep holding run                     ', f(p), '(expect low, slowing to vx 2.00)');
+go(p,[[200,{dir:1}]]); console.log('  out the far side                     ', f(p), 'ever tall under the rock:', p.everTall, '(expect tall, false)');
+p=go(at(398),[[360,{dir:-1,down:true}]]); console.log('5 crawl through from the right         ', f(p), 'ever tall under the rock:', p.everTall, '(expect out past 387.7, low because down is held, false)');
+p=go(at(372),[[60,{dir:1,down:true}]]); const xa=p.x; go(p,[[120,{dir:1,down:true}]]); console.log('6 crawl under the rock at 2.5          ', f(p), '(expect crawling freely, about', (xa+4).toFixed(2), ')');
+p=go(at(120),[[40,{dir:1}],[60,{dir:1,down:true}]]); console.log('7 hold down while walking in the open ', f(p), '(expect low, vx 2.00)');
+go(p,[[30,{dir:1}]]); console.log('  let go of down                       ', f(p), '(expect tall, back at walk speed', P.walkSpeed+')');
+pj=false; p=go(at(120),[[30,{dir:1,down:true}],[12,{dir:1,down:true,jump:true}]]); console.log('8 jump from a crawl in the open        ', f(p), 'peak', p.peak.toFixed(2), '(expect in the air: nothing overhead, so he can jump)');
+const st0=(()=>{ const q=at(120); q.stamina=40; go(q,[[60,{down:true}]]); return q.stamina; })(), st1=(()=>{ const q=at(120); q.stamina=40; go(q,[[60,{dir:1,down:true}]]); return q.stamina; })();
+console.log('9 a second of stamina from 40: crouched still', st0.toFixed(1), ' crawling', st1.toFixed(1), '(expect the crouch rate standing still, the walking rate while crawling)');
+`)(P);

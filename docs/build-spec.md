@@ -62,10 +62,15 @@ The lab is the reference. Port its behaviour, not its code style.
   - left to right: a surface, exactly like ground;
   - right to left: an **underside**. Rising into one stops his rise dead and leaves his sideways speed alone. Moving sideways into one that is too low for him is blocked, on the ground or in the air;
   - straight up or down: a **face**, which blocks like a cliff but has a bottom. He passes under it when his head is below that bottom.
-- **He always counts at full standing height against rock**, even during a dodge slide. Nothing lets him under rock lower than he is tall, and that is intended. The slide's lower height (`heightNow`) is for monster hit boxes, which do not exist yet.
+- **He is low** (`p.low` in the lab) on walkable ground whenever down is held, during a dodge slide, or while there is rock over him too low to stand under. It is decided once at the start of the tick, from where he starts it. While low his height is `duckHeight` (0.9), and that height is used for undersides and for the bottoms of faces. In the air he is always at full height.
+  - Low and not sliding, his top speed is `crawlSpeed`, whatever run says. Slopes still scale it.
+  - He cannot jump while there is rock over him too low to stand under. In the open he can jump from a crawl.
+  - Being under low rock keeps him low even while exhausted or prone.
+  - A dodge slide that ends under low rock carries on as a crawl; it is no longer cancelled by the rock.
+  - Known edge: crawling off a ledge that is itself under low rock puts him in the air at full height with his head in the rock. He just falls. Maps should not do this.
 - Undersides are not checked while he is hanging, pulling up or climbing. A map should not run a climbable through rock.
 - The lab functions are `makeSlab`, `roofOver` and the bottom test in `hitCliffs`. `_world.json` lists the derived undersides and faces to check against.
-- **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
+- **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted, dodge sliding, low (crouching or crawling). Plus what each hand holds and any draw or sheathe in progress.
 - **Climbables** come in four kinds and two placements.
   - Kinds: `Ladder`, `Rope`, `RoughRock`, `SmoothRock`. (`SmoothRock` is what was called `Wall`.) Each has a stamina multiplier in the numbers and a count of free hands it needs: 0, 1, 1 and 2. Only a ladder holds him without grab held, and only a ladder lets him rest.
   - **Free-standing:** against the back wall, as before. He is on it, seen from behind.
@@ -84,10 +89,10 @@ The lab is the reference. Port its behaviour, not its code style.
 
 ### How to know the port is right
 
-`feel-lab/traces/` holds recorded runs of the lab's simulation, one file each. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
+`feel-lab/traces/` holds recorded runs of the lab's simulation, one file each. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, what each hand holds, whether he is dodge sliding, and whether he is low). `_world.json` has the parameters and the test map they ran on.
 
 - Write a test that replays each trace's inputs through the C# simulation and compares every tick.
-- Positions, velocities and stamina must match to within 0.000001. Mode, grounded and hands must match exactly.
+- Positions, velocities and stamina must match to within 0.000001. Mode, grounded, hands, dodge sliding and low must match exactly.
 - If a trace drifts by a hair and then diverges at a decision point, that is a real difference in arithmetic order. Find it; do not widen the tolerance.
 - To record more traces, add a scenario to `feel-lab/checks/make-traces.js` and run it with Node.
 

@@ -11,7 +11,7 @@ const PARAMS = {jumpHeight:4, apexTime:0.40, fallMult:1.6, cutMult:3, terminal:2
   airControl:0.65, coyoteMs:80, bufferMs:100, hardCut:false, walkLimit:50, upCost:20, downBoost:15, slideFriction:0.75, slideSteer:0.3, slideJump:1, footWidth:0.6, bodyWidth:0.6,
   staminaMax:100, jumpCost:30, runDrain:2, walkRegen:12, crouchRegen:60, exhaustTime:1.2, charHeight:1.9, armReach:0.1, lungeLean:0.8, lungeCost:15, proneTime:0.6,
   pullTime:1, pullCost:40, climbSpeed:2, weight:1, climbEffort:10, hangCost:3, multLadder:0.5, multRope:1.5, multRoughRock:1, multSmoothRock:8, oneHand:0.65, drawTime:0.35,
-  climbSprint:1.75, climbSprintCost:3, duckTime:0.35, duckKeep:0.7, duckCost:5, duckHeight:0.9};
+  climbSprint:1.75, climbSprintCost:3, duckTime:0.35, duckKeep:0.7, duckCost:5, duckHeight:0.9, crawlSpeed:2};
 
 // Each scenario: where he starts (x, standing on the solid ground there) and a list of [ticks, held inputs].
 // dir: -1 left, 1 right. hand: 0 or 1 presses that hand's draw/sheathe key on the first tick of the segment.
@@ -83,6 +83,14 @@ const SCENARIOS = [
    steps:[[2,{}],[30,{jump:true,grab:true}],[120,{grab:true,up:true}],[90,{}]]},
   {name:'face-smooth-rock-needs-two-hands', about:'The same holding a sword: smooth rock needs two free hands, so he cannot get on it. He catches the top corner one-handed instead.', x:380.4,
    steps:[[1,{hand:1}],[40,{}],[30,{jump:true,grab:true}],[140,{grab:true,up:true}],[40,{}]]},
+  {name:'crawl-under-low-rock', about:'Walk at rock whose underside is 1 tile up and get stopped; hold down and crawl under it; let go of down halfway and stay low; come out the far side and stand.', x:384,
+   steps:[[60,R],[20,{}],[120,{dir:1,down:true}],[40,{}],[170,R],[40,{}]]},
+  {name:'slide-under-low-rock', about:'Sprint and dodge-slide in under the low rock; the slide ends underneath; keep going at a crawl and come out the far side.', x:381,
+   steps:[[45,RUN],[30,{...RUN,down:true}],[230,R],[40,{}]]},
+  {name:'low-rock-no-jump-no-stand', about:'Crawl under the low rock, then press jump and let go of everything: he cannot jump and cannot stand until he crawls out.', x:386.5,
+   steps:[[70,{dir:1,down:true}],[20,{jump:true}],[60,{}],[70,L],[40,{}]]},
+  {name:'crouch-walk-in-the-open', about:'Walk, hold down to drop to a crawl, let go to stand and walk on, then crouch still.', x:120,
+   steps:[[40,R],[80,{dir:1,down:true}],[40,R],[60,{down:true}],[30,{}]]},
   {name:'draw-and-sheathe', about:'Draw both hands, sheathe the left, while walking.', x:20,
    steps:[[1,{hand:1}],[30,{}],[1,{hand:0,dir:1}],[40,R],[1,{hand:0}],[40,{}]]},
 ];
@@ -100,8 +108,9 @@ const run = new Function('PARAMS', 'SCENARIOS', sim + level + `
                        swapHand:(t === 0 && h.hand !== undefined) ? h.hand : -1}, LINES, WORLD_W, CLIMBS, CLIFFS, ROOFS);
       prevJump = jump; modes.add(p.mode + (p.grounded ? '/ground' : '/air') + (p.prone > 0 ? '/prone' : '') + (p.exhaust > 0 ? '/exhausted' : ''));
       if (p.duck > 0) modes.add('dodge-slide');
+      if (p.low && p.duck <= 0) modes.add(Math.abs(p.vx) > 0.3 ? 'crawl' : 'low-still');
       if (p.climb && p.climb.face) modes.add('on-face:' + p.climb.kind);
-      states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0, p.duck > 0 ? 1 : 0]);
+      states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0, p.duck > 0 ? 1 : 0, p.low ? 1 : 0]);
     }
     out.push({name:sc.name, about:sc.about, modes:[...modes], states, startY:yAt(ground, sc.x)});
   }
@@ -124,7 +133,7 @@ for (let i = 0; i < SCENARIOS.length; i++){
   const sc = SCENARIOS[i], o = res.out[i];
   fs.writeFileSync(path.join(dir, sc.name + '.json'), JSON.stringify({name:sc.name, about:sc.about, startX:sc.x, startY:o.startY,
     inputs:sc.steps.map(([ticks, h]) => ({ticks, ...h})),
-    stateColumns:['x', 'y', 'vx', 'vy', 'stamina', 'mode', 'grounded', 'leftHandHolding', 'rightHandHolding', 'dodgeSliding'], states:o.states}));
+    stateColumns:['x', 'y', 'vx', 'vy', 'stamina', 'mode', 'grounded', 'leftHandHolding', 'rightHandHolding', 'dodgeSliding', 'low'], states:o.states}));
   const last = o.states[o.states.length - 1];
   console.log(sc.name.padEnd(34), String(o.states.length).padStart(4), 'ticks  end x', last[0].toFixed(2), 'y', last[1].toFixed(2), ' ', o.modes.join(' '));
 }

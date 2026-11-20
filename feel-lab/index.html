@@ -134,6 +134,7 @@ button.capturing{background:var(--white);color:var(--ink);border-color:var(--whi
     <button type="button" id="go-4">5 Climbing</button>
     <button type="button" id="go-5">6 Cliffs</button>
     <button type="button" id="go-6">7 Rock overhead</button>
+    <button type="button" id="go-7">8 Low rock</button>
   </div>
 
   <div class="bar">
@@ -264,7 +265,7 @@ function hitCliffs(p, P, cliffs, x0, y0){
   const hb = (P.bodyWidth || 0)/2;
   for (const W of cliffs){
     if (y0 >= W.top - WORLD.cliffTop) continue;                       // feet at or above the top: he is over it, not against it
-    if (y0 + P.charHeight <= W.bottom + WORLD.cliffTop) continue;     // head below the bottom of the face: he passes under it
+    if (y0 + heightNow(p, P) <= W.bottom + WORLD.cliffTop) continue;     // head below the bottom of the face: he passes under it
     if (W.face < 0){ if (x0 <= W.x && p.x + hb > W.x){ p.x = W.x - hb; if (p.vx > 0) p.vx = 0; } }
     else           { if (x0 >= W.x && p.x - hb < W.x){ p.x = W.x + hb; if (p.vx < 0) p.vx = 0; } }
   }
@@ -303,13 +304,13 @@ function makePlayer(x, line){
           lift:0, plift:0, safeX:x, safeLine:line,
           stamina:null, exhaust:0, winded:false, spent:false, crouch:false, mode:'normal', hang:null, climb:null, grabLock:0, lunge:0, prone:0,
           held:[false, false], swap:null,
-          duck:0, downWas:false};               // dodge slide time left, and whether down was held last tick      // what is in the left and right hand, and a draw or sheathe in progress
+          duck:0, downWas:false, low:false};               // dodge slide time left, and whether down was held last tick      // what is in the left and right hand, and a draw or sheathe in progress
 }
 
 function respawn(p, x, line){
   p.x = p.px = x; p.y = p.py = yAt(line, x); p.vx = 0; p.vy = 0;
   p.grounded = true; p.line = line; p.jumping = false; p.cutting = false; p.jump = null; p.coyote = 0; p.buffer = 0;
-  p.stamina = null; p.exhaust = 0; p.winded = false; p.spent = false; p.crouch = false; p.mode = 'normal'; p.hang = null; p.climb = null; p.grabLock = 0; p.lunge = 0; p.prone = 0; p.swap = null; p.duck = 0; p.downWas = false;
+  p.stamina = null; p.exhaust = 0; p.winded = false; p.spent = false; p.crouch = false; p.mode = 'normal'; p.hang = null; p.climb = null; p.grabLock = 0; p.lunge = 0; p.prone = 0; p.swap = null; p.duck = 0; p.downWas = false; p.low = false;
 }
 
 // ---- Hands ----
@@ -358,7 +359,9 @@ function endIsOpen(lines, M, side, P){
 }
 // Hands reach your own height plus a little: a taller character catches higher ledges.
 // How tall he is right now. Nothing in the lab checks this yet; hazards and enemies will.
-function heightNow(p, P){ return p.duck > 0 ? P.duckHeight : P.charHeight; }
+// How tall he is right now. He is low while sliding, crouching or crawling, and stays low wherever there is no room to stand.
+// Rock overhead and the bottoms of faces are tested against this height, so he can get under anything at least this high. Monsters will use it too.
+function heightNow(p, P){ return p.low ? P.duckHeight : P.charHeight; }
 function reachOf(P){ return P.charHeight + P.armReach; }
 // The ledge end, if any, that your hands can reach from feet height y.
 // Normally hands go up: a ledge end within reach above you and close to you sideways.
@@ -490,6 +493,10 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
   const downPressed = !!inp.down && !p.downWas;   // a fresh press of down, not a hold
   p.downWas = !!inp.down;
   if (p.mode !== 'normal' || !p.grounded) p.duck = 0;
+  // Low: holding down on walkable ground, in a dodge slide, or under rock with no room to stand. Decided here, from where he starts the tick,
+  // and used for every height test in it. In the air he is always at full height.
+  const cramped = !!roofs && p.grounded && roofOver(P, roofs, p.x, p.y) < p.y + P.charHeight;
+  p.low = p.mode === 'normal' && p.grounded && !isSteep(p.line, P) && (cramped || (p.exhaust <= 0 && p.prone <= 0 && (p.duck > 0 || !!inp.down)));
   if (p.stamina == null || p.stamina > P.staminaMax) p.stamina = P.staminaMax;
   if (p.grabLock > 0) p.grabLock -= DT;
   // Draw or sheathe: takes a moment, and that hand is useless until it finishes.
@@ -568,7 +575,7 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
       // Walkable: no gravity along the surface. Slopes only change top speed.
       const f = L.sin/SIN45;
       const heading = inp.dir !== 0 ? inp.dir : Math.sign(p.vx);
-      let top = baseTop;
+      let top = p.low ? P.crawlSpeed : baseTop;                // low and not sliding: he crawls
       if (L.sign !== 0 && heading !== 0){
         if (heading*L.sign > 0) top *= Math.max(BODY.minUphillShare, 1 - P.upCost/100*f);
         else top *= 1 + P.downBoost/100*f;
@@ -618,9 +625,10 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
     } else {
       p.y = yAt(L, p.x);
     }
-    // Rock overhead: if this step would put his head into an underside, he does not take it. He always counts at full standing height,
-    // so nothing lets him under rock lower than he is tall, not even a dodge slide.
-    if (roofs && roofOver(P, roofs, p.x, p.y) < p.y + P.charHeight && roofOver(P, roofs, p.px, p.py) >= p.py + P.charHeight){
+    // Rock overhead: if this step would put his head into an underside, he does not take it. His height is his height right now,
+    // so sliding or crawling gets him under rock that would stop him standing.
+    const hNow = heightNow(p, P);
+    if (roofs && roofOver(P, roofs, p.x, p.y) < p.y + hNow && roofOver(P, roofs, p.px, p.py) >= p.py + hNow){
       p.x = p.px; p.y = p.py; p.vx = 0; p.vy = 0; p.grounded = true; p.line = L; p.coyote = 0; p.duck = duck0 > 0 ? 0 : p.duck;
     }
     ax = p.x; ay = p.y;
@@ -640,7 +648,7 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
   if (inp.jumpPressed) p.buffer = P.bufferMs/1000;
   const wants = inp.jumpPressed || p.buffer > 0;
   const sliding = p.grounded && isSteep(p.line, P);
-  const can = p.grounded ? (!sliding || P.slideJump > 0) : p.coyote > 0;
+  const can = p.grounded ? ((!sliding || P.slideJump > 0) && !cramped) : p.coyote > 0;   // no jumping where there is no room to stand
   let justJumped = false;
   if (wants && can){
     justJumped = true;
@@ -741,7 +749,7 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
 /*SIM-END*/
 
 // ---------- Level ----------
-const WORLD_W = 384;
+const WORLD_W = 400;
 const LINES = [];
 const MARKS = [];      // small number labels
 const CAPTIONS = [];   // section captions
@@ -807,6 +815,8 @@ CLIMBS.push({kind:'RoughRock', x:312, y1:3, y2:6.5, face:1});     // up the righ
 CLIMBS.push({kind:'Rope', x:344, y1:0, y2:7, face:1});            // down the right side of the 7 block
 CLIMBS.push({kind:'Ladder', x:362, y1:1.5, y2:6, face:-1});       // up the left side of the overhang; starts 1.5 up
 CLIMBS.push({kind:'SmoothRock', x:380, y1:2.5, y2:5, face:1});    // the side of floating rock; starts 2.5 up, so you jump to it
+slab([[388,4],[396,4],[396,1],[388,1]], 'underside at 1: slide or crawl');   // too low to stand under; high enough to get under while low
+CAPTIONS.push({x:382, y:8.6, text:'LOW ROCK   sprint and press down to slide in, or hold down and a direction to crawl. He stays low until there is room to stand'});
 CAPTIONS.push({x:346, y:10.4, text:'ROCK OVERHEAD   floating rock is solid all round: bump your head on it, get stopped by a low overhang, grab its top corner'});
 
 // Surfaces are checked ground first, then scaffolds, each in the order written above. Rare exact ties go to the earlier one.
@@ -874,8 +884,10 @@ const DEFS = [
    desc:'How much of your speed is left at the end of a full slide. Lower is a shorter, sharper slide.'},
   {group:'Dodge slide', k:'duckCost', name:'Slide cost', unit:'', min:0, max:40, step:1, dp:0, def:5,
    desc:'Stamina spent to start a slide.'},
-  {group:'Dodge slide', k:'duckHeight', name:'Height while sliding', unit:' tiles', min:0.3, max:1.9, step:0.05, dp:2, def:0.9,
-   desc:'How tall he counts as during the slide. Nothing in the lab tests this yet; it is what will let a slide pass under things.'},
+  {group:'Dodge slide', k:'duckHeight', name:'Height while low', unit:' tiles', min:0.3, max:1.9, step:0.05, dp:2, def:0.9,
+   desc:'How tall he is while sliding, crouching or crawling. He fits under any rock at least this high, and he stays low until there is room to stand.'},
+  {group:'Dodge slide', k:'crawlSpeed', name:'Crawl speed', unit:' tiles/s', min:0.5, max:6, step:0.1, dp:1, def:2,
+   desc:'Top speed while low and not sliding. Hold down and a direction to crawl.'},
   {group:'Climbing', k:'bodyWidth', name:'Body width', unit:' tiles', min:0, max:1.5, step:0.05, dp:2, def:0.6,
    desc:'How wide he is when he runs into a cliff face. He stops with this much of him clear of the rock.'},
   {group:'Climbing', k:'charHeight', name:'Character height', unit:' tiles', min:1, max:3, step:0.05, dp:2, def:1.9,
@@ -1071,7 +1083,7 @@ function queueSwap(hand){ if (!swapQueue.includes(hand)) swapQueue.push(hand); }
 const DEFAULT_BINDS = {left:['ArrowLeft'], right:['ArrowRight'], up:['ArrowUp'], down:['ArrowDown'],
                        jump:['Space'], run:['KeyD'], grab:['KeyF'], handL:['KeyQ'], handR:['KeyW']};
 const ACTIONS = {left:'Left', right:'Right', up:'Up', down:'Down', jump:'Jump', run:'Run', grab:'Grab', handL:'Left hand', handR:'Right hand'};
-const RESERVED = ['KeyT', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Tab', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
+const RESERVED = ['KeyT', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Tab', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
 const KEY_STORE = 'feel-lab-keys-v7';   // v7: Brad's arrow-key layout, hands on Q and W
 let BINDS = JSON.parse(JSON.stringify(DEFAULT_BINDS));
 try {
@@ -1149,7 +1161,7 @@ window.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (!controlFocused()){
     if (e.code === 'KeyT'){ warp(currentSection); return; }   // T for try again; R is the right hand now
-    const n = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7'].indexOf(e.code);
+    const n = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8'].indexOf(e.code);
     if (n >= 0){ warp(n); $('hint').hidden = true; return; }
   }
   const a = MAP[e.code]; if (!a) return;
@@ -1282,7 +1294,8 @@ function pickFrame(p){
   }
   if (p.exhaust > 0 && p.grounded) return F.getup[0];   // on hands and knees
   if (p.duck > 0){ const u = 1 - p.duck/P.duckTime; return F.slide[u < 0.2 ? 0 : u < 0.8 ? 1 : 2]; }   // dodge slide
-  if (p.crouch) return F.crouch[0];
+  if (p.low && Math.abs(p.vx) > 0.3) return F.getup[0];   // crawling: on hands and knees, until he has crawl frames
+  if (p.crouch || p.low) return F.crouch[0];
   if (!p.grounded){
     const r = p.vy/derive(P).v0;                 // +1 at takeoff, 0 at the apex, negative while falling
     if (r > 0.55) return F.jump[1];
@@ -1389,7 +1402,7 @@ window.addEventListener('resize', resize);
 
 // The course is long, so each section has a start point. R returns to the current one.
 const GEAR = ['shield', 'sword'];   // stand-in names for what the left and right hand draw
-const SECTIONS = [3, 36, 115, 163, 229, 294, 346];
+const SECTIONS = [3, 36, 115, 163, 229, 294, 346, 381];
 let currentSection = 0;
 function warp(i){
   const x = SECTIONS[i];

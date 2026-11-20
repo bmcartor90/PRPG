@@ -179,7 +179,7 @@ These have to be built in from the start, because they are painful to add later:
 ### Map size, doors and edges (decided 2026-11-19)
 
 - **A map is up to 344 by 344 tiles:** about 14 screens wide and 25 tall. There will be a lot of vertical climbing.
-- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below: your rise stops dead and your sideways speed carries on. Rock lower than you are tall cannot be got under, not even with a dodge slide. That is intended: the slide is for dodging monsters. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
+- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below: your rise stops dead and your sideways speed carries on. Rock lower than you stand can only be got under by going low: sliding, or crawling. Anything with at least 1 tile of room under it can be got under. See "Crouching and crawling". Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
 - **Positions snap to sixths of a tile** in the map editor.
 - **Doors.** Press **interact** while standing at a door to go through it to another map. (Not up: up also mounts ladders, so a door near a ladder would be ambiguous.) Doors come in pairs. A door is 1.25 tiles wide, and you can enter from anywhere within it. They are an escape: you can use one while a monster has noticed you. A door can be marked locked, and then a plot element is needed to open it.
 - **Edges.** Walking off the edge of a map can lead to the opposite edge of another map. Edges are paired the way doors are.
@@ -344,7 +344,20 @@ Four kinds, each usable in two places: standing free against the back wall, or r
 - Press down while sprinting and he drops into a slide for a moment. It is for dodging things.
 - He is low during it (0.9 tiles against his standing 1.9), cannot steer, and loses speed. It ends by itself, or with a jump.
 - Lab starting numbers: 0.35 seconds, 70% of speed kept at the end (about 3.2 tiles covered from a full sprint), 5 stamina.
-- **Its purpose is dodging monster hit boxes.** His low height during the slide is tested against monsters, not against rock. It does not let him under rock lower than he stands, and no crawl is planned.
+- **It dodges monster hit boxes and gets him under low rock.** His low height counts against both. A slide that ends under rock carries on as a crawl.
+
+### Crouching and crawling
+
+Decided on 2026-11-19. This reverses the earlier "no crawl is planned".
+
+- **Low** is one state with three ways in: holding down on walkable ground, a dodge slide, or being under rock with no room to stand.
+- While low he is 0.9 tiles tall, whoever he is. So anything with at least 1 tile of room under it can be got under.
+- **Hold down and a direction to crawl.** Lab starting speed: 2 tiles a second, against 5.5 walking. Running does nothing while low.
+- **Hold down and stand still to crouch.** That is the crouch that recovers stamina fast, as before. Crawling recovers stamina at the walking rate.
+- **Under low rock he stays low** whatever is held, until he is somewhere he can stand. He cannot jump there. Walking or sprinting into low rock without going low just stops him at it.
+- **A sprint and a press of down** still starts the dodge slide. It covers about 3 tiles, so it clears a short stretch of low rock outright and leaves him crawling under a long one.
+- In the open he can jump straight out of a crawl.
+- The low height counts against monster hit boxes too, so a crawl ducks a high attack as a slide does.
 
 ### Stat scale
 

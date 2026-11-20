@@ -2,6 +2,26 @@
 
 Newest first. Each entry says what changed and what a port of the simulation has to do about it.
 
+## 2026-11-19, late night: crouching, crawling and low rock
+
+Brad reversed an earlier decision: he must be able to get under anything with at least 1 tile of room, by sliding or crawling.
+
+**Three earlier traces changed.** Everything else is unchanged tick for tick in the columns it had.
+
+- `dodge-slide` from tick 93 and `dodge-slide-jump-and-edge` from tick 255: down is still held when the slide ends, so he now drops to a crawl instead of walking.
+- `under-high-rock` from tick 103: the same.
+
+**Every trace has one more column**, `low`, at the end of each state.
+
+1. **Low state.** `p.low`, set at the start of `step`. The rule is in the spec under "The movement simulation". `heightNow` now reads it, and the ground roof test and the bottom test in `hitCliffs` use `heightNow`.
+2. **`crawlSpeed`** (2 tiles a second) is a new number. `duckHeight` is unchanged but now means his height whenever he is low, not only in a slide.
+3. **No jumping under low rock.** See `cramped` in `step`.
+4. **The rule "he always counts at full standing height against rock" is gone.**
+5. **The test map is 400 tiles wide**, with an eighth section: a slab 8 tiles long with its underside 1 tile up.
+6. **New traces:** `crawl-under-low-rock`, `slide-under-low-rock`, `low-rock-no-jump-no-stand`, `crouch-walk-in-the-open`.
+7. **New check to read:** `feel-lab/checks/low-rock.js`.
+8. **Frame choice (step 2):** crawling uses the hands-and-knees get-up frame and crouching the crouch frame, until there are crawl frames.
+
 ## 2026-11-19, night: climbable cliff faces
 
 All earlier traces are unchanged tick for tick. There are six new ones, all named `face-...`.

@@ -52,7 +52,8 @@
   "duckTime": 0.35,
   "duckKeep": 0.7,
   "duckCost": 5,
-  "duckHeight": 0.9
+  "duckHeight": 0.9,
+  "crawlSpeed": 2
  },
  "fixedNote": "Numbers the lab has no slider for. They are still tuning, not code: character numbers belong beside params, world numbers belong to the game.",
  "fixed": {
@@ -90,7 +91,7 @@
  },
  "groundedNote": "The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.",
  "world": {
-  "width": 384,
+  "width": 400,
   "ground": [
    [
     0,
@@ -239,7 +240,7 @@
    [
     344,
     0,
-    384,
+    400,
     0
    ]
   ],
@@ -296,6 +297,24 @@
     [
      374,
      2.5
+    ]
+   ],
+   [
+    [
+     388,
+     4
+    ],
+    [
+     396,
+     4
+    ],
+    [
+     396,
+     1
+    ],
+    [
+     388,
+     1
     ]
    ]
   ],
@@ -605,7 +624,7 @@
    "openSide": "right"
   },
   {
-   "x": 384,
+   "x": 400,
    "top": 0,
    "bottom": null,
    "openSide": "right"
@@ -645,6 +664,18 @@
    "top": 5,
    "bottom": 2.5,
    "openSide": "left"
+  },
+  {
+   "x": 396,
+   "top": 4,
+   "bottom": 1,
+   "openSide": "right"
+  },
+  {
+   "x": 388,
+   "top": 4,
+   "bottom": 1,
+   "openSide": "left"
   }
  ],
  "undersides": [
@@ -665,6 +696,12 @@
    2.5,
    380,
    2.5
+  ],
+  [
+   388,
+   1,
+   396,
+   1
   ]
  ]
 }
