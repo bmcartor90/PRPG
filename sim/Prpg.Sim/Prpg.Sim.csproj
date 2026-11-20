@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Plain C# with no Unity references. netstandard2.1 and C# 9 so Unity can compile the same source. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Prpg.Sim</RootNamespace>
+  </PropertyGroup>
+</Project>
