@@ -7,6 +7,7 @@ Sheets as received, in `source/`. Not cut or used yet. The design treats a door 
 | `Meshy_AI_environment_doors_and_openings_sheet.png` | Stone arch with wooden door: closed, ajar, wide open; iron portcullis. Crystal cave mouth, timbered mine entrance, narrow rock crack. | Opaque dark grey (flood fill cuts it) | Keep. The four arches match each other in size (about 290 x 340). The ajar and open frames swing the door in different directions, so they are two states, not two frames of one swing. |
 | `Meshy_AI_locked_doors_and_dormant_portal_sheet.png` | Chained and padlocked door, rune-sealed door, iron vault door, empty rune arch. | Opaque dark grey | Keep, with the mismatch below. |
 | `Meshy_AI_shimmering_portal_loop_sheet.png` | Active portal, 8 frames of a swirl. | Transparent | Keep. Frames are consistent in size (about 330 x 362). |
+| `Meshy_AI_stone_arch_door_conditions_sheet_2.png` | The mundane door, second conditions sheet: portcullis down, portcullis half raised, door half open, gold keyhole, overgrown, iced, cobwebbed, empty arch. | Opaque mid grey (flood fill cuts it) | Keep. Every arch is 292 x 338 to within a few pixels, the stones are laid out the same, and it matches the plain doors on the first sheet. Frame 3 was asked for fully open and came back half open. Ivy and ice spill slightly past the arch on frames 5 and 6. |
 
 ## Mismatches
 
