@@ -1,0 +1,16 @@
+{
+ "note": "Layers, back to front: vortex (spun about its centre, which sits at vortexCentre in the arch's pixels, and clipped to doorway_mask), then the arch. Dormant: arch_dormant, no vortex. Active: arch_active and the vortex turning steadily. Waking, opening and closing: fade or grow the vortex. Scale everything by pxPerTileScale so the doorway is 2.4 tiles tall.",
+ "archSize": [
+  356,
+  389
+ ],
+ "vortexCentre": [
+  175.2,
+  217.8
+ ],
+ "vortexDiameter": 291,
+ "doorwayHeightPx": 256,
+ "doorwayWidthPx": 170,
+ "pxPerTileScale": 1.5,
+ "footY": 382
+}

@@ -6,7 +6,7 @@ Paste the preamble, fill in the character, then list the rows of poses. Upload t
 
 ```
 Sprite sheet for a 2D side-scrolling platformer. One single image, 1536 x 864.
-Detailed pixel-art style with a crisp dark outline. Transparent background.
+Detailed pixel-art style with a crisp dark outline. Transparent background with clean alpha: no haze, no semi-transparent fringe.
 Match the attached reference image exactly: same character, same palette,
 same proportions, same size.
 
@@ -61,7 +61,7 @@ Then ask for the effects on a second sheet, so they can be reused, turned off or
 
 ```
 Effects sheet for a 2D side-scrolling platformer. One single image, 1536 x 864.
-Detailed pixel-art style with a crisp dark outline where it suits. Transparent background.
+Detailed pixel-art style with a crisp dark outline where it suits. Transparent background with clean alpha: no haze, no semi-transparent fringe.
 Match the style and colours of the attached monster sheet.
 
 SUBJECT: the effects for this monster's attacks and reactions, drawn on their own,
