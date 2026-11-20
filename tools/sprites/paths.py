@@ -42,6 +42,7 @@ SHEETS={
  'fa99d3c2':'monsters/crystal-golem/source/Meshy_AI_crystal_golem_monster_sheet.png',
  '697b89da':'props/doors/source/Meshy_AI_stone_arch_door_conditions_sheet_2.png',
  '2ae07e3a':'props/doors/source/Meshy_AI_rune_archway_portal_states_sheet.png',
+ '9bb47414':'props/doors/source/Meshy_AI_active_portal_loop_animation_sheet.png',
  '6d34fc5c':'props/doors/source/Meshy_AI_shimmering_portal_loop_sheet.png',
 }
 def SRC(i):
