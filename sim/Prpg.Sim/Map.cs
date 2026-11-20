@@ -67,9 +67,9 @@ namespace Prpg.Sim
         public readonly List<Cliff> Cliffs = new List<Cliff>();
 
         /// <summary>Reads a map file. Fields it does not know are ignored, so the format can grow.</summary>
-        public static Map Load(string json) => FromJson(Json.Parse(json) as JsonObject ?? throw new FormatException("A map must be a JSON object"));
+        public static Map Load(string json, WorldRules world) => FromJson(Json.Parse(json) as JsonObject ?? throw new FormatException("A map must be a JSON object"), world);
 
-        public static Map FromJson(JsonObject o)
+        public static Map FromJson(JsonObject o, WorldRules world)
         {
             var m = new Map { Name = o.String("name") ?? "", Width = o.Number("width") };
             AddLines(m, o.Array("ground"), true);
@@ -88,7 +88,7 @@ namespace Prpg.Sim
                 }
                 m.Climbables.Add(new Climbable(m.Climbables.Count, kind, c.Number("x"), c.Number("y1"), c.Number("y2")));
             }
-            m.BuildCliffs();
+            m.BuildCliffs(world);
             return m;
         }
 
@@ -109,7 +109,7 @@ namespace Prpg.Sim
 
         // The lab's buildCliffs: at each end of solid ground, look just beyond it. If other ground carries on at the same
         // height or higher there is no cliff; otherwise a face runs from this end down to the highest lower ground (or out of the map).
-        void BuildCliffs()
+        void BuildCliffs(WorldRules W)
         {
             Cliffs.Clear();
             foreach (var M in Lines)
@@ -117,14 +117,14 @@ namespace Prpg.Sim
                 if (!M.Solid) continue;
                 foreach (int side in Sides)
                 {
-                    double ex = side < 0 ? M.X1 : M.X2, ey = side < 0 ? M.Y1 : M.Y2, bx = ex + side * 0.01;
+                    double ex = side < 0 ? M.X1 : M.X2, ey = side < 0 ? M.Y1 : M.Y2, bx = ex + side * W.CliffProbe;
                     double below = double.NegativeInfinity;
                     bool covered = false;
                     foreach (var N in Lines)
                     {
                         if (N == M || !N.Solid || bx < N.X1 || bx > N.X2) continue;
                         double ny = N.YAt(bx);
-                        if (ny >= ey - 0.05) { covered = true; break; }
+                        if (ny >= ey - W.CliffLevel) { covered = true; break; }
                         if (ny > below) below = ny;
                     }
                     if (!covered) Cliffs.Add(new Cliff(ex, ey, below, side));

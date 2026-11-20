@@ -11,7 +11,7 @@ A 2D sidescroller platforming RPG. Working title.
 - `docs/changes.md`, `docs/answers.md`: what has changed for the programmer, and answers to his questions.
 - `tools/sprites/`: the scripts that cut sprite sheets into frames.
 - `sim/`: the movement simulation in plain C# (no Unity), and its tests. Run `dotnet test` in `sim/` (needs the .NET 8 SDK).
-- `data/movement.json`: each character's movement numbers (Lucca, Nina). `data/world.json`: numbers that belong to the game. `data/maps/test.json`: the test map.
+- `data/movement.json`: each character's movement numbers (Lucca, Nina, Ramorand). `data/world.json`: numbers that belong to the game. `data/maps/test.json`: the test map.
 - `docs/questions.md`: open questions and what the code assumes until they are answered.
 - `feel-lab/`: the browser prototype used to tune movement, and scripts that measure it.
 - `assets/sprites/characters.md`: what each character looks like, for briefing the art tool in a new chat.

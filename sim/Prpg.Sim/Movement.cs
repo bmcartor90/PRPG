@@ -75,6 +75,10 @@ namespace Prpg.Sim
         public double WindedUntil;   // after exhaustion he cannot sprint until this share of the stamina bar is back
         public double SprintShare;   // he counts as sprinting above walk speed plus this share of the gap up to run speed
         public double DuckStopShare;   // a dodge slide ends early below this share of walk speed
+        public double RunDrainAbove;   // running drains stamina only above walk speed plus this many tiles a second
+        public double CrouchBelow;   // he can crouch only when moving slower than this, in tiles a second
+        public double MinUphillShare;   // however steep the climb, top speed never drops below this share of normal
+        public double PullSlideFrom;   // a pull-up lifts him straight up until this share of it is done, then also carries him in over the ledge
 
         /// <summary>The numbers the lab has sliders for, in file order.</summary>
         public static readonly string[] SliderNames = {
@@ -90,7 +94,8 @@ namespace Prpg.Sim
         /// <summary>Per-character numbers with no slider in the lab (its BODY table).</summary>
         public static readonly string[] FixedNames = {
             "catchOut", "catchUnder", "catchMinDrop", "hangOut", "hangIn", "hangEase", "climbReach",
-            "climbJumpSpeed", "slideDownSpeed", "dropGrabLock", "jumpGrabLock", "windedUntil", "sprintShare", "duckStopShare"
+            "climbJumpSpeed", "slideDownSpeed", "dropGrabLock", "jumpGrabLock", "windedUntil", "sprintShare", "duckStopShare",
+            "runDrainAbove", "crouchBelow", "minUphillShare", "pullSlideFrom"
         };
         /// <summary>Every parameter name, in the order the file and the tuning panel list them.</summary>
         public static readonly string[] Names = Concat(SliderNames, FixedNames);
@@ -165,6 +170,10 @@ namespace Prpg.Sim
                 case "windedUntil": return WindedUntil;
                 case "sprintShare": return SprintShare;
                 case "duckStopShare": return DuckStopShare;
+                case "runDrainAbove": return RunDrainAbove;
+                case "crouchBelow": return CrouchBelow;
+                case "minUphillShare": return MinUphillShare;
+                case "pullSlideFrom": return PullSlideFrom;
                 default: throw new ArgumentException("Unknown movement parameter " + name);
             }
         }
@@ -237,6 +246,10 @@ namespace Prpg.Sim
                 case "windedUntil": WindedUntil = v; return true;
                 case "sprintShare": SprintShare = v; return true;
                 case "duckStopShare": DuckStopShare = v; return true;
+                case "runDrainAbove": RunDrainAbove = v; return true;
+                case "crouchBelow": CrouchBelow = v; return true;
+                case "minUphillShare": MinUphillShare = v; return true;
+                case "pullSlideFrom": PullSlideFrom = v; return true;
                 default: return false;
             }
         }

@@ -66,11 +66,13 @@ namespace Prpg.Sim.Tests
         }
 
         [Fact]
-        public void NinaIsLuccaButShorter()
+        public void NinaIsLuccaButShorterAndRamorandIsLucca()
         {
             var text = Repo.Read("data", "movement.json");
             var lucca = MovementFile.Load(text, "Lucca");
             var nina = MovementFile.Load(text, "Nina");
+            var ramorand = MovementFile.Load(text, "Ramorand");
+            foreach (var n in Movement.Names) Assert.True(lucca.Get(n) == ramorand.Get(n), n);
             foreach (var n in Movement.Names)
                 if (n == "charHeight") Assert.Equal(1.7, nina.Get(n));
                 else Assert.True(lucca.Get(n) == nina.Get(n), n);
@@ -93,7 +95,7 @@ namespace Prpg.Sim.Tests
             Assert.Equal(WorldRules.Names, fixedWorld.Keys.ToArray());
             foreach (var n in fixedWorld.Keys) Assert.True(fixedWorld.Number(n) == world.Get(n), "world.json differs from the lab's WORLD table on " + n);
 
-            var labMap = Map.FromJson(w.Object("world"));
+            var labMap = Map.FromJson(w.Object("world"), Repo.World());
             var map = Repo.Map();
             Assert.Equal(labMap.Width, map.Width);
             Assert.Equal(labMap.Lines.Count, map.Lines.Count);

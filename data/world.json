@@ -5,5 +5,8 @@
   "stepOff": 0.15,
   "edgeMargin": 0.45,
   "respawnBelow": -7,
-  "safeInset": 0.6
+  "safeInset": 0.6,
+  "cliffProbe": 0.01,
+  "cliffLevel": 0.05,
+  "cliffTop": 0.02
 }

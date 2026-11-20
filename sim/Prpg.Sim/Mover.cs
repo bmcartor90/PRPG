@@ -190,7 +190,7 @@ namespace Prpg.Sim
                     p.Stamina -= P.PullCost * P.Weight * DT;
                     double t = Math.Min(1, p.HangProg);
                     p.Y = p.HangY0 + (ey - p.HangY0) * t;
-                    p.X = ex + side * P.HangOut - side * (P.HangOut + P.HangIn) * Math.Max(0, (t - 0.6) / 0.4);
+                    p.X = ex + side * P.HangOut - side * (P.HangOut + P.HangIn) * Math.Max(0, (t - P.PullSlideFrom) / (1 - P.PullSlideFrom));
                     if (t >= 1)
                     {
                         p.Mode = Mode.Normal; p.HangLine = -1; p.OnGround = true; p.Line = L.Index;
@@ -370,7 +370,7 @@ namespace Prpg.Sim
                     double top = baseTop;
                     if (L.Sign != 0 && heading != 0)
                     {
-                        if (heading * L.Sign > 0) top *= Math.Max(0.1, 1 - P.UpCost / 100 * f);
+                        if (heading * L.Sign > 0) top *= Math.Max(P.MinUphillShare, 1 - P.UpCost / 100 * f);
                         else top *= 1 + P.DownBoost / 100 * f;
                     }
                     p.Vx = Drive(p.Vx, inp.Dir, top, P, 1);
@@ -378,7 +378,7 @@ namespace Prpg.Sim
                 p.X += p.Vx * L.Cos * DT;
                 if (p.X < W.EdgeMargin) { p.X = W.EdgeMargin; p.Vx = 0; }
                 if (p.X > worldW - W.EdgeMargin) { p.X = worldW - W.EdgeMargin; p.Vx = 0; }
-                HitCliffs(p, P, map, p.Px, p.Py);
+                HitCliffs(p, P, W, map, p.Px, p.Py);
 
                 if (p.X < L.X1 || p.X > L.X2)
                 {
@@ -429,7 +429,7 @@ namespace Prpg.Sim
                 p.X += p.Vx * DT;
                 if (p.X < W.EdgeMargin) { p.X = W.EdgeMargin; p.Vx = 0; }
                 if (p.X > worldW - W.EdgeMargin) { p.X = worldW - W.EdgeMargin; p.Vx = 0; }
-                HitCliffs(p, P, map, p.Px, p.Py);
+                HitCliffs(p, P, W, map, p.Px, p.Py);
             }
 
             // Jump: a press counts now, or shortly before landing (buffer); the ground counts shortly after leaving it (coyote).
@@ -520,8 +520,8 @@ namespace Prpg.Sim
             if (p.OnGround && p.Mode == Mode.Normal && p.Exhaust <= 0 && p.Prone <= 0)
             {
                 bool steep = IsSteep(lines[p.Line], P);
-                bool running = run && inp.Dir != 0 && Math.Abs(p.Vx) > P.WalkSpeed + 0.1 && !steep;
-                p.Crouch = inp.Down && inp.Dir == 0 && Math.Abs(p.Vx) < 0.2 && !steep;
+                bool running = run && inp.Dir != 0 && Math.Abs(p.Vx) > P.WalkSpeed + P.RunDrainAbove && !steep;
+                p.Crouch = inp.Down && inp.Dir == 0 && Math.Abs(p.Vx) < P.CrouchBelow && !steep;
                 if (p.Duck > 0) { p.Crouch = false; }       // sliding: neither draining nor recovering
                 else if (running) { p.Stamina -= P.RunDrain * DT; if (p.Stamina <= 0) Tire(p, P); }
                 else p.Stamina = Math.Min(P.StaminaMax, p.Stamina + (p.Crouch ? P.CrouchRegen : P.WalkRegen) * DT);
@@ -530,12 +530,12 @@ namespace Prpg.Sim
         }
 
         // Stop him at a cliff face. x0 and y0 are where he was before this tick's sideways move.
-        static void HitCliffs(PlayerState p, Movement P, Map map, double x0, double y0)
+        static void HitCliffs(PlayerState p, Movement P, WorldRules W, Map map, double x0, double y0)
         {
             double hb = P.BodyWidth / 2;
             foreach (var c in map.Cliffs)
             {
-                if (y0 >= c.Top - 0.02) continue;          // feet at or above the top: over it, not against it
+                if (y0 >= c.Top - W.CliffTop) continue;          // feet at or above the top: over it, not against it
                 if (c.Face < 0) { if (x0 <= c.X && p.X + hb > c.X) { p.X = c.X - hb; if (p.Vx > 0) p.Vx = 0; } }
                 else { if (x0 >= c.X && p.X - hb < c.X) { p.X = c.X + hb; if (p.Vx < 0) p.Vx = 0; } }
             }

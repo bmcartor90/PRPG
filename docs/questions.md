@@ -16,6 +16,11 @@ One line each: the question, and what the code assumes until Brad answers. Answe
 
 ## Step 1, second round (cliffs, scaffolds, dodge slide)
 
-10. **Numbers still written into the lab's code.** Not in `BODY` or `WORLD`, so ported as constants, unchanged: cliff derivation looks 0.01 beyond a ground end and treats ground within 0.05 as continuing; a cliff only blocks feet more than 0.02 below its top; he counts as running above walk speed + 0.1 (the dodge slide uses `sprintShare` instead); crouching needs speed under 0.2; uphill top speed never drops below 10%; a pull-up starts moving him sideways after 60% of it. Should these join the tables?
-11. **Line order.** The lab keeps one list of lines in the order the level code made them, mixing ground and scaffolds, and that order settles ties. The map file splits ground from scaffolds, so the code numbers ground first, then scaffolds. All 22 traces still match exactly. Assumed fine; a map with exact ties between a ground line and a scaffold could in principle behave differently from the lab.
-12. **`feel-lab/README.md` says 20 traces;** there are 22. Not edited, since `feel-lab/` is off limits to me.
+10. **Remaining numbers in code.** Answered: all in data now. Only arithmetic and two rounding guards are left, as in the lab.
+11. **Line order.** Answered: ground, then scaffolds, as in the file.
+12. **Trace count in the lab README.** Fixed by the design side.
+
+## Step 1, third round
+
+13. **Ramorand's movement numbers.** Nothing gives them, so `movement.json` has him identical to Lucca (the lab shows him at 1.9 tiles). Confirm or give his numbers.
+14. **"Safe".** The dodge slide is anchored but not safe. There is no safety state in the simulation yet (it needs threats), so nothing marks this beyond `InDynamicAction` being true during a slide. Will add `Safe` when monsters exist.

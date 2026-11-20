@@ -20,7 +20,7 @@ namespace Prpg.Sim.Tests
 
         public static string Read(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root }.Concat(parts).ToArray()));
 
-        public static Map Map() => Sim.Map.Load(Read("data", "maps", "test.json"));
+        public static Map Map() => Sim.Map.Load(Read("data", "maps", "test.json"), World());
         public static Movement Lucca() => MovementFile.Load(Read("data", "movement.json"), "Lucca");
         public static WorldRules World() => WorldRules.Load(Read("data", "world.json"));
 
