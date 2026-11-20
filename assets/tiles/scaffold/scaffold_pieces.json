@@ -1,0 +1,69 @@
+{
+ "image": "source/Meshy_AI_miner_scaffold_tileset.png",
+ "pixelsPerTile": 151,
+ "note": "x, y, w, h locate each piece on the sheet. The three deck pieces share one walking surface: deckSurfaceY is the row he stands on, deckUndersideY the bottom of the planks. pixelsPerTile is the scale used in the mock-up (a ladder 0.7 tiles wide), close to Lucca's 160.",
+ "deckSurfaceY": 59,
+ "deckUndersideY": 117,
+ "pieces": {
+  "deckLeft": {
+   "x": 72,
+   "y": 44,
+   "w": 340,
+   "h": 162
+  },
+  "deckMid": {
+   "x": 499,
+   "y": 58,
+   "w": 538,
+   "h": 63
+  },
+  "deckRight": {
+   "x": 1123,
+   "y": 44,
+   "w": 341,
+   "h": 162
+  },
+  "postTop": {
+   "x": 213,
+   "y": 240,
+   "w": 175,
+   "h": 227
+  },
+  "postMid": {
+   "x": 575,
+   "y": 227,
+   "w": 45,
+   "h": 247
+  },
+  "postFoot": {
+   "x": 838,
+   "y": 226,
+   "w": 126,
+   "h": 248
+  },
+  "brace": {
+   "x": 1130,
+   "y": 233,
+   "w": 212,
+   "h": 212
+  },
+  "ladder": {
+   "x": 392,
+   "y": 510,
+   "w": 108,
+   "h": 295
+  },
+  "rope": {
+   "x": 712,
+   "y": 509,
+   "w": 112,
+   "h": 306
+  },
+  "ropeTop": {
+   "x": 1023,
+   "y": 511,
+   "w": 129,
+   "h": 276
+  }
+ }
+}
