@@ -66,6 +66,7 @@ The rule:
 - **The default is falling to a lower route.** A missed jump drops you onto a slower way through, not into a pit.
 - A failed jump should often mean you **hit the monster and now must fight it**.
 - There could also be things that "merely" damage you if you hit them.
+- **Bottomless pits:** falling into one sends you instantly back to the last save point. The intent is that maps should not have them.
 
 ## Hazards
 
@@ -350,6 +351,11 @@ Three nested conditions, each a subset of the one before:
 - **Safe:** grounded, not in a hazard, and outside every detection zone.
 
 A **dynamic action** is anything that is not grounded. So hanging from a wall is anchored but still a dynamic action: a fight can start there, but you cannot change your gear.
+
+Decided on 2026-11-19:
+
+- **Sliding down a too-steep slope is not anchored.** Gravity is acting on him, so a battle cannot start mid-slide.
+- **The dodge slide is not safe.** He is on walkable ground, but it counts as a dynamic action: no gear changes mid-slide.
 
 ## Open questions
 

@@ -1,6 +1,6 @@
 # Ramorand sprites
 
-Sheets for Ramorand, the third character. Six sheets so far, so he is not cut into an atlas and is not in the lab.
+Sheets for Ramorand, the templar, and the frames cut from them. He is playable in the feel lab (the Character menu), 1.9 tiles tall, carrying his own sword and shield.
 
 | File | Frames | Verdict |
 |---|---|---|
@@ -15,11 +15,17 @@ A second copy of the ledge sheet arrived as `..._sheet_1.png`; it is the same im
 
 He stands about 319 pixels tall on the sheet and is much broader than Lucca or Nina, with a long cape trailing behind him.
 
+## The atlas
+
+`atlas/ramorand_atlas.png` and `atlas/ramorand_atlas.json`, in the same format as Lucca's. He has every animation name the others have except the four moving draws, so an item drawn while he walks or runs slides into his hand instead of being animated.
+
+Because his action sheet is short, his `jump` reuses frames (7 slots from 5 drawings), and `crouch` and `slide` are one drawing each.
+
 ## Still needed
 
-The moving draws (walking and running). Without them he can still be played; an item drawn while moving would slide into his hand instead of being animated. Skip the "inverted" moving draws sheet, which has never come back with the far arm.
+The moving draws (walking and running). Optional: a fuller action sheet, for a smoother jump and slide.
 
 ## To watch for
 
 - **The cape.** It hangs well behind his body. On ledges, ladders and ropes it needs somewhere to go, and it will hide a shield slung on his back.
-- **His fists are bare and dark-skinned against silver armour.** Marking them for held items needs a different colour test from the one used for Lucca and Nina.
+- **His near fist is often drawn gauntlet-grey**, even on sheets where the far fist is bare. His fist positions were marked by eye, not by colour, and are a few pixels less exact than the others'.

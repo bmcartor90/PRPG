@@ -2,6 +2,16 @@
 
 Newest first. Each entry says what changed and what a port of the simulation has to do about it.
 
+## 2026-11-19, later the same day
+
+All 22 traces are unchanged tick for tick.
+
+1. **The remaining bare numbers are in the tables.** `BODY` gained `runDrainAbove`, `crouchBelow`, `minUphillShare`, `pullSlideFrom`; `WORLD` gained `cliffProbe`, `cliffLevel`, `cliffTop`. What is left in the simulation code is arithmetic, two rounding guards (`1e-6` in `isSteep`, `1e-9` in landing), and drawing-only values.
+2. **Surface order is now defined.** The lab checks ground first, then scaffolds, each in the order listed, which is the order a map file gives them. Rare exact ties go to the earlier surface.
+3. **A third character, Ramorand,** with an atlas. He has no moving-draw frames, so frame choice must cope with an animation being absent.
+4. **Each character carries their own gear.** `assets/sprites/items/items_atlas.json` says who uses which item.
+5. **Decided by Brad:** sliding down a too-steep slope is not anchored; the dodge slide is not safe; a bottomless pit sends you back to the last save point (see `answers.md`).
+
 ## 2026-11-19, after the first simulation port (branch `sim-port`, built on commit 64b9da0)
 
 All 15 traces that existed at that commit are unchanged tick for tick. Everything below is an addition.

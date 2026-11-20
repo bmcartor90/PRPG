@@ -22,7 +22,7 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 | `Meshy_AI_Lucca_Moving_Draws_Sheet.png` | Walking: sword draw (4), shield fetch (2). Running: the same six. Empty fists. | Transparent | Yes |
 | `Meshy_AI_Lucca_Draw_Opposite_Hand_Sheet.png` | Standing sword draw (4), shield fetch and carry (2), the same two again (2) | Transparent | Frames 5 and 6 only. It was meant to show the far arm doing the work and shows the near arm instead. |
 | `Meshy_AI_Lucca_Moving_Draws_Inverted_Sheet.png` | Same as the moving draws sheet | Transparent | No. It was meant to swap arms and did not, so it duplicates the other sheet. |
-| `Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Cut out and scaled to his size in `../items/`. On the sheet they are drawn much larger than him: the sword is 514 pixels long against his 307-pixel height. |
+| `../items/source/Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Cut out and scaled to his size in `../items/`. On the sheet they are drawn much larger than him: the sword is 514 pixels long against his 307-pixel height. |
 
 ## Known flaws in the sheets
 

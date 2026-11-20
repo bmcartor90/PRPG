@@ -7,7 +7,7 @@ The art tool (Meshy) remembers nothing between chats. This file is what keeps a 
 1. Upload the character's reference picture from `references/`.
 2. Paste that character's block from this file.
 3. Paste the preamble from `prompt_template.md`, then the list of poses you want.
-4. For gear, also upload `lucca/source/Meshy_AI_Lucca_Weapons_Equipment_Sheet.png`.
+4. For gear, also upload a sheet from `items/source/`.
 
 This gets close, not exact. Expect small drift in size and colour between sheets, and check every sheet before using it.
 
@@ -54,8 +54,8 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 ## Ramorand
 
 - **Reference picture:** `references/ramorand_anchor.png` (first frame of his walk sheet)
-- **Archetype:** not yet decided
-- **Height in the game:** not yet decided
+- **Archetype:** templar
+- **Height in the game:** 1.9 tiles
 - **Size on a sheet:** about 319 pixels tall standing, on a 1536 x 864 sheet, and much broader than Lucca
 - **Hair:** bald, with a short dark beard
 - **Outfit:** full silver plate armour with a high collar; long navy cape; navy tabard with silver trim hanging from the belt

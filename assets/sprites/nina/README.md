@@ -24,6 +24,6 @@ She stands about 321 pixels tall on a sheet against Lucca's 307, most of it the 
 
 ## Flaws
 
-- **Her colours drift between sheets.** The ledge-and-lunge sheet drew her robe cream and her boots black; everywhere else the robe is grey-white and the boots brown. It shows when she grabs a ledge.
+- **Her colours drift between sheets.** The ledge-and-lunge sheet drew her robe cream and her boots black; everywhere else the robe is grey-white and the boots brown. The robe is corrected when the frames are cut (the source file is untouched). The boots are not: they cannot be told apart from her trousers by colour, so they stay a little darker on ledge frames.
 - The walk-and-run sheet gives her a double belt and dark cuffs that the other sheets lack.
 - Her hood is down in the rope-slide frame only.

@@ -69,7 +69,11 @@
    "jumpGrabLock": 0.45,
    "windedUntil": 0.25,
    "sprintShare": 0.25,
-   "duckStopShare": 0.5
+   "duckStopShare": 0.5,
+   "runDrainAbove": 0.1,
+   "crouchBelow": 0.2,
+   "minUphillShare": 0.1,
+   "pullSlideFrom": 0.6
   },
   "world": {
    "snap": 0.3,
@@ -77,7 +81,10 @@
    "stepOff": 0.15,
    "edgeMargin": 0.45,
    "respawnBelow": -7,
-   "safeInset": 0.6
+   "safeInset": 0.6,
+   "cliffProbe": 0.01,
+   "cliffLevel": 0.05,
+   "cliffTop": 0.02
   }
  },
  "groundedNote": "The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.",
