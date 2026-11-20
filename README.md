@@ -4,4 +4,8 @@ A 2D sidescroller platforming RPG. Working title.
 
 ## What is here
 
-- `assets/sprites/lucca/` holds the sprite sheets for Lucca, the test character, and the frames cut from them. See the README in that folder.
+- `assets/sprites/characters.md`: what each character looks like, for briefing the art tool in a new chat.
+- `assets/sprites/prompt_template.md`: the prompt format for requesting a sprite sheet, and what has gone wrong before.
+- `assets/sprites/references/`: one reference picture per character.
+- `assets/sprites/lucca/`: Lucca's sprite sheets and the frames cut from them.
+- `assets/sprites/items/`: sword, sheath, shield and staff, cut out and scaled to fit him.
