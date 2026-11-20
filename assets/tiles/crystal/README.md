@@ -19,3 +19,11 @@
 - The background needs cutting out before use. A flood fill from the border works.
 
 `docs/mockups/crystal-cavern-mockup-1080p.png` shows these pieces with Lucca and the cavern background at game scale.
+
+# Solid wall set
+
+`source/Meshy_AI_crystal_cavern_solid_wall_tileset.png`: 1536 x 864, opaque dark grey background, 6 pieces: plain rock block, rock block with crystals, rock block braced with mine timbers, a ceiling underside with stalactites, a base strip with rubble and crystals, a narrow column.
+
+- **Usable as fill and cliff face.** Each block has a dark outline. Trimmed by about 10 pixels it tiles side to side with no visible seam; top to bottom leaves a faint light line, which a short blend at the seam removes.
+- Same resolution problem as the platforms: a block is about 440 pixels wide, so its scale against the characters has to be chosen rather than read off.
+- Still missing: a walkable top edge (the surface you stand on), and inside and outside corners.

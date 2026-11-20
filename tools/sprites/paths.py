@@ -33,6 +33,10 @@ SHEETS={
  '61b27d1a':'sprites/items/source/Meshy_AI_ramorand_weapons_equipment_sheet.png',
  '6dd62cb4':'tiles/crystal/source/Meshy_AI_crystal_platform_tileset.png',
  '474ce6bb':'tiles/scaffold/source/Meshy_AI_miner_scaffold_tileset.png',
+ 'ab22f874':'tiles/crystal/source/Meshy_AI_crystal_cavern_solid_wall_tileset.png',
+ '0c686896':'props/doors/source/Meshy_AI_environment_doors_and_openings_sheet.png',
+ '17425c7e':'props/doors/source/Meshy_AI_locked_doors_and_dormant_portal_sheet.png',
+ '6d34fc5c':'props/doors/source/Meshy_AI_shimmering_portal_loop_sheet.png',
 }
 def SRC(i):
     """Path of a source sheet, by id or by a path under assets/."""
