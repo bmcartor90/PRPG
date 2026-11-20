@@ -18,3 +18,19 @@ Both sheets so far have a mostly transparent background with a semi-transparent 
 
 - **Keep.** Consistent size (crouching about 190 pixels tall, against Lucca's 307 standing) and colours.
 - Effects are painted in: dust, drool, impact sparks, stars.
+
+## Cave mole (`cave-mole/`)
+
+12 frames, facing right, opaque dark grey background (a flood fill from the border cuts it). Row 1: dirt mound, claws breaking out, emerging, crawling (2), burrowing back in. Row 2: standing upright, claw raised, swipe, digging down, hit (dizzy stars), knocked on its back.
+
+- **Keep.** Consistent size (upright about 235 to 270 pixels tall) and colours.
+- Its fur is nearly as dark as the background; the cut works but check the edges closely.
+- Effects painted in: flying dirt, motion arcs, stars.
+
+## Crystal golem (`crystal-golem/`)
+
+12 frames, facing right, opaque dark grey background. Row 1: idle (2), walk (3), roar with crystals flaring. Row 2: fist raised, ground slam with a crystal burst, shard punch, guarding behind crystals, crumbling, rubble pile.
+
+- **Keep, with care when cutting.** Frames 8 and 9 (slam and punch) touch through their effects, and so do 11 and 12 (crumbling and rubble). They need splitting by hand.
+- Standing about 280 pixels tall, a little shorter than Lucca on the sheet. A golem probably wants to be bigger than the heroes; it will be scaled up when cut, which softens it.
+- Effects painted in: crystal bursts, flying shards, sparkles.

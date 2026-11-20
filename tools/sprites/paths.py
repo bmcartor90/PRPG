@@ -38,6 +38,8 @@ SHEETS={
  '17425c7e':'props/doors/source/Meshy_AI_locked_doors_and_dormant_portal_sheet.png',
  '0058dca7':'monsters/assassin-vine/source/Meshy_AI_assassin_vine_monster_sheet.png',
  '7b9e35c8':'monsters/fat-rabbit/source/Meshy_AI_fat_rabbit_monster_sheet.png',
+ '114dd7b8':'monsters/cave-mole/source/Meshy_AI_cave_mole_monster_sheet.png',
+ 'fa99d3c2':'monsters/crystal-golem/source/Meshy_AI_crystal_golem_monster_sheet.png',
  '6d34fc5c':'props/doors/source/Meshy_AI_shimmering_portal_loop_sheet.png',
 }
 def SRC(i):
