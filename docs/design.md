@@ -317,27 +317,32 @@ Notes on Mind:
 
 **Decided:**
 
-- **Stats count in steps of 20:** 80, 100, 120, 140, 160, 180, 200. Seven levels. The player is given a value at each level, not a continuous slider.
+- **Stats count in steps of 20:** 80, 100, 120, 140, 160, 180, 200. That is seven levels.
+- **The player sees levels 1 to 7, never the values behind them.** Level 1 is a stat of 80, level 2 is 100, and so on up to level 7 at 200.
 - **Each movement number belongs to one stat, or to none.**
-- **Agility's options:** jump height, run speed, speed-up time, air control.
-- **Body's options:** the stamina bar, pull-up time, climb speed.
+- **Agility's options:** Jump, Speed, Acceleration, Air control.
+- **Acceleration is one option that moves three numbers together:** how fast he speeds up, stops and turns.
+- **Body's options:** Stamina, Pull-up, Climb.
 - **Body also works automatically, not as an option:** a higher Body shortens exhaustion, and raises the share of climb speed kept when climbing one-handed.
-- **On no stat:** walkable limit, draw and sheathe time, stop time, turn time, walking recovery, crouched recovery, walk speed, every stamina cost, gravity, jump cut, coyote time and jump buffer. Height and reach belong to the character.
+- **On no stat:** walkable limit, draw and sheathe time, walking recovery, crouched recovery, walk speed, every stamina cost, gravity, jump cut, coyote time and jump buffer. Height and reach belong to the character.
 - **Walkable limit may become an ability that Mind unlocks.**
 
 **Proposed values, not yet tuned by feel:**
 
-| | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+| Level | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |---|---|---|---|---|---|---|---|
-| Jump height (tiles), Agility | 3.6 | 4.0 | 4.4 | 4.7 | 5.0 | 5.3 | 5.5 |
-| Run speed (tiles/s), Agility | 9.0 | 10.0 | 10.8 | 11.5 | 12.1 | 12.6 | 13.0 |
-| Speed-up time (s), Agility | 0.50 | 0.45 | 0.41 | 0.38 | 0.35 | 0.32 | 0.30 |
-| Air control, Agility | 0.60 | 0.65 | 0.70 | 0.74 | 0.78 | 0.82 | 0.85 |
-| Stamina bar, Body | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
-| Pull-up time (s), Body | 1.25 | 1.00 | 0.85 | 0.73 | 0.64 | 0.56 | 0.50 |
-| Climb speed (tiles/s), Body | 1.7 | 2.0 | 2.4 | 2.7 | 3.0 | 3.3 | 3.5 |
-| Exhaustion (s), Body, automatic | 1.4 | 1.2 | 1.05 | 0.9 | 0.8 | 0.7 | 0.6 |
-| One-handed share of climb speed, Body, automatic | 60% | 65% | 70% | 74% | 78% | 82% | 85% |
+| Stat | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+| **Jump:** height (tiles) | 3.6 | 4.0 | 4.4 | 4.7 | 5.0 | 5.3 | 5.5 |
+| **Speed:** run speed (tiles/s) | 9.0 | 10.0 | 10.8 | 11.5 | 12.1 | 12.6 | 13.0 |
+| **Acceleration:** speed-up time (s) | 0.50 | 0.45 | 0.41 | 0.38 | 0.35 | 0.32 | 0.30 |
+| **Acceleration:** stop time (s) | 0.33 | 0.30 | 0.28 | 0.26 | 0.24 | 0.23 | 0.22 |
+| **Acceleration:** turn time (s) | 0.39 | 0.35 | 0.32 | 0.30 | 0.28 | 0.26 | 0.25 |
+| **Air control** | 0.60 | 0.65 | 0.70 | 0.74 | 0.78 | 0.82 | 0.85 |
+| **Stamina:** the bar | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+| **Pull-up:** time (s) | 1.25 | 1.00 | 0.85 | 0.73 | 0.64 | 0.56 | 0.50 |
+| **Climb:** speed (tiles/s) | 1.7 | 2.0 | 2.4 | 2.7 | 3.0 | 3.3 | 3.5 |
+| Exhaustion (s), automatic | 1.4 | 1.2 | 1.05 | 0.9 | 0.8 | 0.7 | 0.6 |
+| One-handed share of climb speed, automatic | 60% | 65% | 70% | 74% | 78% | 82% | 85% |
 
 **Not yet decided:** whether the player picks a level per stat or per number at sleep, and whether anything changes between levels.
 - At these numbers stamina feels costly, and it is not the free-jumping Mario dream. That is accepted: it is the starting point, not the ceiling.
