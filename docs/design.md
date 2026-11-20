@@ -312,7 +312,34 @@ Notes on Mind:
 
 - The stamina and movement costs in the lab are what the game should feel like at **100 / 100 / 100** (Body / Agility / Mind).
 - **100 / 100 / 100 is the typical starting condition. 80 / 80 / 80 is the minimum. About 200 is near the upper limit.**
-- **How each stat changes each movement number is not designed yet.** It needs a curve per number, kept in data so it can be tuned. The shape matters more than the range: a straight line from 80 to 200 would take jump height from 4 tiles to 8.
+
+### Stats and movement (in progress, 2026-11-19)
+
+**Decided:**
+
+- **Stats count in steps of 20:** 80, 100, 120, 140, 160, 180, 200. Seven levels. The player is given a value at each level, not a continuous slider.
+- **Each movement number belongs to one stat, or to none.**
+- **Agility's options:** jump height, run speed, speed-up time, air control.
+- **Body's options:** the stamina bar, pull-up time, climb speed.
+- **Body also works automatically, not as an option:** a higher Body shortens exhaustion, and raises the share of climb speed kept when climbing one-handed.
+- **On no stat:** walkable limit, draw and sheathe time, stop time, turn time, walking recovery, crouched recovery, walk speed, every stamina cost, gravity, jump cut, coyote time and jump buffer. Height and reach belong to the character.
+- **Walkable limit may become an ability that Mind unlocks.**
+
+**Proposed values, not yet tuned by feel:**
+
+| | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+|---|---|---|---|---|---|---|---|
+| Jump height (tiles), Agility | 3.6 | 4.0 | 4.4 | 4.7 | 5.0 | 5.3 | 5.5 |
+| Run speed (tiles/s), Agility | 9.0 | 10.0 | 10.8 | 11.5 | 12.1 | 12.6 | 13.0 |
+| Speed-up time (s), Agility | 0.50 | 0.45 | 0.41 | 0.38 | 0.35 | 0.32 | 0.30 |
+| Air control, Agility | 0.60 | 0.65 | 0.70 | 0.74 | 0.78 | 0.82 | 0.85 |
+| Stamina bar, Body | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+| Pull-up time (s), Body | 1.25 | 1.00 | 0.85 | 0.73 | 0.64 | 0.56 | 0.50 |
+| Climb speed (tiles/s), Body | 1.7 | 2.0 | 2.4 | 2.7 | 3.0 | 3.3 | 3.5 |
+| Exhaustion (s), Body, automatic | 1.4 | 1.2 | 1.05 | 0.9 | 0.8 | 0.7 | 0.6 |
+| One-handed share of climb speed, Body, automatic | 60% | 65% | 70% | 74% | 78% | 82% | 85% |
+
+**Not yet decided:** whether the player picks a level per stat or per number at sleep, and whether anything changes between levels.
 - At these numbers stamina feels costly, and it is not the free-jumping Mario dream. That is accepted: it is the starting point, not the ceiling.
 
 ### Draw and sheathe
@@ -374,6 +401,6 @@ Decided on 2026-11-19:
 3. What do Body, Agility and Mind do in battle?
 4. Does reaching a Big Safe without sleeping count as a save point, or only actually sleeping?
 5. The battle-start edge rules (hazards, pits, several enemies touched before anchoring). Deferred until it can be felt.
-6. Which abilities Mind unlocks, and how each is statted (double jump, teleportation and others).
+6. Which abilities Mind unlocks, and how each is statted (double jump, teleportation, a steeper walkable limit and others).
 7. How sprinting and stamina interact during ordinary traversal.
 8. Climbable difficulty in numbers: the cost multiplier for each surface.
