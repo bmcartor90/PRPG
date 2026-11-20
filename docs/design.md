@@ -191,12 +191,14 @@ Mostly for towns. A staircase can lead up and back, so a higher part of the map 
 
 - **It is a drawing rule only.** The map and all movement stay in ordinary tiles. Nothing about jumping, speed or reach changes; farther things are simply drawn smaller, so movement on screen shrinks by the same ratio without being touched.
 - **Any number of depths, numbered from 0 at the front.** Each depth is a band of height, joined to the next by stairs. Above the height where a depth starts, the whole map is at that depth or deeper; a map cannot have a "front" at that height as well.
-- **Each depth back is drawn at 75% of the one in front of it.** Standing at depth 0 you see depth 1 at 0.75 and depth 2 at 0.5625, and so on.
-- **The view moves in with the hero, so he is never smaller than 0.75.**
-  - At depth 0 he is full size.
-  - Walking to depth 1 he shrinks steadily to 0.75.
-  - Walking on to depth 2, depth 0 disappears and everything scales forward: depth 1 is now full size and depth 2 is 0.75. The same again at every deeper step.
-  - Coming back down, all of this runs in reverse.
+- **The leader is always drawn at full size.** The world is sized around him. He never shrinks.
+- **Each depth is drawn at 75% of the one in front of it,** measured from where the leader stands:
+  - his own depth is at 1;
+  - the depth behind him is at 0.75, the next at 0.5625, and so on, as far back as there are depths;
+  - the depth in front of him is at 1.33;
+  - the depth two in front would be at 1.78, and is not shown.
+- **Moving between depths is smooth.** As he climbs a staircase to the next depth, everything grows steadily: the depth he is heading for goes from 0.75 to 1, the one he is leaving goes from 1 to 1.33, and the one in front of that goes from 1.33 to 1.78, fading out as it grows until it is gone. Coming back down, all of this runs in reverse.
+- **Depths slide past each other as he walks,** farther ones more slowly. Stairs between depths stay joined and skew as he passes.
 - **Foreground pieces do not scale.** Some scenery sits in front of the play area, and characters pass behind it: a tree close to the camera, say. It stays the same size however high it reaches, because it is not going back as it goes up.
 - **A foreground piece fades to partly see-through while the leader is behind it,** so he is never lost.
 - **The foreground slides past about 15% faster than the play area,** as things near a camera do. To be tuned by eye.
