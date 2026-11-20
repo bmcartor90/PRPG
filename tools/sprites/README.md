@@ -8,7 +8,7 @@ Scripts that turn Meshy sheets in `assets/` into the atlases the lab and the gam
 
 Fist positions are stored as coordinates in `fists.py` (Lucca), `fists_nina.py`, `fists_ramorand.py`. To label new frames: `python3 blobs.py <tag> <anim,anim,...> [character]`, read the numbered contact sheet in `work/`, write the coordinates in.
 
-`grid.py <character> <anim,...> <out.png>` draws frames with a coordinate grid, for reading positions by eye. `shot_climb.py <character>` captures them hanging and climbing with each item. `lab_data.py` rewrites the lab's sprite-data blocks from `work/` (build.sh runs it).
+`grid.py <character> <anim,...> <out.png>` draws frames with a coordinate grid, for reading positions by eye. `shot_climb.py <character>` captures them hanging and climbing with each item. `lab_art.py` makes the lab's cave art (far background, rock texture, scaffold pieces). `lab_data.py` rewrites the lab's sprite-data blocks from `work/` (build.sh runs it).
 
 Other scripts: `char_boxes.py` / `nina_boxes.py` / `empty_boxes.py` / `slice3.py` find frames on a sheet; `mock.py` / `mock2.py <background> <out.png>` make still mock-ups; `shot16.py` drives the lab in headless Chrome and writes `work/look17.png`.
 

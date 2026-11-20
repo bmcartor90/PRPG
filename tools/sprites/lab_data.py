@@ -15,5 +15,6 @@ for k,(c,mf,ff) in enumerate(CH):
     x=json.load(open(f'{WORK}/{ff}')); end='}};' if k==2 else '},'
     lines[fi+k]=('const FISTS = {' if k==0 else '  ')+f'{c}:'+J(x['fists'])[:-1]+end
     lines[dp+k]=('const DRAW_POSE = {' if k==0 else '  ')+f'{c}:'+J(x['pose'])[:-1]+end
+sc=at('const SCAFFOLD = {'); lines[sc]='const SCAFFOLD = '+J(json.load(open(WORK+'/scaffold_lab.json')))+';'
 it=at('const ITEMS = {'); lines[it]='const ITEMS = '+J(json.load(open(WORK+'/items.json')))+';'
 open(f,'w',encoding='utf-8').write('\n'.join(lines)); print('lab data written')
