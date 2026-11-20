@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Prpg.Sim
 {
-    public enum ClimbKind { Ladder, Rope, Wall }
+    public enum ClimbKind { Ladder, Rope, RoughRock, SmoothRock }
 
     /// <summary>
     /// A surface: a line segment, flat or sloped, with x1 &lt; x2. Immutable.
@@ -32,15 +32,20 @@ namespace Prpg.Sim
         public double ClampX(double x) => Math.Min(Math.Max(x, X1), X2);
     }
 
-    /// <summary>A ladder, rope or wall: a vertical climbable at x from y1 up to y2. Immutable.</summary>
+    /// <summary>
+    /// A ladder, rope or rock: a vertical climbable at x from y1 up to y2. Immutable.
+    /// Face is 0 for one standing free (he is on it, seen from behind), or which side is open air (-1 left, 1 right)
+    /// for one running down a cliff face.
+    /// </summary>
     public sealed class Climbable
     {
         public readonly int Index;
         public readonly ClimbKind Kind;
         public readonly double X, Y1, Y2;
-        public Climbable(int index, ClimbKind kind, double x, double y1, double y2)
+        public readonly int Face;
+        public Climbable(int index, ClimbKind kind, double x, double y1, double y2, int face = 0)
         {
-            Index = index; Kind = kind; X = x; Y1 = y1; Y2 = y2;
+            Index = index; Kind = kind; X = x; Y1 = y1; Y2 = y2; Face = face;
         }
     }
 
@@ -103,10 +108,19 @@ namespace Prpg.Sim
                 {
                     case "Ladder": kind = ClimbKind.Ladder; break;
                     case "Rope": kind = ClimbKind.Rope; break;
-                    case "Wall": kind = ClimbKind.Wall; break;
+                    case "RoughRock": kind = ClimbKind.RoughRock; break;
+                    case "SmoothRock": case "Wall": kind = ClimbKind.SmoothRock; break;   // "Wall" is the old name
                     default: throw new FormatException("Unknown climbable kind \"" + c.String("kind") + "\"");
                 }
-                m.Climbables.Add(new Climbable(m.Climbables.Count, kind, c.Number("x") / u, c.Number("y1") / u, c.Number("y2") / u));
+                int face = 0;
+                switch (c.String("openSide"))
+                {
+                    case null: break;
+                    case "left": face = -1; break;
+                    case "right": face = 1; break;
+                    default: throw new FormatException("openSide must be \"left\" or \"right\"");
+                }
+                m.Climbables.Add(new Climbable(m.Climbables.Count, kind, c.Number("x") / u, c.Number("y1") / u, c.Number("y2") / u, face));
             }
             m.BuildCliffs(world);
             m.Cliffs.AddRange(faces);

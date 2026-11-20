@@ -58,7 +58,7 @@ namespace Prpg.Sim
             p.X = p.Px = x; p.Y = p.Py = L.YAt(x); p.Vx = 0; p.Vy = 0;
             p.OnGround = true; p.Line = line; p.Jumping = false; p.Cutting = false; p.Coyote = 0; p.Buffer = 0;
             p.Stamina = double.NaN; p.Exhaust = 0; p.Winded = false; p.Spent = false; p.Crouch = false; p.Mode = Mode.Normal;
-            p.HangLine = -1; p.Climb = -1; p.GrabLock = 0; p.Lunge = 0; p.Prone = 0; p.SwapHand = -1; p.Duck = 0; p.DownWas = false;
+            p.HangLine = -1; p.Climb = -1; p.GrabLock = 0; p.Lunge = 0; p.Prone = 0; p.SwapHand = -1; p.Duck = 0; p.DownWas = false; p.Low = false;
         }
 
         // ---- Hands ----
@@ -71,7 +71,14 @@ namespace Prpg.Sim
             return n;
         }
 
-        static int HandsNeeded(Climbable C) => C.Kind == ClimbKind.Wall ? 2 : C.Kind == ClimbKind.Rope ? 1 : 0;
+        static int HandsNeeded(Climbable C) => C.Kind == ClimbKind.SmoothRock ? 2 : (C.Kind == ClimbKind.Rope || C.Kind == ClimbKind.RoughRock) ? 1 : 0;
+
+        /// <summary>Where his body is while on a climbable: on it if it stands free, just clear of the rock if it runs down a face.</summary>
+        public static double ClimbX(Climbable C, Movement P) => C.Face != 0 ? C.X + C.Face * P.BodyWidth / 2 : C.X;
+
+        /// <summary>The highest his feet go. On a rope or rock face his hands stay on it, so his feet stop a body-height short;
+        /// from there the top corner of the cliff is a ledge to hang from.</summary>
+        public static double ClimbTop(Climbable C, Movement P) => (C.Face != 0 && C.Kind != ClimbKind.Ladder) ? Math.Max(C.Y1, C.Y2 - P.CharHeight) : C.Y2;
 
         // ---- Stamina, ledge grabs and climbing ----
 
@@ -104,7 +111,7 @@ namespace Prpg.Sim
         }
 
         /// <summary>How tall he is right now. Nothing checks this yet; hazards and enemies will.</summary>
-        public static double HeightNow(PlayerState p, Movement P) => p.Duck > 0 ? P.DuckHeight : P.CharHeight;
+        public static double HeightNow(PlayerState p, Movement P) => p.Low ? P.DuckHeight : P.CharHeight;
 
         static double ReachOf(Movement P) => P.CharHeight + P.ArmReach;
 
@@ -231,18 +238,35 @@ namespace Prpg.Sim
             double cost = (mv != 0 ? effort : P.HangCost * P.Weight) * mult;
             bool canSprint = inp.Run && !p.Winded && (ladder ? fh >= 1 : fh == 2);
             if (canSprint && mv > 0) { speed *= P.ClimbSprint; cost *= P.ClimbSprintCost; }
-            if (inp.Run && mv < 0 && C.Kind != ClimbKind.Wall) { speed = P.ClimbSpeed * P.SlideDownSpeed; cost = P.HangCost * P.Weight * mult; }
-            p.Y = Math.Min(C.Y2, Math.Max(C.Y1, p.Y + mv * speed * DT));
+            if (inp.Run && mv < 0 && (ladder || C.Kind == ClimbKind.Rope)) { speed = P.ClimbSpeed * P.SlideDownSpeed; cost = P.HangCost * P.Weight * mult; }
+            double cx = ClimbX(C, P), top = ClimbTop(C, P);
+            p.Y = Math.Min(top, Math.Max(C.Y1, p.Y + mv * speed * DT));
             if (ladder && mv == 0 && fh == 2)
                 p.Stamina = Math.Min(P.StaminaMax, p.Stamina + P.WalkRegen * DT);
             else p.Stamina -= cost * DT;
-            if ((mv > 0 && p.Y >= C.Y2) || (mv < 0 && p.Y <= C.Y1))
+            if (mv > 0 && p.Y >= top && top < C.Y2)
+            {
+                // Top of a rope or rock face: his hands are at the top of it. If that is the top corner of the cliff,
+                // he is now hanging from the ledge, and getting up is the ordinary pull-up.
+                foreach (var L in lines)
+                {
+                    if (IsSteep(L, P)) continue;
+                    double ex = C.Face < 0 ? L.X1 : L.X2, ey = C.Face < 0 ? L.Y1 : L.Y2;
+                    if (Math.Abs(ex - C.X) < W.Join && Math.Abs(ey - C.Y2) < W.Join && EndIsOpen(lines, L, C.Face, P, W))
+                    {
+                        p.Climb = -1;
+                        StartHang(p, new Ledge { Line = L, Side = C.Face, Ex = ex, Ey = ey }, p.Y);
+                        return;
+                    }
+                }
+            }
+            else if ((mv > 0 && p.Y >= C.Y2) || (mv < 0 && p.Y <= C.Y1))
             {
                 // At an end: step onto a platform if one is there.
                 foreach (var L in lines)
                 {
-                    if (IsSteep(L, P) || C.X < L.X1 - P.ClimbReach || C.X > L.X2 + P.ClimbReach) continue;
-                    double nx = L.ClampX(C.X);
+                    if (IsSteep(L, P) || cx < L.X1 - P.ClimbReach || cx > L.X2 + P.ClimbReach) continue;
+                    double nx = L.ClampX(cx);
                     if (Math.Abs(L.YAt(nx) - p.Y) < W.StepOff)
                     {
                         p.Mode = Mode.Normal; p.Climb = -1; p.OnGround = true; p.Line = L.Index; p.X = nx; p.Y = L.YAt(nx); p.Vx = 0; p.Vy = 0;
@@ -278,6 +302,11 @@ namespace Prpg.Sim
             bool downPressed = inp.Down && !p.DownWas;     // a fresh press of down, not a hold
             p.DownWas = inp.Down;
             if (p.Mode != Mode.Normal || !p.OnGround) p.Duck = 0;
+            // Low: holding down on walkable ground, in a dodge slide, or under rock with no room to stand. Decided here, from where he
+            // starts the tick, and used for every height test in it. In the air he is always at full height.
+            bool cramped = p.OnGround && RoofOver(P, W, map.Undersides, p.X, p.Y) < p.Y + P.CharHeight;
+            p.Low = p.Mode == Mode.Normal && p.OnGround && !IsSteep(lines[p.Line], P)
+                    && (cramped || (p.Exhaust <= 0 && p.Prone <= 0 && (p.Duck > 0 || inp.Down)));
             if (double.IsNaN(p.Stamina) || p.Stamina > P.StaminaMax) p.Stamina = P.StaminaMax;
             if (p.GrabLock > 0) p.GrabLock -= DT;
             // Draw or sheathe: takes a moment, and that hand is useless until it finishes.
@@ -310,15 +339,18 @@ namespace Prpg.Sim
             {
                 foreach (var C in map.Climbables)
                 {
-                    if (Math.Abs(p.X - C.X) > P.ClimbReach) continue;
+                    double cx = ClimbX(C, P), top = ClimbTop(C, P);
+                    if (Math.Abs(p.X - cx) > P.ClimbReach) continue;
                     bool ladder = C.Kind == ClimbKind.Ladder;
                     if (FreeHands(p) < HandsNeeded(C)) continue;
-                    bool within = p.Y >= C.Y1 - W.StepOff && p.Y < C.Y2 - W.Join;
-                    bool goOn = within && (inp.Grab || (ladder && inp.Up));
+                    bool within = p.Y >= C.Y1 - W.StepOff && p.Y < top - W.Join;
+                    bool airSide = C.Face == 0 || (p.X - C.X) * C.Face >= 0;     // onto a face from the open side, not from on top of the rock
+                    bool goOn = within && airSide && (inp.Grab || (ladder && inp.Up));
                     bool goDown = inp.Down && p.OnGround && Math.Abs(p.Y - C.Y2) < W.StepOff && (ladder || inp.Grab);
                     if (goOn || goDown)
                     {
-                        p.Mode = Mode.Climb; p.Climb = C.Index; p.X = C.X; p.Vx = 0; p.Vy = 0; p.OnGround = false; p.Line = -1;
+                        p.Mode = Mode.Climb; p.Climb = C.Index; p.X = cx; p.Vx = 0; p.Vy = 0; p.OnGround = false; p.Line = -1;
+                        if (p.Y > top) p.Y = top;                     // lowering himself over the edge onto a rope or rock face
                         p.Jumping = false; p.Cutting = false; p.Coyote = 0; p.Buffer = 0;
                         Tail(p, P, W, map); return;
                     }
@@ -370,7 +402,7 @@ namespace Prpg.Sim
                 {
                     double f = L.Sin / SIN45;
                     double heading = inp.Dir != 0 ? inp.Dir : JsSign(p.Vx);
-                    double top = baseTop;
+                    double top = p.Low ? P.CrawlSpeed : baseTop;     // low and not sliding: he crawls
                     if (L.Sign != 0 && heading != 0)
                     {
                         if (heading * L.Sign > 0) top *= Math.Max(P.MinUphillShare, 1 - P.UpCost / 100 * f);
@@ -425,8 +457,9 @@ namespace Prpg.Sim
                     p.Y = L.YAt(p.X);
                 }
                 // Rock overhead: if this step would put his head into an underside, he does not take it.
-                // He always counts at full standing height, even in a dodge slide.
-                if (roofs.Count > 0 && RoofOver(P, W, roofs, p.X, p.Y) < p.Y + P.CharHeight && RoofOver(P, W, roofs, p.Px, p.Py) >= p.Py + P.CharHeight)
+                // His height is his height right now, so sliding or crawling gets him under rock that would stop him standing.
+                double hNow = HeightNow(p, P);
+                if (roofs.Count > 0 && RoofOver(P, W, roofs, p.X, p.Y) < p.Y + hNow && RoofOver(P, W, roofs, p.Px, p.Py) >= p.Py + hNow)
                 {
                     p.X = p.Px; p.Y = p.Py; p.Vx = 0; p.Vy = 0; p.OnGround = true; p.Line = L.Index; p.Coyote = 0; p.Duck = duck0 > 0 ? 0 : p.Duck;
                 }
@@ -449,7 +482,7 @@ namespace Prpg.Sim
             if (inp.JumpPressed) p.Buffer = P.BufferMs / 1000;
             bool wants = inp.JumpPressed || p.Buffer > 0;
             bool sliding = p.OnGround && IsSteep(lines[p.Line], P);
-            bool can = p.OnGround ? (!sliding || P.SlideJump > 0) : p.Coyote > 0;
+            bool can = p.OnGround ? ((!sliding || P.SlideJump > 0) && !cramped) : p.Coyote > 0;   // no jumping where there is no room to stand
             bool justJumped = false;
             if (wants && can)
             {
@@ -570,7 +603,7 @@ namespace Prpg.Sim
             foreach (var c in map.Cliffs)
             {
                 if (y0 >= c.Top - W.CliffTop) continue;          // feet at or above the top: over it, not against it
-                if (y0 + P.CharHeight <= c.Bottom + W.CliffTop) continue;   // head below the bottom of the face: he passes under it
+                if (y0 + HeightNow(p, P) <= c.Bottom + W.CliffTop) continue;   // head below the bottom of the face: he passes under it
                 if (c.Face < 0) { if (x0 <= c.X && p.X + hb > c.X) { p.X = c.X - hb; if (p.Vx > 0) p.Vx = 0; } }
                 else { if (x0 >= c.X && p.X - hb < c.X) { p.X = c.X + hb; if (p.Vx < 0) p.Vx = 0; } }
             }

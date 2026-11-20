@@ -63,6 +63,8 @@ namespace Prpg.Game
             }
             else if (p.Mode == Mode.Climb && f.HasHand)
             {
+                var C = map.Climbables[p.Climb];
+                if (C.Face != 0) wx = C.X;                                     // on a cliff face his hand is on the rock, not at his own position
                 wy = iy + 0.76 * P.CharHeight; ax = f.HandX; ay = f.HandY;   // lower hand grips about three-quarters of his height up
             }
 

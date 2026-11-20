@@ -37,6 +37,7 @@ namespace Prpg.Sim
 
         public double Duck;                  // dodge slide time left (0 when not sliding)
         public bool DownWas;                 // down was held last tick, so a press can be told from a hold
+        public bool Low;                     // sliding, crouching or crawling, or kept low by rock overhead: his height is duckHeight
 
         public bool Held(int hand) => hand == 0 ? HeldLeft : HeldRight;
         public void SetHeld(int hand, bool v) { if (hand == 0) HeldLeft = v; else HeldRight = v; }

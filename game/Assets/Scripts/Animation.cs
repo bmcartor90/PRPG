@@ -20,6 +20,7 @@ namespace Prpg.Game
             bool slidingNow = p.OnGround && Mover.IsSteep(map.Lines[p.Line], P);
             LungeT = p.Lunge != 0 ? LungeT + 1 : 0;
             if (p.Mode == Mode.Hang || p.Mode == Mode.Pull) { Face = -p.HangSide; Slide = 0; }
+            else if (p.Mode == Mode.Climb && map.Climbables[p.Climb].Face != 0) { Face = -map.Climbables[p.Climb].Face; Slide = 0; }   // on a cliff face he faces the rock
             else if (p.Lunge != 0) { Face = p.Lunge; Slide = 0; }
             else if (slidingNow) { if (Math.Abs(p.Vx) > 0.3) Face = Math.Sign(p.Vx); Slide++; }
             else { Slide = 0; if (inputDir != 0) Face = inputDir; }
@@ -68,8 +69,9 @@ namespace Prpg.Game
                 int f = Mover.FreeHands(p);
                 bool moving = Math.Abs(p.Y - p.Py) > 1e-4;
                 int i = (((int)Math.Floor(p.Y / 0.4) % 4) + 4) % 4;
-                if (C.Kind == ClimbKind.Rope)
+                if (C.Kind == ClimbKind.Rope || C.Face != 0)
                 {
+                    // Side view, pinned by his lower hand. Every climbable on a cliff face uses these until it has its own frames.
                     if (p.Py - p.Y > P.ClimbSpeed * Mover.DT * 1.5) return At("ropeSlide", 0);
                     if (!moving) return f == 1 ? At("rope1", 0) : At("ropeHang", 0);
                     if (f == 1) return i % 2 != 0 ? At("rope1", 0) : At("ropeHang", 0);
@@ -87,7 +89,8 @@ namespace Prpg.Game
             }
             if (p.Exhaust > 0 && p.OnGround) return At("getup", 0);
             if (p.Duck > 0) { double u = 1 - p.Duck / P.DuckTime; return At("slide", u < 0.2 ? 0 : u < 0.8 ? 1 : 2); }
-            if (p.Crouch) return At("crouch", 0);
+            if (p.Low && Math.Abs(p.Vx) > 0.3) return At("getup", 0);   // crawling: on hands and knees, until he has crawl frames
+            if (p.Crouch || p.Low) return At("crouch", 0);
             if (!p.OnGround)
             {
                 double r = p.Vy / Mover.Derive(P).V0;      // +1 at takeoff, 0 at the apex, negative while falling

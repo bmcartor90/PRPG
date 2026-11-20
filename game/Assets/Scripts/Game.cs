@@ -16,7 +16,7 @@ namespace Prpg.Game
         const float ViewW = 24f, ViewH = 13.5f;
         static readonly float FloorPad = Math.Min(1.5f, ViewH * 0.18f);
         // Section starts on the test map, as the lab's number keys.
-        static readonly double[] Sections = { 3, 36, 115, 163, 229, 294, 346 };
+        static readonly double[] Sections = { 3, 36, 115, 163, 229, 294, 346, 381 };
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot()
@@ -156,7 +156,7 @@ namespace Prpg.Game
         {
             var kb = Keyboard.current;
             if (kb == null) return;
-            Key[] digits = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7 };
+            Key[] digits = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8 };
             for (int i = 0; i < digits.Length && i < Sections.Length; i++) if (kb[digits[i]].wasPressedThisFrame) Warp(i);
             if (kb[Key.T].wasPressedThisFrame) Warp(section);
             if (kb[Key.Tab].wasPressedThisFrame)
@@ -230,7 +230,7 @@ namespace Prpg.Game
             if (showHelp)
             {
                 string help = "Arrows move  Space jump  D sprint  F grab  Q/W left/right hand\n"
-                            + "1-7 sections  T retry  Tab character  F5 copy seeds  F1 hide  Esc quit\n"
+                            + "1-8 sections  T retry  Tab character  F5 copy seeds  F1 hide  Esc quit\n"
                             + sim.State.RunSeedText + "  " + sim.State.BattleSeedText;
                 var hs = new GUIStyle(style) { alignment = TextAnchor.UpperRight };
                 hs.normal.textColor = new Color32(0x8f, 0x8f, 0x8f, 255);

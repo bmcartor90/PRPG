@@ -42,6 +42,7 @@ namespace Prpg.Sim.Tests
                 Assert.True((double)e[7] == (p.HeldLeft ? 1 : 0), $"{where}: left hand {p.HeldLeft}, lab {e[7]}");
                 Assert.True((double)e[8] == (p.HeldRight ? 1 : 0), $"{where}: right hand {p.HeldRight}, lab {e[8]}");
                 Assert.True((double)e[9] == (p.DodgeSliding ? 1 : 0), $"{where}: dodge slide {p.DodgeSliding}, lab {e[9]}");
+                Assert.True((double)e[10] == (p.Low ? 1 : 0), $"{where}: low {p.Low}, lab {e[10]}");
             }
         }
 
@@ -52,7 +53,7 @@ namespace Prpg.Sim.Tests
         }
 
         [Fact]
-        public void ThereAreTwentyEightTraces() => Assert.Equal(28, Repo.TraceNames().Count());
+        public void ThereAreThirtyEightTraces() => Assert.Equal(38, Repo.TraceNames().Count());
 
         [Fact]
         public void CliffsMatchTheLab()

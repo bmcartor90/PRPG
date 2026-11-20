@@ -23,7 +23,7 @@ namespace Prpg.Sim.Tests
                 B(p.Stamina), B(p.Exhaust), p.Winded.ToString(), p.Spent.ToString(), p.Crouch.ToString(), p.Mode.ToString(),
                 p.HangLine.ToString(), p.HangSide.ToString(), B(p.HangProg), B(p.HangY0), p.Climb.ToString(),
                 B(p.GrabLock), p.Lunge.ToString(), B(p.Prone), p.HeldLeft.ToString(), p.HeldRight.ToString(),
-                p.SwapHand.ToString(), B(p.SwapT), B(p.SwapTotal), B(p.Duck), p.DownWas.ToString(),
+                p.SwapHand.ToString(), B(p.SwapT), B(p.SwapTotal), B(p.Duck), p.DownWas.ToString(), p.Low.ToString(),
             });
         }
 

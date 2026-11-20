@@ -50,7 +50,8 @@ namespace Prpg.Sim
         public double HangCost;
         public double MultLadder;
         public double MultRope;
-        public double MultWall;
+        public double MultRoughRock;
+        public double MultSmoothRock;
         public double OneHand;
         public double DrawTime;
         public double ClimbSprint;
@@ -59,6 +60,7 @@ namespace Prpg.Sim
         public double DuckKeep;
         public double DuckCost;
         public double DuckHeight;
+        public double CrawlSpeed;
 
         // Fixed numbers: no slider in the lab, but still per-character tuning (the lab's BODY table).
         public double CatchOut;   // tiles outside a ledge end that still catch it
@@ -87,9 +89,9 @@ namespace Prpg.Sim
             "walkLimit", "upCost", "downBoost", "slideFriction", "slideSteer", "slideJump", "footWidth",
             "bodyWidth", "staminaMax", "jumpCost", "runDrain", "walkRegen", "crouchRegen", "exhaustTime",
             "charHeight", "armReach", "lungeLean", "lungeCost", "proneTime", "pullTime", "pullCost",
-            "climbSpeed", "weight", "climbEffort", "hangCost", "multLadder", "multRope", "multWall",
-            "oneHand", "drawTime", "climbSprint", "climbSprintCost", "duckTime", "duckKeep", "duckCost",
-            "duckHeight"
+            "climbSpeed", "weight", "climbEffort", "hangCost", "multLadder", "multRope", "multRoughRock",
+            "multSmoothRock", "oneHand", "drawTime", "climbSprint", "climbSprintCost", "duckTime", "duckKeep",
+            "duckCost", "duckHeight", "crawlSpeed"
         };
         /// <summary>Per-character numbers with no slider in the lab (its BODY table).</summary>
         public static readonly string[] FixedNames = {
@@ -147,7 +149,8 @@ namespace Prpg.Sim
                 case "hangCost": return HangCost;
                 case "multLadder": return MultLadder;
                 case "multRope": return MultRope;
-                case "multWall": return MultWall;
+                case "multRoughRock": return MultRoughRock;
+                case "multSmoothRock": return MultSmoothRock;
                 case "oneHand": return OneHand;
                 case "drawTime": return DrawTime;
                 case "climbSprint": return ClimbSprint;
@@ -156,6 +159,7 @@ namespace Prpg.Sim
                 case "duckKeep": return DuckKeep;
                 case "duckCost": return DuckCost;
                 case "duckHeight": return DuckHeight;
+                case "crawlSpeed": return CrawlSpeed;
                 case "catchOut": return CatchOut;
                 case "catchUnder": return CatchUnder;
                 case "catchMinDrop": return CatchMinDrop;
@@ -223,7 +227,8 @@ namespace Prpg.Sim
                 case "hangCost": HangCost = v; return true;
                 case "multLadder": MultLadder = v; return true;
                 case "multRope": MultRope = v; return true;
-                case "multWall": MultWall = v; return true;
+                case "multRoughRock": MultRoughRock = v; return true;
+                case "multSmoothRock": MultSmoothRock = v; return true;
                 case "oneHand": OneHand = v; return true;
                 case "drawTime": DrawTime = v; return true;
                 case "climbSprint": ClimbSprint = v; return true;
@@ -232,6 +237,7 @@ namespace Prpg.Sim
                 case "duckKeep": DuckKeep = v; return true;
                 case "duckCost": DuckCost = v; return true;
                 case "duckHeight": DuckHeight = v; return true;
+                case "crawlSpeed": CrawlSpeed = v; return true;
                 case "catchOut": CatchOut = v; return true;
                 case "catchUnder": CatchUnder = v; return true;
                 case "catchMinDrop": CatchMinDrop = v; return true;
@@ -260,7 +266,8 @@ namespace Prpg.Sim
             {
                 case ClimbKind.Ladder: return MultLadder;
                 case ClimbKind.Rope: return MultRope;
-                default: return MultWall;
+                case ClimbKind.RoughRock: return MultRoughRock;
+                default: return MultSmoothRock;
             }
         }
 

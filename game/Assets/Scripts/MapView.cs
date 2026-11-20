@@ -16,6 +16,7 @@ namespace Prpg.Game
         static readonly Color Face = new Color32(0x8a, 0x8a, 0x8a, 255);
         static readonly Color Post = new Color32(0x5a, 0x5a, 0x5a, 255);
         static readonly Color Climb = new Color32(0x9a, 0x9a, 0x9a, 255);
+        static readonly Color Gold = new Color32(0xc9, 0xa2, 0x4a, 255);
         const float Lw = 0.09f;          // surface line width in tiles (the lab's s*0.09)
         const float Bottom = -40;        // rock is drawn down to here
 
@@ -45,6 +46,7 @@ namespace Prpg.Game
             foreach (var C in map.Climbables)
             {
                 float x = (float)C.X, ya = (float)C.Y1, yb = (float)C.Y2, w = 0.05f;
+                if (C.Face != 0) { Seg(x + C.Face * 0.04f, ya, x + C.Face * 0.04f, yb, 0.08f, Gold); continue; }   // marked on the rock face
                 if (C.Kind == ClimbKind.Ladder)
                 {
                     Seg(x - 0.3f, ya, x - 0.3f, yb, w, Climb); Seg(x + 0.3f, ya, x + 0.3f, yb, w, Climb);
