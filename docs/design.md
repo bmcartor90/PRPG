@@ -185,6 +185,17 @@ These have to be built in from the start, because they are painful to add later:
 - **Edges.** Walking off the edge of a map can lead to the opposite edge of another map. Edges are paired the way doors are.
 - **The map editor** is built into the game as an editor mode, one map at a time. See `map-editor-brief.md`.
 
+### Depth (planned, 2026-11-19)
+
+Mostly for towns. A staircase can lead up and back, with the characters shrinking as they climb, so a higher part of the map reads as farther away.
+
+- **It is a drawing rule only.** The map and all movement stay in ordinary tiles. Nothing about jumping, speed or reach changes; things above a certain height are simply drawn smaller, so movement on screen shrinks by the same ratio without being touched.
+- **A whole band of height.** A map names the height where depth starts, the height where it finishes, and how small things get. Below the start everything is full size; above the finish everything is at the smaller size.
+- **In between, size changes steadily.** A character shrinks steadily as he climbs the stairs and grows steadily as he comes back down.
+- **Above the start height the whole map is "back".** Such a map cannot also have a "front" at that height.
+- **Foreground pieces do not scale.** Some scenery sits in front of the play area, and characters pass behind it: a tree close to the camera, say. It stays the same size however high it reaches, because it is not going back as it goes up.
+- Not decided: how small the back gets, and what happens when the leader is hidden behind a foreground piece.
+
 ### Background
 
 The background is a matte painting zoomed way out. As the foreground scrolls quickly, the background scrolls slowly behind it.

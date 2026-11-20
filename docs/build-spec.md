@@ -128,6 +128,7 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 - **Stowed gear is not drawn.** An item appears only while it is in a hand or on its way there.
 - **Items:** `assets/sprites/items/`. The sword and shield are separate pictures pinned to his fists. Read "Which hand is which" and "Drawing and sheathing" in the Lucca README before touching this; the handedness rule is easy to get backwards. The lab's drawing code just after `pickFrame` is the reference.
 - Surfaces can be plain white lines for now, as in the lab: dashed for too steep to stand on, ground filled in dark beneath with its cliff faces drawn, scaffolds with thin posts. Tile art comes later.
+- **Planned, not in this build: depth and a foreground layer** (see "Depth" in `design.md`). Two things to do now so they are cheap later: turn a world position into a screen position and size in **one** function that everything drawn goes through, and keep a draw order with a slot in front of the characters.
 - **Background:** leave a hook for layers that scroll slower than the camera. The far layer will be a zoomed-out painting that moves at a small fraction of camera speed. No art for it yet; a flat colour is fine.
 
 ## Controls
