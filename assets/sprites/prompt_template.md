@@ -46,3 +46,35 @@ Row 2, ...
 4. Nothing in the frame that was not asked for.
 
 A sheet that fails 1 or 2 gets regenerated. Small failures of 3 can be corrected when the frames are cut out.
+
+## Monsters (agreed 2026-11-19)
+
+Monster sheets use the same preamble, with these two rules added to LAYOUT RULES:
+
+```
+- No effects and no particles: no dust, dirt, sparks, shards, drool, motion lines,
+  impact bursts, stars or glow outside the body. Only the creature itself.
+- Frames must not touch one another, even at the tips of limbs or crystals.
+```
+
+Then ask for the effects on a second sheet, so they can be reused, turned off or timed separately:
+
+```
+Effects sheet for a 2D side-scrolling platformer. One single image, 1536 x 864.
+Detailed pixel-art style with a crisp dark outline where it suits. Transparent background.
+Match the style and colours of the attached monster sheet.
+
+SUBJECT: the effects for this monster's attacks and reactions, drawn on their own,
+with NO creature in any frame.
+
+LAYOUT RULES:
+- Each row is one effect, its frames in order left to right.
+- Equal-sized cells, evenly spaced, clear empty space between frames.
+- No text, no labels, no ground lines.
+
+ROWS:
+Row 1, [effect, e.g. dust puff on landing], [N] frames: [describe each frame]
+Row 2, ...
+```
+
+The first four monsters (assassin vine, fat rabbit, cave mole, crystal golem) came before this rule and have their effects painted in. They are kept as they are.
