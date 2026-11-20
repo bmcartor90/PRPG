@@ -28,7 +28,7 @@ He edits **one map at a time**. Maps connect through doors and edges, described 
    - a width of **1.25 tiles**, taken from the door art. You can go through from anywhere within it. Keep it as a number in the map file, defaulting to 1.25, in case other doors differ;
    - the map and the door it leads to. That map usually will not exist yet, so the editor shows the door as unlinked and lets him carry on;
    - a locked mark, with a short note of what opens it. For now a locked door simply does not open; the plot logic comes later.
-5. **Edge exits.** Any of the four edges of a map can be paired with the opposite edge of another map, the same way doors are paired. Walk off the right edge of one and you arrive at the left edge of the other.
+5. **Edge exits.** Any of the four edges of a map can be paired with the opposite edge of another map, the same way doors are paired. An exit is the **whole edge**; Brad will shape his levels so only part of it can be reached. Walk off the right edge of one and you arrive at the left edge of the other.
 6. **The start point.**
 
 ## Doors and edges in play
@@ -81,4 +81,3 @@ Monsters, areas, hazards and sleep sites. Hand-placed art; surfaces get their ar
 
 ## Still open with Brad
 
-- Whether an edge exit is the whole edge or a marked stretch of it.
