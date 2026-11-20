@@ -2,6 +2,17 @@
 
 Newest first. Each entry says what changed and what a port of the simulation has to do about it.
 
+## 2026-11-19, night: climbable cliff faces
+
+All earlier traces are unchanged tick for tick. There are six new ones, all named `face-...`.
+
+1. **Renamed:** the climbable kind `Wall` is now `SmoothRock`, and `multWall` is `multSmoothRock`. Same numbers, same behaviour.
+2. **New kind:** `RoughRock`, with `multRoughRock` (1.0). It needs one free hand.
+3. **Climbables can run down a cliff face.** A climbable with `openSide` is on a face. The rules are in the spec. In the lab: `climbX` and `climbTop` are new; getting on checks the open side; the top of a rope or rock face hands over to the ledge hang; stepping off at either end uses his body position, not the face.
+4. **Sliding down** is now limited to ladders and ropes by name, not "anything but a wall".
+5. **`handsNeeded`:** `SmoothRock` 2, `Rope` and `RoughRock` 1, `Ladder` 0.
+6. **Frame choice (step 2):** every climbable on a face uses the side-view rope frames for now, facing the rock, with his lower hand pinned to the face. Proper frames will come from the art side.
+
 ## 2026-11-19, evening: floating rock
 
 All earlier traces are unchanged tick for tick. There are six new ones.

@@ -66,6 +66,14 @@ The lab is the reference. Port its behaviour, not its code style.
 - Undersides are not checked while he is hanging, pulling up or climbing. A map should not run a climbable through rock.
 - The lab functions are `makeSlab`, `roofOver` and the bottom test in `hitCliffs`. `_world.json` lists the derived undersides and faces to check against.
 - **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
+- **Climbables** come in four kinds and two placements.
+  - Kinds: `Ladder`, `Rope`, `RoughRock`, `SmoothRock`. (`SmoothRock` is what was called `Wall`.) Each has a stamina multiplier in the numbers and a count of free hands it needs: 0, 1, 1 and 2. Only a ladder holds him without grab held, and only a ladder lets him rest.
+  - **Free-standing:** against the back wall, as before. He is on it, seen from behind.
+  - **On a cliff face:** it runs down a stretch of a face, which can be part of the face's height. The entry says which side is open air. His body is beside the rock, clear of it by half his body width (`climbX`).
+  - Getting onto a face: hold grab while against it, on the open side, with his feet inside the stretch. A ladder also takes plain up.
+  - At the top of a face: a ladder carries him all the way up and steps him onto the top. On rope or rock his hands stay on it, so his feet stop one body-height short (`climbTop`); if the top of the stretch is the top corner of the cliff, he is then hanging from that ledge, and getting up is the ordinary pull-up.
+  - From the top: down (ladder) or grab and down (the rest) at the edge puts him onto it.
+  - Sliding down fast is for ladders and ropes only.
 - **Dodge slide:** pressing down while sprinting drops him into a short slide: low, no steering, losing speed, ended by time, by slowing too far, or by a jump. "Press" means down was not held on the previous tick, so the simulation state remembers whether down was held. `heightNow` in the lab gives his height during it; nothing uses that yet.
 - **Numbers the lab has no slider for** are still tuning, not code. They are the `BODY` and `WORLD` tables at the top of the lab's simulation and are listed in `_world.json` under `fixed`. Load the `character` ones from `data/movement.json` with the rest of that character's numbers, and the `world` ones from their own data file.
 - **Two meanings of "grounded".** The lab's `grounded`, and the grounded column in the traces, is true whenever he is on a surface, including sliding down one too steep to stand on. The design's Grounded means standing on walkable ground. Keep them as two names: `OnGround` for the lab's meaning and `Grounded` for the design's.
@@ -109,13 +117,13 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
   "ground": [[x1, y1, x2, y2], ...],
   "floatingRock": [[[x, y], [x, y], ...], ...],
   "scaffolds": [[x1, y1, x2, y2], ...],
-  "climbables": [{"kind": "Ladder", "x": 262, "y1": 0, "y2": 8}, ...]
+  "climbables": [{"kind": "Ladder", "x": 262, "y1": 0, "y2": 8}, {"kind": "Rope", "x": 344, "y1": 0, "y2": 7, "openSide": "right"}, ...]
 }
 ```
 
 - **Coordinates are whole numbers of a unit, and the file says how many units make a tile** (`"unitsPerTile"`). Maps made in the editor use 6: every position is a whole number of sixths, so 7 means 7/6 of a tile. The game converts to tiles on load. The lab's test map needs 60, because its level has positions such as 331.6 and 5.75 that are not sixths; `_world.json` gives it in plain tiles.
 - `ground` lines are solid and filled beneath, down to the bottom of the map; `scaffolds` are jump-through; each `floatingRock` entry is one closed outline, clockwise.
-- `kind` is `Ladder`, `Rope` or `Wall`. Each kind has a stamina cost multiplier in the parameters.
+- `kind` is `Ladder`, `Rope`, `RoughRock` or `SmoothRock`. Each kind has a stamina cost multiplier in the parameters. A climbable with `openSide` runs down a cliff face at that `x`; without it, it stands free.
 - The format will grow (areas, monsters, hazards). Keep the loader simple and tolerant of fields it does not know.
 
 ## Drawing

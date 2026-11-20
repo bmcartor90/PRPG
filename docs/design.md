@@ -319,6 +319,26 @@ Notes on Mind:
 - **You can climb down a rope from the platform at its top,** the same way you can a ladder.
 - **You can rest on a ladder** and regenerate stamina there, if your hands are empty.
 
+### Climbables (decided 2026-11-19)
+
+Four kinds, each usable in two places: standing free against the back wall, or running down a cliff face. Every climbable is marked in the art with a thin line of gold leaf.
+
+| Kind | Stamina cost | Free hands needed | Holds you without grab | Can rest |
+|---|---|---|---|---|
+| Ladder | ×0.5 | 0 | Yes | Yes, with both hands free |
+| Rope | ×1.5 | 1 | No | No |
+| Rough rock | ×1.0 | 1 | No | No |
+| Smooth rock | ×8 | 2 | No | No |
+
+- "Rough rock" is the art's "very rough" and "smooth rock" is its "slightly rough". Smooth rock replaces the brick wall.
+- **A cliff face can be climbable for part of its height.** A stretch that starts above the ground needs a jump to reach.
+- **Getting on:** hold grab while against the face, inside the stretch. A ladder also takes plain up. Above the stretch, near the top corner, grab catches the ledge instead.
+- **At the top:** a ladder steps you onto the top for free. The other three leave you hanging from the top corner, and you get up with the ordinary timed pull-up.
+- **Jumping off** works as on any climbable. Pushing into the rock does nothing.
+- **A stretch that stops partway down** just ends. Letting go drops you.
+- The faces of floating rock can carry climbables too.
+- At the lab's starting numbers, smooth rock is good for about one and a half tiles of climbing before the pull-up, or about three-quarters of a tile after a jump. Beyond that the bar runs out.
+
 ### Dodge slide
 
 - Press down while sprinting and he drops into a slide for a moment. It is for dodging things.

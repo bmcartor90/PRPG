@@ -320,7 +320,13 @@ function freeHands(p){
   return n;
 }
 // How many free hands each surface needs to hold onto at all.
-function handsNeeded(C){ return C.kind === 'Wall' ? 2 : C.kind === 'Rope' ? 1 : 0; }
+function handsNeeded(C){ return C.kind === 'SmoothRock' ? 2 : (C.kind === 'Rope' || C.kind === 'RoughRock') ? 1 : 0; }
+// A climbable either stands free (he is seen from behind, on it) or runs down a cliff face (C.face says which side is open air, as for cliffs).
+// On a face his body is beside the rock, just clear of it.
+function climbX(C, P){ return C.face ? C.x + C.face*(P.bodyWidth || 0)/2 : C.x; }
+// The highest his feet go. A free-standing climbable and a ladder on a face take him all the way to the top. On a rope or rock face
+// his hands stay on it, so his feet stop a body-height short; from there the top corner of the cliff is a ledge to hang from.
+function climbTop(C, P){ return (C.face && C.kind !== 'Ladder') ? Math.max(C.y1, C.y2 - P.charHeight) : C.y2; }
 
 // ---- Stamina, ledge grabs and climbing ----
 // Modes: 'normal' (everything above), 'hang' (holding a ledge end), 'pull' (pulling up onto it), 'climb' (on a ladder, rope or wall).
@@ -435,16 +441,28 @@ function holdStep(p, P, inp, lines){
   let cost = (mv !== 0 ? effort : P.hangCost*P.weight)*mult;
   const canSprint = inp.run && !p.winded && (ladder ? f >= 1 : f === 2);
   if (canSprint && mv > 0){ speed *= P.climbSprint; cost *= P.climbSprintCost; }          // sprinting up: faster, worse value per tile
-  if (inp.run && mv < 0 && C.kind !== 'Wall'){ speed = P.climbSpeed*BODY.slideDownSpeed; cost = P.hangCost*P.weight*mult; }   // sliding down: fast and cheap
-  p.y = Math.min(C.y2, Math.max(C.y1, p.y + mv*speed*DT));
+  if (inp.run && mv < 0 && (ladder || C.kind === 'Rope')){ speed = P.climbSpeed*BODY.slideDownSpeed; cost = P.hangCost*P.weight*mult; }   // sliding down: fast and cheap
+  const cx = climbX(C, P), top = climbTop(C, P);
+  p.y = Math.min(top, Math.max(C.y1, p.y + mv*speed*DT));
   if (ladder && mv === 0 && f === 2){
     p.stamina = Math.min(P.staminaMax, p.stamina + P.walkRegen*DT);   // both hands free on a ladder: hook in and rest
   } else p.stamina -= cost*DT;
-  if ((mv > 0 && p.y >= C.y2) || (mv < 0 && p.y <= C.y1)){
+  if (mv > 0 && p.y >= top && top < C.y2){
+    // Top of a rope or rock face: his hands are at the top of it. If that is the top corner of the cliff, he is now hanging from the ledge,
+    // and getting up is the ordinary pull-up.
+    for (const L of lines){
+      if (isSteep(L, P)) continue;
+      const ex = C.face < 0 ? L.x1 : L.x2, ey = C.face < 0 ? L.y1 : L.y2;
+      if (Math.abs(ex - C.x) < WORLD.join && Math.abs(ey - C.y2) < WORLD.join && endIsOpen(lines, L, C.face, P)){
+        p.climb = null; startHang(p, {line:L, side:C.face}, p.y);
+        return;
+      }
+    }
+  } else if ((mv > 0 && p.y >= C.y2) || (mv < 0 && p.y <= C.y1)){
     // At an end: step onto a platform if one is there.
     for (const L of lines){
-      if (isSteep(L, P) || C.x < L.x1 - BODY.climbReach || C.x > L.x2 + BODY.climbReach) continue;
-      const nx = clampX(L, C.x);
+      if (isSteep(L, P) || cx < L.x1 - BODY.climbReach || cx > L.x2 + BODY.climbReach) continue;
+      const nx = clampX(L, cx);
       if (Math.abs(yAt(L, nx) - p.y) < WORLD.stepOff){
         p.mode = 'normal'; p.climb = null; p.grounded = true; p.line = L; p.x = nx; p.y = yAt(L, nx); p.vx = 0; p.vy = 0;
         return;
@@ -494,14 +512,17 @@ function step(p, P, inp, lines, worldW, climbs, cliffs, roofs){
   // press down (ladder) or hold grab and press down (rope, wall) to climb down.
   if (climbs && p.grabLock <= 0 && p.exhaust <= 0 && p.stamina > 0 && (inp.grab || inp.up || (inp.down && p.grounded))){
     for (const C of climbs){
-      if (Math.abs(p.x - C.x) > BODY.climbReach) continue;
+      const cx = climbX(C, P), top = climbTop(C, P);
+      if (Math.abs(p.x - cx) > BODY.climbReach) continue;
       const ladder = C.kind === 'Ladder';
       if (freeHands(p) < handsNeeded(C)) continue;
-      const within = p.y >= C.y1 - WORLD.stepOff && p.y < C.y2 - WORLD.join;
-      const goOn = within && (inp.grab || (ladder && inp.up));
+      const within = p.y >= C.y1 - WORLD.stepOff && p.y < top - WORLD.join;
+      const airSide = !C.face || (p.x - C.x)*C.face >= 0;      // he gets onto a face from the open side, not from on top of the rock
+      const goOn = within && airSide && (inp.grab || (ladder && inp.up));
       const goDown = inp.down && p.grounded && Math.abs(p.y - C.y2) < WORLD.stepOff && (ladder || inp.grab);   // from the platform at the top
       if (goOn || goDown){
-        p.mode = 'climb'; p.climb = C; p.x = C.x; p.vx = 0; p.vy = 0; p.grounded = false; p.line = null;
+        p.mode = 'climb'; p.climb = C; p.x = cx; p.vx = 0; p.vy = 0; p.grounded = false; p.line = null;
+        if (p.y > top) p.y = top;                               // lowering himself over the edge onto a rope or rock face
         p.jumping = false; p.cutting = false; p.jump = null; p.coyote = 0; p.buffer = 0;
         tail(p, P); return;
       }
@@ -760,7 +781,7 @@ CAPTIONS.push({x:168, y:10.4, text:'SLOPES   a dashed line is too steep to stand
 // Climbing: ledges just out of jumping range, then a ladder, a rope and a brick wall up to platforms 8 tiles high.
 const CLIMBS = [];
 [[234, 5], [242, 5.75], [250, 6.5]].forEach(l => { line(l[0], l[0]+4, l[1]); MARKS.push({x:l[0]+2, y:l[1]+0.25, text:String(l[1])}); });
-[['Ladder', 262], ['Rope', 272], ['Wall', 282]].forEach(c => { CLIMBS.push({kind:c[0], x:c[1], y1:0, y2:8}); line(c[1]-0.5, c[1]+3.5, 8); });
+[['Ladder', 262], ['Rope', 272], ['SmoothRock', 282]].forEach(c => { CLIMBS.push({kind:c[0], x:c[1], y1:0, y2:8}); line(c[1]-0.5, c[1]+3.5, 8); });
 CAPTIONS.push({x:232, y:10.4, text:'CLIMBING   hold grab to catch a ledge or climbable; up or jump pulls you up. In the air: grab + direction + jump lunges'});
 
 // Cliffs: solid ground at different heights, with cliff faces between. Scaffolds everywhere else can be jumped up through; these cannot.
@@ -771,6 +792,7 @@ CLIMBS.push({kind:'Ladder', x:331.6, y1:0, y2:7});
 CAPTIONS.push({x:294, y:10.4, text:'CLIFFS   filled ground is solid: its faces block you. Jump up 2, grab and pull up to 6.5, drop into the pit, take the ladder up 7'});
 // Rock overhead: floating masses of rock, each a closed outline traced clockwise. Their tops are ground, their sides are faces
 // with a bottom you can pass under, and their undersides stop your head.
+const KIND_NAME = {Ladder:'ladder', Rope:'rope', RoughRock:'rough rock', SmoothRock:'smooth rock'};
 const SLABS = [], SLAB_FACES = [], ROOFS = [];
 function slab(points, label){
   const r = makeSlab(points, (x1, y1, x2, y2) => slope(x1, y1, x2, y2, true));
@@ -780,6 +802,11 @@ function slab(points, label){
 slab([[350,4.5],[356,4.5],[356,3],[350,3]], 'underside at 3');             // jump under it and you hit your head
 slab([[362,6],[370,6],[370,4.5],[362,1.5]], 'overhang 4.5 down to 1.5');   // walk in from the right until it is too low to go on
 slab([[374,5],[380,5],[380,2.5],[374,2.5]], 'underside at 2.5');           // high enough to walk under
+// Climbables on cliff faces. face says which side is open air. A stretch can cover part of a face.
+CLIMBS.push({kind:'RoughRock', x:312, y1:3, y2:6.5, face:1});     // up the right side of the 6.5 block, from the 3 block
+CLIMBS.push({kind:'Rope', x:344, y1:0, y2:7, face:1});            // down the right side of the 7 block
+CLIMBS.push({kind:'Ladder', x:362, y1:1.5, y2:6, face:-1});       // up the left side of the overhang; starts 1.5 up
+CLIMBS.push({kind:'SmoothRock', x:380, y1:2.5, y2:5, face:1});    // the side of floating rock; starts 2.5 up, so you jump to it
 CAPTIONS.push({x:346, y:10.4, text:'ROCK OVERHEAD   floating rock is solid all round: bump your head on it, get stopped by a low overhang, grab its top corner'});
 
 // Surfaces are checked ground first, then scaffolds, each in the order written above. Rare exact ties go to the earlier one.
@@ -875,8 +902,10 @@ const DEFS = [
   {group:'Climbing', k:'multRope', name:'Rope difficulty', unit:'×', min:0.1, max:12, step:0.1, dp:1, def:1.5,
    extra:P => '8 tiles costs ' + (P.climbEffort*P.weight*P.multRope*8/P.climbSpeed).toFixed(0),
    desc:'Cost multiplier on a rope. Relatively easy. Keep grab held. From the platform at the top, hold grab and press down to climb down.'},
-  {group:'Climbing', k:'multWall', name:'Brick wall difficulty', unit:'×', min:0.1, max:12, step:0.1, dp:1, def:8,
-   extra:P => '8 tiles costs ' + (P.climbEffort*P.weight*P.multWall*8/P.climbSpeed).toFixed(0),
+  {group:'Climbing', k:'multRoughRock', name:'Rough rock difficulty', unit:'×', min:0.1, max:12, step:0.1, dp:1, def:1,
+   desc:'Stamina cost of climbing rough rock, as a multiple of climb effort. It has good holds: one free hand is enough.'},
+  {group:'Climbing', k:'multSmoothRock', name:'Smooth rock difficulty', unit:'×', min:0.1, max:12, step:0.1, dp:1, def:8,
+   extra:P => '8 tiles costs ' + (P.climbEffort*P.weight*P.multSmoothRock*8/P.climbSpeed).toFixed(0),
    desc:'Cost multiplier on a brick wall. Nearly impossible at base stamina; enough Body beats it. Keep grab held.'},
 
   {group:'Hands', k:'drawTime', name:'Draw and sheathe time', unit:' s', min:0.05, max:1.5, step:0.05, dp:2, def:0.35,
@@ -1236,7 +1265,7 @@ function pickFrame(p){
   if (p.mode === 'pull'){ const t = p.hang.prog; return F.pull[t < 0.3 ? 0 : t < 0.55 ? 1 : t < 0.85 ? 2 : 3]; }
   if (p.mode === 'climb'){
     const C = p.climb, f = freeHands(p), moving = Math.abs(p.y - p.py) > 1e-4, i = ((Math.floor(p.y/0.4) % 4) + 4) % 4;
-    if (C.kind === 'Rope'){                       // side view, pinned to the rope by his lower hand
+    if (C.kind === 'Rope' || C.face){             // side view, pinned by his lower hand. Every climbable on a cliff face uses these until it has its own frames
       if (p.py - p.y > P.climbSpeed*DT*1.5) return F.ropeSlide[0];
       if (!moving) return f === 1 ? F.rope1[0] : F.ropeHang[0];
       if (f === 1) return i % 2 ? F.rope1[0] : F.ropeHang[0];
@@ -1325,7 +1354,7 @@ function drawScaffoldArt(L, X, Y, s){
 function drawClimbArt(C, X, Y, s){
   const k = s/SCAFFOLD.pxPerTile, Q = SCAFFOLD.pieces, x = X(C.x), ya = Y(C.y1), yb = Y(C.y2);
   ctx.save(); ctx.beginPath(); ctx.rect(x - s, yb - 0.6*s, 2*s, ya - yb + 0.6*s); ctx.clip();
-  if (C.kind === 'Wall'){                        // the slightly rough back wall: gilded holds mark it as climbable
+  if (C.kind === 'SmoothRock'){                  // the slightly rough back wall: gilded holds mark it as climbable
     if (!ART.patWall) ART.patWall = ctx.createPattern(ART.wall, 'repeat');
     const kw = s/ROCK_PX_PER_TILE, w = 0.9*s;
     if (ART.patWall && ART.patWall.setTransform){ ART.patWall.setTransform(new DOMMatrix([kw, 0, 0, kw, x - w/2, Y(0)])); ctx.fillStyle = ART.patWall; ctx.fillRect(x - w/2, yb, w, ya - yb); }
@@ -1392,6 +1421,7 @@ function tick(){
   const slidingNow = player.grounded && isSteep(player.line, P);
   anim.lungeT = player.lunge ? anim.lungeT + 1 : 0;
   if (player.hang){ anim.face = -player.hang.side; anim.slide = 0; }
+  else if (player.mode === 'climb' && player.climb.face){ anim.face = -player.climb.face; anim.slide = 0; }   // on a cliff face he faces the rock
   else if (player.lunge){ anim.face = player.lunge; anim.slide = 0; }
   else if (slidingNow){ if (Math.abs(player.vx) > 0.3) anim.face = Math.sign(player.vx); anim.slide++; }
   else { anim.slide = 0; if (dir !== 0) anim.face = dir; }
@@ -1441,7 +1471,13 @@ function render(alpha){
   ctx.font = '500 ' + Math.max(10, s*0.34) + 'px "IBM Plex Mono", Consolas, monospace'; ctx.textAlign = 'center';
   for (const C of CLIMBS){
     const x = X(C.x), ya = Y(C.y1), yb = Y(C.y2);
-    if (art){ drawClimbArt(C, X, Y, s); ctx.fillText((C.kind === 'Wall' ? 'brick wall' : C.kind.toLowerCase()) + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5)); continue; }
+    if (C.face){                                   // on a cliff face: a gold line down the rock marks it as climbable
+      ctx.save(); ctx.strokeStyle = '#d6b24a'; ctx.lineWidth = Math.max(2, s*0.09); ctx.setLineDash(C.kind === 'Ladder' ? [s*0.12, s*0.12] : C.kind === 'Rope' ? [] : C.kind === 'RoughRock' ? [s*0.3, s*0.1] : [s*0.08, s*0.25]);
+      ctx.beginPath(); ctx.moveTo(x + C.face*s*0.08, ya); ctx.lineTo(x + C.face*s*0.08, yb); ctx.stroke(); ctx.restore();
+      ctx.textAlign = C.face > 0 ? 'left' : 'right'; ctx.fillText(KIND_NAME[C.kind] + ' ×' + P['mult'+C.kind].toFixed(1), x + C.face*0.5*s, Y((C.y1 + C.y2)/2)); ctx.textAlign = 'center';
+      continue;
+    }
+    if (art){ drawClimbArt(C, X, Y, s); ctx.fillText(KIND_NAME[C.kind] + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5)); continue; }
     ctx.lineWidth = Math.max(1.5, s*0.05); ctx.beginPath();
     if (C.kind === 'Ladder'){
       ctx.moveTo(x - 0.3*s, ya); ctx.lineTo(x - 0.3*s, yb); ctx.moveTo(x + 0.3*s, ya); ctx.lineTo(x + 0.3*s, yb);
@@ -1458,7 +1494,7 @@ function render(alpha){
       }
     }
     ctx.stroke();
-    ctx.fillText((C.kind === 'Wall' ? 'brick wall' : C.kind.toLowerCase()) + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5));
+    ctx.fillText(KIND_NAME[C.kind] + ' ×' + P['mult'+C.kind].toFixed(1), x + 1.6*s, Y(C.y2 + 0.5));
   }
 
   const lw = Math.max(2, s*0.09);
@@ -1515,6 +1551,7 @@ function render(alpha){
       if (f.length > 6){ wx = ex + sd*0.12; wy = ey; ax = f[6]; ay = f[7]; }
       else { wx = ex - sd*0.45; wy = ey; }
     } else if (player.mode === 'climb' && f.length > 6){
+      if (player.climb.face) wx = player.climb.x;          // on a cliff face his hand is on the rock, not at his own position
       wy = iy + 0.76*P.charHeight; ax = f[6]; ay = f[7];     // his lower hand grips the rope about three-quarters of his height up
     }
     ctx.save();
@@ -1623,7 +1660,7 @@ function readouts(){
   else if (p.lunge) state = 'lunging';
   else if (p.mode === 'hang') state = 'hanging from a ledge (anchored, not grounded)';
   else if (p.mode === 'pull') state = 'pulling up';
-  else if (p.mode === 'climb') state = 'on a ' + (p.climb.kind === 'Wall' ? 'brick wall' : p.climb.kind.toLowerCase()) + ' (anchored, not grounded)';
+  else if (p.mode === 'climb') state = 'on ' + KIND_NAME[p.climb.kind] + (p.climb.face ? ' on a cliff face' : '') + ' (anchored, not grounded)';
   else if (p.exhaust > 0) state = 'exhausted';
   else if (p.crouch) state = 'crouched, recovering';
   else if (!p.grounded) state = p.vy > 0 ? 'rising' : 'falling';

@@ -6,7 +6,7 @@ const level=script.split('// ---------- Level ----------')[1].split('// --------
 eval(sim+level+`
 const P={jumpHeight:4,apexTime:0.40,fallMult:1.6,cutMult:3,terminal:20,walkSpeed:5.5,runSpeed:10,accelTime:0.45,stopTime:0.30,turnTime:0.35,airControl:0.65,coyoteMs:80,bufferMs:100,hardCut:false,
   walkLimit:50,upCost:20,downBoost:15,slideFriction:0.75,slideSteer:0.3,slideJump:1,footWidth:0.6,bodyWidth:0.6,
-  staminaMax:100,jumpCost:30,runDrain:2,walkRegen:12,crouchRegen:60,exhaustTime:1.2,charHeight:1.9,armReach:0.1,lungeLean:0.8,lungeCost:15,proneTime:0.6,pullTime:1,pullCost:40,climbSpeed:2,weight:1,climbEffort:10,hangCost:3,multLadder:0.5,multRope:1.5,multWall:8,oneHand:0.65,drawTime:0.35,climbSprint:1.75,climbSprintCost:3};
+  staminaMax:100,jumpCost:30,runDrain:2,walkRegen:12,crouchRegen:60,exhaustTime:1.2,charHeight:1.9,armReach:0.1,lungeLean:0.8,lungeCost:15,proneTime:0.6,pullTime:1,pullCost:40,climbSpeed:2,weight:1,climbEffort:10,hangCost:3,multLadder:0.5,multRope:1.5,multRoughRock:1,multSmoothRock:8,oneHand:0.65,drawTime:0.35,climbSprint:1.75,climbSprintCost:3};
 const I=(o)=>Object.assign({dir:0,run:false,jumpHeld:false,jumpPressed:false,up:false,down:false,grab:false,swapHand:-1},o);
 const at=(x)=>{ let best=null; for(const L of LINES) if(L.solid&&x>=L.x1&&x<=L.x2&&(!best||yAt(L,x)>yAt(best,x))) best=L; return makePlayer(x,best); };
 let pj=false; const S=(p,i)=>{ const j=!!i.jump; step(p,P,I({dir:i.dir||0,run:!!i.run,jumpHeld:j,jumpPressed:j&&!pj,up:!!i.up,down:!!i.down,grab:!!i.grab}),LINES,WORLD_W,CLIMBS,CLIFFS); pj=j; };

@@ -22,7 +22,9 @@ He edits **one map at a time**. Maps connect through doors and edges, described 
    - The fill, the cliff faces and the undersides are worked out from the trace. He never draws them.
    - Undersides and the faces of floating rock are in the feel lab now, with recordings. See `changes.md` and the spec.
 2. **Scaffolds.** A line he can jump up through.
-3. **Climbables.** Ladder, rope or wall: where it is, its bottom and its top.
+3. **Climbables.** Ladder, rope, rough rock or smooth rock. Two ways to place one:
+   - **free-standing:** where it is, its bottom and its top;
+   - **on a cliff face:** click a face and drag out the stretch of it that is climbable. Faces are worked out from the ground, so he marks one; he does not draw it. A stretch can be part of a face, and faces of floating rock count.
 4. **Doors.** Placed on a surface. Each has:
    - a name;
    - a width of **1.25 tiles**, taken from the door art. You can go through from anywhere within it. Keep it as a number in the map file, defaulting to 1.25, in case other doors differ;
@@ -73,7 +75,7 @@ A map is about 350 screens. He needs to pan, zoom out far enough to see all of i
 
 ## Warnings
 
-Warn, do not block: ground traces that overlap; a door not standing on a surface; a door or edge with no partner; a climbable with nothing to step onto at its top; no start point.
+Warn, do not block: ground traces that overlap; a door not standing on a surface; a door or edge with no partner; a free-standing climbable with nothing to step onto at its top; a climbable that runs through rock; no start point.
 
 ## Not in version one
 

@@ -43,7 +43,8 @@
   "hangCost": 3,
   "multLadder": 0.5,
   "multRope": 1.5,
-  "multWall": 8,
+  "multRoughRock": 1,
+  "multSmoothRock": 8,
   "oneHand": 0.65,
   "drawTime": 0.35,
   "climbSprint": 1.75,
@@ -440,7 +441,7 @@
     "y2": 8
    },
    {
-    "kind": "Wall",
+    "kind": "SmoothRock",
     "x": 282,
     "y1": 0,
     "y2": 8
@@ -450,6 +451,34 @@
     "x": 331.6,
     "y1": 0,
     "y2": 7
+   },
+   {
+    "kind": "RoughRock",
+    "x": 312,
+    "y1": 3,
+    "y2": 6.5,
+    "openSide": "right"
+   },
+   {
+    "kind": "Rope",
+    "x": 344,
+    "y1": 0,
+    "y2": 7,
+    "openSide": "right"
+   },
+   {
+    "kind": "Ladder",
+    "x": 362,
+    "y1": 1.5,
+    "y2": 6,
+    "openSide": "left"
+   },
+   {
+    "kind": "SmoothRock",
+    "x": 380,
+    "y1": 2.5,
+    "y2": 5,
+    "openSide": "right"
    }
   ]
  },

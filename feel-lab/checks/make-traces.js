@@ -10,7 +10,7 @@ const level = script.split('// ---------- Level ----------')[1].split('// ------
 const PARAMS = {jumpHeight:4, apexTime:0.40, fallMult:1.6, cutMult:3, terminal:20, walkSpeed:5.5, runSpeed:10, accelTime:0.45, stopTime:0.30, turnTime:0.35,
   airControl:0.65, coyoteMs:80, bufferMs:100, hardCut:false, walkLimit:50, upCost:20, downBoost:15, slideFriction:0.75, slideSteer:0.3, slideJump:1, footWidth:0.6, bodyWidth:0.6,
   staminaMax:100, jumpCost:30, runDrain:2, walkRegen:12, crouchRegen:60, exhaustTime:1.2, charHeight:1.9, armReach:0.1, lungeLean:0.8, lungeCost:15, proneTime:0.6,
-  pullTime:1, pullCost:40, climbSpeed:2, weight:1, climbEffort:10, hangCost:3, multLadder:0.5, multRope:1.5, multWall:8, oneHand:0.65, drawTime:0.35,
+  pullTime:1, pullCost:40, climbSpeed:2, weight:1, climbEffort:10, hangCost:3, multLadder:0.5, multRope:1.5, multRoughRock:1, multSmoothRock:8, oneHand:0.65, drawTime:0.35,
   climbSprint:1.75, climbSprintCost:3, duckTime:0.35, duckKeep:0.7, duckCost:5, duckHeight:0.9};
 
 // Each scenario: where he starts (x, standing on the solid ground there) and a list of [ticks, held inputs].
@@ -71,6 +71,18 @@ const SCENARIOS = [
    steps:[[200,L],[2,{}],[40,{jump:true}],[40,{}],[60,R]]},
   {name:'under-high-rock', about:'Walk and dodge-slide under rock whose underside is higher than he stands.', x:371,
    steps:[[40,R],[40,RUN],[30,{...RUN,down:true}],[60,{}]]},
+  {name:'face-rough-rock', about:'From the 3 block, climb rough rock up the side of the 6.5 block, hang from its top corner, and pull up.', x:314,
+   steps:[[40,L],[10,{grab:true}],[180,{grab:true,up:true}],[30,{}]]},
+  {name:'face-rough-rock-one-handed', about:'The same climb holding a sword: one free hand is enough, but it is slower.', x:314,
+   steps:[[1,{hand:1}],[40,L],[10,{grab:true}],[220,{grab:true,up:true}],[30,{}]]},
+  {name:'face-rope-up-and-down', about:'Climb the rope up the 7-high face, pull up, step back to the edge, lower onto the rope with grab and down, and slide to the ground.', x:346,
+   steps:[[40,L],[10,{grab:true}],[260,{grab:true,up:true}],[30,{}],[5,R],[14,{}],[2,{grab:true,down:true}],[60,{grab:true,down:true,run:true}],[30,{}]]},
+  {name:'face-ladder-starts-high', about:'A ladder on a face that starts 1.5 up: up alone does nothing from the ground; jump and hold up to catch it, climb, and step onto the top.', x:360,
+   steps:[[40,R],[40,{dir:1,up:true}],[1,{}],[30,{jump:true,up:true}],[160,{up:true}],[30,{}]]},
+  {name:'face-smooth-rock-too-costly', about:'Jump to smooth rock on the side of floating rock and climb: the jump, the climb and the pull-up cost more than the bar, so he is exhausted and falls.', x:380.4,
+   steps:[[2,{}],[30,{jump:true,grab:true}],[120,{grab:true,up:true}],[90,{}]]},
+  {name:'face-smooth-rock-needs-two-hands', about:'The same holding a sword: smooth rock needs two free hands, so he cannot get on it. He catches the top corner one-handed instead.', x:380.4,
+   steps:[[1,{hand:1}],[40,{}],[30,{jump:true,grab:true}],[140,{grab:true,up:true}],[40,{}]]},
   {name:'draw-and-sheathe', about:'Draw both hands, sheathe the left, while walking.', x:20,
    steps:[[1,{hand:1}],[30,{}],[1,{hand:0,dir:1}],[40,R],[1,{hand:0}],[40,{}]]},
 ];
@@ -88,13 +100,14 @@ const run = new Function('PARAMS', 'SCENARIOS', sim + level + `
                        swapHand:(t === 0 && h.hand !== undefined) ? h.hand : -1}, LINES, WORLD_W, CLIMBS, CLIFFS, ROOFS);
       prevJump = jump; modes.add(p.mode + (p.grounded ? '/ground' : '/air') + (p.prone > 0 ? '/prone' : '') + (p.exhaust > 0 ? '/exhausted' : ''));
       if (p.duck > 0) modes.add('dodge-slide');
+      if (p.climb && p.climb.face) modes.add('on-face:' + p.climb.kind);
       states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0, p.duck > 0 ? 1 : 0]);
     }
     out.push({name:sc.name, about:sc.about, modes:[...modes], states, startY:yAt(ground, sc.x)});
   }
   const seg = (M) => [M.x1, M.y1, M.x2, M.y2];
   return {out, world:{width:WORLD_W, ground:LINES.filter(M => M.solid && !M.slab).map(seg), floatingRock:SLABS, scaffolds:LINES.filter(M => !M.solid).map(seg),
-    climbables:CLIMBS.map(c => ({kind:c.kind, x:c.x, y1:c.y1, y2:c.y2}))},
+    climbables:CLIMBS.map(c => c.face ? {kind:c.kind, x:c.x, y1:c.y1, y2:c.y2, openSide:c.face < 0 ? 'left' : 'right'} : {kind:c.kind, x:c.x, y1:c.y1, y2:c.y2})},
     fixed:{character:BODY, world:WORLD},
     undersides:ROOFS.map(U => [U.x1, U.y1, U.x2, U.y2]),
     cliffs:CLIFFS.map(c => ({x:c.x, top:c.top, bottom:c.bottom === -Infinity ? null : c.bottom, openSide:c.face < 0 ? 'left' : 'right'}))};

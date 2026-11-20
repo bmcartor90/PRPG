@@ -7,7 +7,7 @@ const level=script.split('// ---------- Level ----------')[1].split('// --------
 eval(sim+level+`
 const base={jumpHeight:4,apexTime:0.40,fallMult:1.6,cutMult:3,terminal:20,walkSpeed:5.5,runSpeed:10,accelTime:0.45,stopTime:0.30,turnTime:0.35,airControl:0.65,coyoteMs:80,bufferMs:100,hardCut:false,
   walkLimit:50,upCost:20,downBoost:15,slideFriction:0.75,slideSteer:0.3,slideJump:1,footWidth:0.6,
-  staminaMax:100,jumpCost:30,runDrain:2,walkRegen:12,crouchRegen:60,exhaustTime:1.2,charHeight:1.9,armReach:0.1,lungeLean:0.8,lungeCost:15,proneTime:0.6,pullTime:1,pullCost:40,climbSpeed:2,weight:1,climbEffort:10,hangCost:3,multLadder:0.5,multRope:1.5,multWall:8,oneHand:0.65,drawTime:0.35,climbSprint:1.75,climbSprintCost:3};
+  staminaMax:100,jumpCost:30,runDrain:2,walkRegen:12,crouchRegen:60,exhaustTime:1.2,charHeight:1.9,armReach:0.1,lungeLean:0.8,lungeCost:15,proneTime:0.6,pullTime:1,pullCost:40,climbSpeed:2,weight:1,climbEffort:10,hangCost:3,multLadder:0.5,multRope:1.5,multRoughRock:1,multSmoothRock:8,oneHand:0.65,drawTime:0.35,climbSprint:1.75,climbSprintCost:3};
 const I=(o)=>Object.assign({dir:0,run:false,jumpHeld:false,jumpPressed:false,up:false,down:false,grab:false,swapHand:-1},o);
 const S=(p,P,i)=>step(p,P,I(i),LINES,WORLD_W,CLIMBS);
 const ground=(x)=>LINES.find(L=>x>=L.x1&&x<=L.x2&&L.sign===0&&Math.abs(L.y1)<1e-9);
@@ -23,7 +23,7 @@ grabTest(base,234,'ledge 5.0:'); grabTest(base,242,'ledge 5.75:'); grabTest(base
 grabTest(base,234,'no button:',false); grabTest({...base,weight:2},234,'weight x2:');
 { const p=makePlayer(233.6,ground(233.6)); S(p,base,{jumpHeld:true,jumpPressed:true,grab:true}); let n=0; while(p.mode==='normal'&&n++<300) S(p,base,{jumpHeld:true,grab:true}); S(p,base,{}); console.log('release grab while hanging -> mode',p.mode,'falling',!p.grounded); }
 // ladder / rope / wall: climb from the ground to the top
-for (const C of CLIMBS){ const p=makePlayer(C.x,ground(C.x)); let n=0; while(n++<3000 && !(p.grounded&&p.y>7.9)){ S(p,base,{up:true,grab:true}); if(p.exhaust>0) break; }
+for (const C of CLIMBS.filter(c => !c.face && c.y2 === 8)){ const p=makePlayer(C.x,ground(C.x)); let n=0; while(n++<3000 && !(p.grounded&&p.y>7.9)){ S(p,base,{up:true,grab:true}); if(p.exhaust>0) break; }
   console.log(C.kind,'-> reached top',p.grounded&&p.y>7.9,'| y',p.y.toFixed(2),'stamina',p.stamina.toFixed(1),'exhausted',p.exhaust>0,'ticks',n); }
 // climb down a ladder from the top platform
 { const C=CLIMBS[0]; const top=LINES.find(L=>Math.abs(L.y1-8)<1e-9&&C.x>=L.x1&&C.x<=L.x2); const p=makePlayer(C.x,top); let n=0; while(n++<800&&!(p.grounded&&p.y<0.1)) S(p,base,{down:true}); console.log('ladder down: on ground',p.grounded&&p.y<0.1,'ticks',n); }
@@ -58,7 +58,7 @@ for (const C of CLIMBS){ const p=makePlayer(C.x,ground(C.x)); let n=0; while(n++
 function climbTest(kind, held, opts={}){ const C=CLIMBS.find(c=>c.kind===kind); const p=makePlayer(C.x,ground(C.x)); p.held=held.slice(); let n=0;
   while(n++<4000 && !(p.grounded&&p.y>7.9)){ S(p,base,{up:true,grab:true,run:!!opts.run}); if(p.exhaust>0||(n>5&&p.mode==='normal'&&p.grounded&&p.y<0.1)) break; }
   const top=p.grounded&&p.y>7.9; return (top?('top in '+(n/60).toFixed(1)+' s, stamina left '+p.stamina.toFixed(0)):(p.exhaust>0?('fell exhausted at '+p.py.toFixed(1)+' tiles'):'could not hold on')); }
-for (const kind of ['Ladder','Rope','Wall']) console.log(kind.padEnd(6),'| both free:',climbTest(kind,[false,false]),'| one free:',climbTest(kind,[false,true]),'| none free:',climbTest(kind,[true,true]));
+for (const kind of ['Ladder','Rope','SmoothRock']) console.log(kind.padEnd(10),'| both free:',climbTest(kind,[false,false]),'| one free:',climbTest(kind,[false,true]),'| none free:',climbTest(kind,[true,true]));
 console.log('sprint-climb, both free | ladder:',climbTest('Ladder',[false,false],{run:true}),'| rope:',climbTest('Rope',[false,false],{run:true}));
 // pull-up with one hand
 { for (const held of [[false,false],[false,true],[true,true]]){ const p=makePlayer(233.6,ground(233.6)); p.held=held.slice(); S(p,base,{jumpHeld:true,jumpPressed:true,grab:true}); let n=0; while(p.mode==='normal'&&!p.grounded&&n++<300) S(p,base,{jumpHeld:true,grab:true});
