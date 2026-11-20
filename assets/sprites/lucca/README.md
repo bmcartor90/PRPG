@@ -18,7 +18,7 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 | `Meshy_AI_Lucca_Ledge_and_Lunge_Sheet.png` | Hang (2), pull-up (4), stand (1), one-handed hang (2), lunge (2), face down (1), get up (2) | Transparent | Yes |
 | `Meshy_AI_Lucca_Rope_and_Climb_Sheet.png` | Rope climb (4), rope hang (1), one-handed rope (1), rope slide (1), ladder from behind (3), ladder rest (1), wall climb (2), wall hang (1) | Transparent | Yes |
 | `Meshy_AI_Lucca_Weapon_Draw_Sheet.png` | Draw sword (4), shield from back (2), draw staff (4), sword and shield (2) | Transparent | No. The items are painted into him, so this is a reference for where items sit in his hands. |
-| `Meshy_AI_Lucca_Invisible_Weapons_Sheet.png` | The same 12 poses with empty fists | Black | Not yet. These are the poses the items get pinned onto. |
+| `Meshy_AI_Lucca_Invisible_Weapons_Sheet.png` | The same 12 poses with empty fists | Black | Yes. The sword and shield draws are used in the lab; the staff and guard frames are cut but not used yet. |
 | `Meshy_AI_Lucca_Weapons_Equipment_Sheet.png` | Items only: sword, sheath, shield (front, back, edge-on), staff | Transparent | Cut out and scaled to his size in `../items/`. On the sheet they are drawn much larger than him: the sword is 514 pixels long against his 307-pixel height. |
 
 ## Known flaws in the sheets
@@ -40,4 +40,13 @@ All sheets are 1536 x 864. The art is a detailed pixel-art style but is **not** 
 - `handX`, `handY`: present on hanging, pull-up and rope frames. The point where his gripping hand is. On a ledge or rope, pin this point to the ledge or rope instead of pinning his feet.
 - `standingHeightPx`: how tall he is standing upright, in atlas pixels. Scale the art so this equals his height in the game.
 
+- `backFist`, `frontFist`: on standing, walking, running, jumping, sliding, crouching and draw frames. Where his two fists are, for pinning held items. Hanging and climbing frames do not have these yet.
+- `itemPose`: on draw frames. Where the item being drawn is and how it is turned.
+
 He faces right in every side-view frame. Mirror the frame to face left.
+
+## Which hand is which
+
+The art faces right and is turned slightly towards the viewer, so the fist on the side he faces away from (the back fist) is his right hand. When the frame is mirrored to face left, that same fist is anatomically his left. So an item in his right hand is pinned to the back fist when he faces right and to the front fist when he faces left.
+
+The draw frames have the same problem and no fix yet: mirrored, they show the wrong arm doing the drawing. That needs a second set of draw frames.

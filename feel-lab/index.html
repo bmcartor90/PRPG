@@ -997,7 +997,7 @@ const player = makePlayer(3, START);
 
 // ---------- Character sprite (drawing only; the physics still treats the player as a point at the feet) ----------
 // Each frame is [x, y, width, height, anchorX, anchorY] in sprites.png; the anchor is the point under the feet.
-const SPRITE = {"standH":307.0,"frames":{"walk":[[2,2,157,327,85.7,317.0],[161,2,180,327,90.4,317.0],[343,2,187,327,94.5,317.0],[532,2,176,327,94.4,317.0],[710,2,209,328,106.4,318.0],[921,2,155,328,85.0,318.0]],"run":[[1078,2,222,291,113.8,281.0],[1302,2,246,294,126.7,284.0],[1550,2,232,294,121.7,284.0],[2,332,255,291,136.8,281.0],[259,332,237,292,118.6,282.0],[498,332,256,292,128.9,282.0]],"jump":[[756,332,192,221,104.5,211.0],[950,332,197,273,96.9,263.0],[1149,332,180,296,87.5,286.0],[1331,332,193,303,89.3,293.0],[1526,332,177,241,89.8,231.0],[1705,332,214,260,110.3,250.0],[2,637,213,227,91.7,217.0]],"slide":[[217,637,327,168,133.7,158.0],[546,637,297,162,118.4,152.0],[845,637,349,166,137.0,156.0]],"crouch":[[1196,637,192,181,95.6,171.0],[1390,637,181,169,100.0,159.0]],"hang":[[1573,637,132,358,69.4,347.6,70.4,12.6],[1707,637,210,289,87.4,278.2,74.5,12.6]],"pull":[[2,997,147,274,71.7,263.6,74.5,12.6],[151,997,166,308,78.6,297.2,93.5,102.9],[319,997,187,310,86.8,299.2,158.6,126.0],[508,997,212,222,118.8,211.1]],"hang1":[[722,997,154,357,80.1,346.5,66.2,12.6]],"lunge":[[878,997,299,255,142.1,244.7],[1179,997,374,139,196.9,128.1]],"prone":[[1555,997,324,105,173.2,94.5]],"getup":[[2,1356,222,183,112.8,172.2],[226,1356,176,276,93.7,265.7]],"rope":[[404,1356,144,319,70.6,309.0,105.0,75.0],[550,1356,141,385,65.9,375.0,96.0,141.0],[693,1356,149,251,76.1,241.0,105.0,55.0],[844,1356,138,369,65.2,359.0,93.0,141.0]],"ropeHang":[[984,1356,135,312,64.0,302.0,88.0,94.0]],"rope1":[[1121,1356,182,352,92.3,342.0,129.0,129.0]],"ropeSlide":[[1305,1356,152,328,90.2,318.0,121.0,143.0]],"ladder":[[1459,1356,159,339,80.0,329.0],[1620,1356,156,301,80.0,291.0],[1778,1356,154,339,73.8,329.0]],"ladderRest":[[2,1743,152,306,80.0,296.0]],"wall":[[156,1743,206,331,98.6,321.0],[364,1743,182,331,86.6,321.0]],"wallHang":[[548,1743,242,253,120.8,243.0]]}};
+const SPRITE = {"standH":307.0,"frames":{"walk":[[2,2,157,327,85.7,317.0],[161,2,180,327,90.4,317.0],[343,2,187,327,94.5,317.0],[532,2,176,327,94.4,317.0],[710,2,209,328,106.4,318.0],[921,2,155,328,85.0,318.0]],"run":[[1078,2,222,291,113.8,281.0],[1302,2,246,294,126.7,284.0],[1550,2,232,294,121.7,284.0],[2,332,255,291,136.8,281.0],[259,332,237,292,118.6,282.0],[498,332,256,292,128.9,282.0]],"jump":[[756,332,192,221,104.5,211.0],[950,332,197,273,96.9,263.0],[1149,332,180,296,87.5,286.0],[1331,332,193,303,89.3,293.0],[1526,332,177,241,89.8,231.0],[1705,332,214,260,110.3,250.0],[2,637,213,227,91.7,217.0]],"slide":[[217,637,327,168,133.7,158.0],[546,637,297,162,118.4,152.0],[845,637,349,166,137.0,156.0]],"crouch":[[1196,637,192,181,95.6,171.0],[1390,637,181,169,100.0,159.0]],"hang":[[1573,637,132,358,69.4,347.6,70.4,12.6],[1707,637,210,289,87.4,278.2,74.5,12.6]],"pull":[[2,997,147,274,71.7,263.6,74.5,12.6],[151,997,166,308,78.6,297.2,93.5,102.9],[319,997,187,310,86.8,299.2,158.6,126.0],[508,997,212,222,118.8,211.1]],"hang1":[[722,997,154,357,80.1,346.5,66.2,12.6]],"lunge":[[878,997,299,255,142.1,244.7],[1179,997,374,139,196.9,128.1]],"prone":[[1555,997,324,105,173.2,94.5]],"getup":[[2,1356,222,183,112.8,172.2],[226,1356,176,276,93.7,265.7]],"rope":[[404,1356,144,319,70.6,309.0,105.0,75.0],[550,1356,141,385,65.9,375.0,96.0,141.0],[693,1356,149,251,76.1,241.0,105.0,55.0],[844,1356,138,369,65.2,359.0,93.0,141.0]],"ropeHang":[[984,1356,135,312,64.0,302.0,88.0,94.0]],"rope1":[[1121,1356,182,352,92.3,342.0,129.0,129.0]],"ropeSlide":[[1305,1356,152,328,90.2,318.0,121.0,143.0]],"drawSword":[[1459,1356,157,320,82.6,310.4],[1618,1356,173,320,85.2,310.4],[1793,1356,178,321,90.6,311.4],[2,1743,176,324,90.4,314.3]],"drawShield":[[180,1743,178,324,89.5,314.3],[360,1743,168,324,83.1,314.3]],"drawStaff":[[530,1743,173,314,91.0,304.6],[705,1743,179,307,98.4,296.8],[886,1743,199,302,112.4,292.0],[1087,1743,218,307,106.6,296.8]],"guard":[[1307,1743,195,307,105.1,297.8],[1504,1743,178,290,100.2,280.3]],"ladder":[[1684,1743,159,339,80.0,329.0],[1845,1743,156,301,80.0,291.0],[2,2084,154,339,73.8,329.0]],"ladderRest":[[158,2084,152,306,80.0,296.0]],"wall":[[312,2084,206,331,98.6,321.0],[520,2084,182,331,86.6,321.0]],"wallHang":[[704,2084,242,253,120.8,243.0]]}};
 // Standing height in tiles is the Character height slider, P.charHeight.
 const WALK_CYCLE = 2.4, RUN_CYCLE = 4.2;   // tiles travelled per full loop of the walk and run frames
 const spriteImg = new Image();
@@ -1008,7 +1008,13 @@ const anim = {face:1, dist:0, land:0, slide:0, lungeT:0};
 
 // Items are separate pictures laid over him, so one sword works with every animation.
 // Each is [x, y, width, height, gripX, gripY] in items.png, already scaled to his size.
-// First pass: an item is placed relative to the middle of his body, not tracked to his actual fist.
+// Where his two fists are on each frame, as [backX, backY, frontX, frontY] in that frame's own pixels.
+// "Back" is the fist on the side he faces away from, "front" the one on the side he faces; null means hidden behind his body.
+// The art is drawn facing right, where the back fist is his right hand. Mirrored to face left, his right hand is the front fist.
+const FISTS = {"walk":[[77,179,127,172],[61,178,147,173],[61,179,156,173],[79,176,142,177],[null,null,164,172],[73,176,127,175]],"run":[[58,132,198,139],[64,125,220,106],[77,115,208,111],[98,117,221,121],[64,116,209,105],[80,132,211,126]],"jump":[[40,119,null,null],[44,98,null,null],[24,117,157,103],[36,112,170,131],[32,127,null,null],[36,54,179,106],[34,116,null,null]],"slide":[[37,119,200,80],[27,117,178,90],[39,143,180,81]],"crouch":[[37,127,161,161],[46,143,null,null]],"drawSword":[[107,134,114,164],[60,129,125,162],[153,102,null,null],[48,176,148,177]],"drawShield":[[41,49,145,178],[39,177,140,177]],"drawStaff":[[51,34,null,null],[75,31,122,96],[69,148,148,116],[73,136,160,96]],"guard":[[48,159,175,159],[64,164,152,120]]};
+const DRAW_POSE = {"drawSword":[null,[60,129,37,0],[153,102,-19,0],[48,176,38,0]],"drawShield":[[55,128,0,1],null]};
+for (const name in FISTS) FISTS[name].forEach((h, i) => { SPRITE.frames[name][i].fists = h; });
+for (const name in DRAW_POSE) DRAW_POSE[name].forEach((h, i) => { SPRITE.frames[name][i].pose = h; });
 const ITEMS = {"sword":[3,3,190,38,30.5,19.2],"sheath":[196,3,165,24,82.4,11.8],"shield":[364,3,136,136,68.1,67.9],"shieldBack":[503,3,135,136,67.7,68.1],"shieldEdge":[641,3,39,136,19.4,68.1],"staff":[683,3,342,18,171.0,8.9]};
 const itemImg = new Image();
 let itemsReady = false;
@@ -1021,6 +1027,8 @@ function drawItem(name, lx, ly, angleDeg, squash){
   ctx.restore();
 }
 
+// How far out the item is during a draw or sheathe: 0 = fully stowed, 1 = fully in hand.
+function swapProgress(p){ const done = 1 - p.swap.t/p.swap.total; return p.held[p.swap.hand] ? 1 - done : done; }
 let frameFlip = 0;      // set by pickFrame when a frame must be drawn mirrored or unmirrored regardless of facing
 function pickFrame(p){
   const F = SPRITE.frames;
@@ -1061,6 +1069,10 @@ function pickFrame(p){
   }
   if (isSteep(p.line, P)) return F.slide[Math.min(2, Math.floor(anim.slide/5))];
   const sp = Math.abs(p.vx);
+  if (p.swap && sp < 0.4){                        // drawing or sheathing while standing still; sheathing is the draw played backwards
+    const u = swapProgress(p), set = p.swap.hand === 1 ? F.drawSword : F.drawShield;
+    return set[Math.min(set.length - 1, Math.floor(u*set.length))];
+  }
   if (anim.land > 0 && sp < 2) return F.jump[6];  // brief landing crouch, only when you land nearly still
   if (sp < 0.4) return F.walk[0];
   if (sp > P.walkSpeed + 0.25*(P.runSpeed-P.walkSpeed)) return F.run[Math.floor(anim.dist/RUN_CYCLE*6) % 6];
@@ -1218,14 +1230,33 @@ function render(alpha){
     ctx.translate(Math.round(X(wx)), Math.round(Y(wy)));
     ctx.scale((frameFlip || anim.face)*k, k);
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-    // Where the middle of his body is, in the sprite's own coordinates (forward is +x whichever way he faces).
-    const SH = SPRITE.standH, mx = f[2]/2 - ax, my = f[3]/2 - ay;
-    const holding = player.mode !== 'normal', fromBehind = frameFlip !== 0;
-    const sword = itemsReady && player.held[1], shield = itemsReady && player.held[0];
-    if (shield && holding && !fromBehind) drawItem('shield', mx - 0.13*SH, my - 0.04*SH, 0, 0.55);   // slung behind him while he hangs or climbs
+    const SH = SPRITE.standH, mx = f[2]/2 - ax, my = f[3]/2 - ay;   // the middle of his body, in the sprite's own coordinates
+    const holding = player.mode !== 'normal', fromBehind = frameFlip !== 0, sw = player.swap;
+    // An item shows when it is held, or part-way through a draw or sheathe.
+    const showing = (hand) => itemsReady && (sw && sw.hand === hand ? (f.pose !== undefined || swapProgress(player) > 0.5) : player.held[hand]);
+    const before = [], after = [];                 // items drawn behind him, and in front of him
+    if (f.fists){
+      // His right hand (sword) is the back fist when he faces right and the front fist when he faces left; the shield is on the other.
+      const right = anim.face > 0, fast = !player.grounded || Math.abs(player.vx) > P.walkSpeed + 0.25*(P.runSpeed - P.walkSpeed);
+      const fist = (front) => { const x = f.fists[front ? 2 : 0], y = f.fists[front ? 3 : 1];
+        return x === null ? {x:(front ? 0.62 : 0.38)*f[2] - ax, y:0.52*f[3] - ay, hidden:true} : {x:x - ax, y:y - ay, hidden:false}; };
+      if (showing(1)){
+        if (sw && sw.hand === 1 && f.pose !== undefined){ if (f.pose) (f.pose[3] ? before : after).push(['sword', f.pose[0] - ax, f.pose[1] - ay, f.pose[2], 1]); }
+        else { const front = !right, h = fist(front);    // carried low; trailing behind him or pointing ahead when he runs or jumps
+          (h.hidden ? before : after).push(['sword', h.x, h.y, fast ? (front ? 12 : 152) : 38, 1]); }
+      }
+      if (showing(0)){
+        if (sw && sw.hand === 0 && f.pose !== undefined && f.pose){ (f.pose[3] ? before : after).push(['shield', f.pose[0] - ax, f.pose[1] - ay, f.pose[2], 0.55]); }
+        else { const h = fist(right); (h.hidden ? before : after).push(['shield', h.x + 4, h.y - 14, 0, 0.55]); }
+      }
+    } else {
+      // Hanging and climbing frames have no fist positions yet, so items sit at a fixed spot on his body.
+      if (showing(0) && !fromBehind) before.push(['shield', mx - 0.13*SH, my - 0.04*SH, 0, 0.55]);
+      if (showing(1)) after.push(['sword', mx + (fromBehind ? 0.17 : 0.05)*SH, my + 0.03*SH, holding ? 78 : 38, 1]);
+    }
+    for (const it of before) drawItem(...it);
     ctx.drawImage(spriteImg, f[0], f[1], f[2], f[3], -ax, -ay, f[2], f[3]);
-    if (sword) drawItem('sword', mx + (fromBehind ? 0.17 : 0.05)*SH, my + 0.03*SH, holding ? 78 : 38, 1);   // held low, point down and forward
-    if (shield && !holding) drawItem('shield', mx + 0.14*SH, my - 0.03*SH, 0, 0.6);                    // on his forearm, turned partly side-on
+    for (const it of after) drawItem(...it);
     ctx.restore();
   } else {
     ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(px, py, r, 0, 6.2832); ctx.fill();

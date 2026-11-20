@@ -1,7 +1,7 @@
 {
  "image": "lucca_atlas.png",
  "standingHeightPx": 307.0,
- "note": "Each frame: x, y, w, h locate it in the image. anchorX, anchorY is the point under his feet, relative to the frame's top-left. handX, handY (when present) is where his gripping hand is, used to pin him to a ledge or rope instead.",
+ "note": "Each frame: x, y, w, h locate it in the image. anchorX, anchorY is the point under his feet, relative to the frame's top-left. handX, handY (when present) is where his gripping hand is, used to pin him to a ledge or rope instead. backFist and frontFist (when present) are [x, y] of his two fists, for pinning held items: back is the fist on the side he faces away from, front the one on the side he faces, null when hidden behind his body. Facing right the back fist is his right hand; mirrored to face left, his right hand is the front fist. itemPose (draw frames only) is [x, y, angleDegrees, behindHim] for the item on its way out, null when it is not visible yet.",
  "animations": {
   "walk": [
    {
@@ -10,7 +10,15 @@
     "w": 157,
     "h": 327,
     "anchorX": 85.7,
-    "anchorY": 317.0
+    "anchorY": 317.0,
+    "backFist": [
+     77,
+     179
+    ],
+    "frontFist": [
+     127,
+     172
+    ]
    },
    {
     "x": 161,
@@ -18,7 +26,15 @@
     "w": 180,
     "h": 327,
     "anchorX": 90.4,
-    "anchorY": 317.0
+    "anchorY": 317.0,
+    "backFist": [
+     61,
+     178
+    ],
+    "frontFist": [
+     147,
+     173
+    ]
    },
    {
     "x": 343,
@@ -26,7 +42,15 @@
     "w": 187,
     "h": 327,
     "anchorX": 94.5,
-    "anchorY": 317.0
+    "anchorY": 317.0,
+    "backFist": [
+     61,
+     179
+    ],
+    "frontFist": [
+     156,
+     173
+    ]
    },
    {
     "x": 532,
@@ -34,7 +58,15 @@
     "w": 176,
     "h": 327,
     "anchorX": 94.4,
-    "anchorY": 317.0
+    "anchorY": 317.0,
+    "backFist": [
+     79,
+     176
+    ],
+    "frontFist": [
+     142,
+     177
+    ]
    },
    {
     "x": 710,
@@ -42,7 +74,12 @@
     "w": 209,
     "h": 328,
     "anchorX": 106.4,
-    "anchorY": 318.0
+    "anchorY": 318.0,
+    "backFist": null,
+    "frontFist": [
+     164,
+     172
+    ]
    },
    {
     "x": 921,
@@ -50,7 +87,15 @@
     "w": 155,
     "h": 328,
     "anchorX": 85.0,
-    "anchorY": 318.0
+    "anchorY": 318.0,
+    "backFist": [
+     73,
+     176
+    ],
+    "frontFist": [
+     127,
+     175
+    ]
    }
   ],
   "run": [
@@ -60,7 +105,15 @@
     "w": 222,
     "h": 291,
     "anchorX": 113.8,
-    "anchorY": 281.0
+    "anchorY": 281.0,
+    "backFist": [
+     58,
+     132
+    ],
+    "frontFist": [
+     198,
+     139
+    ]
    },
    {
     "x": 1302,
@@ -68,7 +121,15 @@
     "w": 246,
     "h": 294,
     "anchorX": 126.7,
-    "anchorY": 284.0
+    "anchorY": 284.0,
+    "backFist": [
+     64,
+     125
+    ],
+    "frontFist": [
+     220,
+     106
+    ]
    },
    {
     "x": 1550,
@@ -76,7 +137,15 @@
     "w": 232,
     "h": 294,
     "anchorX": 121.7,
-    "anchorY": 284.0
+    "anchorY": 284.0,
+    "backFist": [
+     77,
+     115
+    ],
+    "frontFist": [
+     208,
+     111
+    ]
    },
    {
     "x": 2,
@@ -84,7 +153,15 @@
     "w": 255,
     "h": 291,
     "anchorX": 136.8,
-    "anchorY": 281.0
+    "anchorY": 281.0,
+    "backFist": [
+     98,
+     117
+    ],
+    "frontFist": [
+     221,
+     121
+    ]
    },
    {
     "x": 259,
@@ -92,7 +169,15 @@
     "w": 237,
     "h": 292,
     "anchorX": 118.6,
-    "anchorY": 282.0
+    "anchorY": 282.0,
+    "backFist": [
+     64,
+     116
+    ],
+    "frontFist": [
+     209,
+     105
+    ]
    },
    {
     "x": 498,
@@ -100,7 +185,15 @@
     "w": 256,
     "h": 292,
     "anchorX": 128.9,
-    "anchorY": 282.0
+    "anchorY": 282.0,
+    "backFist": [
+     80,
+     132
+    ],
+    "frontFist": [
+     211,
+     126
+    ]
    }
   ],
   "jump": [
@@ -110,7 +203,12 @@
     "w": 192,
     "h": 221,
     "anchorX": 104.5,
-    "anchorY": 211.0
+    "anchorY": 211.0,
+    "backFist": [
+     40,
+     119
+    ],
+    "frontFist": null
    },
    {
     "x": 950,
@@ -118,7 +216,12 @@
     "w": 197,
     "h": 273,
     "anchorX": 96.9,
-    "anchorY": 263.0
+    "anchorY": 263.0,
+    "backFist": [
+     44,
+     98
+    ],
+    "frontFist": null
    },
    {
     "x": 1149,
@@ -126,7 +229,15 @@
     "w": 180,
     "h": 296,
     "anchorX": 87.5,
-    "anchorY": 286.0
+    "anchorY": 286.0,
+    "backFist": [
+     24,
+     117
+    ],
+    "frontFist": [
+     157,
+     103
+    ]
    },
    {
     "x": 1331,
@@ -134,7 +245,15 @@
     "w": 193,
     "h": 303,
     "anchorX": 89.3,
-    "anchorY": 293.0
+    "anchorY": 293.0,
+    "backFist": [
+     36,
+     112
+    ],
+    "frontFist": [
+     170,
+     131
+    ]
    },
    {
     "x": 1526,
@@ -142,7 +261,12 @@
     "w": 177,
     "h": 241,
     "anchorX": 89.8,
-    "anchorY": 231.0
+    "anchorY": 231.0,
+    "backFist": [
+     32,
+     127
+    ],
+    "frontFist": null
    },
    {
     "x": 1705,
@@ -150,7 +274,15 @@
     "w": 214,
     "h": 260,
     "anchorX": 110.3,
-    "anchorY": 250.0
+    "anchorY": 250.0,
+    "backFist": [
+     36,
+     54
+    ],
+    "frontFist": [
+     179,
+     106
+    ]
    },
    {
     "x": 2,
@@ -158,7 +290,12 @@
     "w": 213,
     "h": 227,
     "anchorX": 91.7,
-    "anchorY": 217.0
+    "anchorY": 217.0,
+    "backFist": [
+     34,
+     116
+    ],
+    "frontFist": null
    }
   ],
   "slide": [
@@ -168,7 +305,15 @@
     "w": 327,
     "h": 168,
     "anchorX": 133.7,
-    "anchorY": 158.0
+    "anchorY": 158.0,
+    "backFist": [
+     37,
+     119
+    ],
+    "frontFist": [
+     200,
+     80
+    ]
    },
    {
     "x": 546,
@@ -176,7 +321,15 @@
     "w": 297,
     "h": 162,
     "anchorX": 118.4,
-    "anchorY": 152.0
+    "anchorY": 152.0,
+    "backFist": [
+     27,
+     117
+    ],
+    "frontFist": [
+     178,
+     90
+    ]
    },
    {
     "x": 845,
@@ -184,7 +337,15 @@
     "w": 349,
     "h": 166,
     "anchorX": 137.0,
-    "anchorY": 156.0
+    "anchorY": 156.0,
+    "backFist": [
+     39,
+     143
+    ],
+    "frontFist": [
+     180,
+     81
+    ]
    }
   ],
   "crouch": [
@@ -194,7 +355,15 @@
     "w": 192,
     "h": 181,
     "anchorX": 95.6,
-    "anchorY": 171.0
+    "anchorY": 171.0,
+    "backFist": [
+     37,
+     127
+    ],
+    "frontFist": [
+     161,
+     161
+    ]
    },
    {
     "x": 1390,
@@ -202,7 +371,12 @@
     "w": 181,
     "h": 169,
     "anchorX": 100.0,
-    "anchorY": 159.0
+    "anchorY": 159.0,
+    "backFist": [
+     46,
+     143
+    ],
+    "frontFist": null
    }
   ],
   "hang": [
@@ -403,26 +577,246 @@
     "handY": 143.0
    }
   ],
-  "ladder": [
+  "drawSword": [
    {
     "x": 1459,
     "y": 1356,
+    "w": 157,
+    "h": 320,
+    "anchorX": 82.6,
+    "anchorY": 310.4,
+    "backFist": [
+     107,
+     134
+    ],
+    "frontFist": [
+     114,
+     164
+    ],
+    "itemPose": null
+   },
+   {
+    "x": 1618,
+    "y": 1356,
+    "w": 173,
+    "h": 320,
+    "anchorX": 85.2,
+    "anchorY": 310.4,
+    "backFist": [
+     60,
+     129
+    ],
+    "frontFist": [
+     125,
+     162
+    ],
+    "itemPose": [
+     60,
+     129,
+     37,
+     0
+    ]
+   },
+   {
+    "x": 1793,
+    "y": 1356,
+    "w": 178,
+    "h": 321,
+    "anchorX": 90.6,
+    "anchorY": 311.4,
+    "backFist": [
+     153,
+     102
+    ],
+    "frontFist": null,
+    "itemPose": [
+     153,
+     102,
+     -19,
+     0
+    ]
+   },
+   {
+    "x": 2,
+    "y": 1743,
+    "w": 176,
+    "h": 324,
+    "anchorX": 90.4,
+    "anchorY": 314.3,
+    "backFist": [
+     48,
+     176
+    ],
+    "frontFist": [
+     148,
+     177
+    ],
+    "itemPose": [
+     48,
+     176,
+     38,
+     0
+    ]
+   }
+  ],
+  "drawShield": [
+   {
+    "x": 180,
+    "y": 1743,
+    "w": 178,
+    "h": 324,
+    "anchorX": 89.5,
+    "anchorY": 314.3,
+    "backFist": [
+     41,
+     49
+    ],
+    "frontFist": [
+     145,
+     178
+    ],
+    "itemPose": [
+     55,
+     128,
+     0,
+     1
+    ]
+   },
+   {
+    "x": 360,
+    "y": 1743,
+    "w": 168,
+    "h": 324,
+    "anchorX": 83.1,
+    "anchorY": 314.3,
+    "backFist": [
+     39,
+     177
+    ],
+    "frontFist": [
+     140,
+     177
+    ],
+    "itemPose": null
+   }
+  ],
+  "drawStaff": [
+   {
+    "x": 530,
+    "y": 1743,
+    "w": 173,
+    "h": 314,
+    "anchorX": 91.0,
+    "anchorY": 304.6,
+    "backFist": [
+     51,
+     34
+    ],
+    "frontFist": null
+   },
+   {
+    "x": 705,
+    "y": 1743,
+    "w": 179,
+    "h": 307,
+    "anchorX": 98.4,
+    "anchorY": 296.8,
+    "backFist": [
+     75,
+     31
+    ],
+    "frontFist": [
+     122,
+     96
+    ]
+   },
+   {
+    "x": 886,
+    "y": 1743,
+    "w": 199,
+    "h": 302,
+    "anchorX": 112.4,
+    "anchorY": 292.0,
+    "backFist": [
+     69,
+     148
+    ],
+    "frontFist": [
+     148,
+     116
+    ]
+   },
+   {
+    "x": 1087,
+    "y": 1743,
+    "w": 218,
+    "h": 307,
+    "anchorX": 106.6,
+    "anchorY": 296.8,
+    "backFist": [
+     73,
+     136
+    ],
+    "frontFist": [
+     160,
+     96
+    ]
+   }
+  ],
+  "guard": [
+   {
+    "x": 1307,
+    "y": 1743,
+    "w": 195,
+    "h": 307,
+    "anchorX": 105.1,
+    "anchorY": 297.8,
+    "backFist": [
+     48,
+     159
+    ],
+    "frontFist": [
+     175,
+     159
+    ]
+   },
+   {
+    "x": 1504,
+    "y": 1743,
+    "w": 178,
+    "h": 290,
+    "anchorX": 100.2,
+    "anchorY": 280.3,
+    "backFist": [
+     64,
+     164
+    ],
+    "frontFist": [
+     152,
+     120
+    ]
+   }
+  ],
+  "ladder": [
+   {
+    "x": 1684,
+    "y": 1743,
     "w": 159,
     "h": 339,
     "anchorX": 80.0,
     "anchorY": 329.0
    },
    {
-    "x": 1620,
-    "y": 1356,
+    "x": 1845,
+    "y": 1743,
     "w": 156,
     "h": 301,
     "anchorX": 80.0,
     "anchorY": 291.0
    },
    {
-    "x": 1778,
-    "y": 1356,
+    "x": 2,
+    "y": 2084,
     "w": 154,
     "h": 339,
     "anchorX": 73.8,
@@ -431,8 +825,8 @@
   ],
   "ladderRest": [
    {
-    "x": 2,
-    "y": 1743,
+    "x": 158,
+    "y": 2084,
     "w": 152,
     "h": 306,
     "anchorX": 80.0,
@@ -441,16 +835,16 @@
   ],
   "wall": [
    {
-    "x": 156,
-    "y": 1743,
+    "x": 312,
+    "y": 2084,
     "w": 206,
     "h": 331,
     "anchorX": 98.6,
     "anchorY": 321.0
    },
    {
-    "x": 364,
-    "y": 1743,
+    "x": 520,
+    "y": 2084,
     "w": 182,
     "h": 331,
     "anchorX": 86.6,
@@ -459,8 +853,8 @@
   ],
   "wallHang": [
    {
-    "x": 548,
-    "y": 1743,
+    "x": 704,
+    "y": 2084,
     "w": 242,
     "h": 253,
     "anchorX": 120.8,
