@@ -77,6 +77,8 @@ namespace Prpg.Sim
         public readonly List<Climbable> Climbables = new List<Climbable>();
         public readonly List<Cliff> Cliffs = new List<Cliff>();
         public readonly List<Underside> Undersides = new List<Underside>();
+        /// <summary>Each floating rock's outline in tiles, as listed in the file (clockwise). For drawing.</summary>
+        public readonly List<double[][]> FloatingRock = new List<double[][]>();
         public double UnitsPerTile = 1;
 
         /// <summary>Reads a map file. Fields it does not know are ignored, so the format can grow.</summary>
@@ -137,6 +139,9 @@ namespace Prpg.Sim
                 if (pt == null || pt.Count != 2) throw new FormatException("Each floating rock point must be [x, y]");
                 px[i] = (double)pt[0] / u; py[i] = (double)pt[1] / u;
             }
+            var outline = new double[n][];
+            for (int i = 0; i < n; i++) outline[i] = new[] { px[i], py[i] };
+            FloatingRock.Add(outline);
             for (int i = 0; i < n; i++)
             {
                 int j = (i + 1) % n;

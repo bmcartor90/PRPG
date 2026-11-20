@@ -1,0 +1,7 @@
+<Project>
+  <!-- Keep dotnet's build output out of the source folders: Unity compiles every .cs file it finds under sim/Prpg.Sim. -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)build~/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)build~/bin/$(MSBuildProjectName)/</BaseOutputPath>
+  </PropertyGroup>
+</Project>

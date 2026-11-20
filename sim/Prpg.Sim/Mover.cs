@@ -51,7 +51,8 @@ namespace Prpg.Sim
             return Toward(v, target, accel * DT);
         }
 
-        static void Respawn(PlayerState p, Map map, double x, int line)
+        /// <summary>Puts him standing still at x on the given line, as after falling out of the map.</summary>
+        public static void Respawn(PlayerState p, Map map, double x, int line)
         {
             var L = map.Lines[line];
             p.X = p.Px = x; p.Y = p.Py = L.YAt(x); p.Vx = 0; p.Vy = 0;

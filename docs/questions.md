@@ -37,3 +37,11 @@ One line each: the question, and what the code assumes until Brad answers. Answe
 
 20. **Upper limit 200.** Brad: Body, Agility and Mind start at 80 minimum, 100 typical, with about 200 near the upper limit. `design.md` has 80 and 100 but not 200.
 21. **How stats and gear change movement numbers.** Each movement number needs a rule (a curve) from Body / Agility / Mind and gear. Proposal: the curves live in data so Brad tunes them without code. With an 80–200 spread, the curve shape matters more than the range (a straight line would take jump height from 4 to 8). Needs drafting with Brad.
+
+## Step 2: on screen
+
+22. **Unity version.** The spec asks for the current LTS. Brad has 6000.6.5f1 installed, so the project uses that to avoid a second install. Whether 6.6 is an LTS release I have not confirmed. Fine to move to an LTS later; the project is small.
+23. **Builds run on Brad's PC, not GitHub.** Unity's free licence is tied to one machine and cannot be used on a cloud build machine. `build.bat` builds with the installed Unity and no window.
+24. **Development keys.** 1 to 7 (sections), T (retry), Tab (character), F1, F5 and Esc are not in the design's layout. They are for testing and come out when menus exist.
+25. **The character is a setting,** remembered between runs and changed with Tab. Changing character keeps the position and swaps movement numbers and art.
+26. **Seeds** are random at start-up and shown in the help line (F5 copies them). There is no way to type one in yet.

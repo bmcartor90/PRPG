@@ -126,6 +126,15 @@ namespace Prpg.Sim
             State.Frame++;
         }
 
+        /// <summary>Lab-style warp: stand him on the highest ground at x and make that his safe spot. A test convenience.</summary>
+        public void Warp(double x)
+        {
+            int line = GroundLineAt(Map, x);
+            var p = State.Player;
+            Mover.Respawn(p, Map, x, line);
+            p.SafeX = x; p.SafeLine = line;
+        }
+
         public SimState Save() => State.Clone();
         public void Restore(SimState saved) => State = saved.Clone();
     }

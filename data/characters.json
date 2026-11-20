@@ -1,0 +1,10 @@
+{
+  "about": "Which art each character uses. Paths are relative to the repository's assets folder. Items are names in assets/sprites/items/items_atlas.json.",
+  "characters": {
+    "Lucca":    { "atlas": "sprites/lucca/atlas/lucca_atlas.json",       "sword": "sword",   "shield": "shield" },
+    "Nina":     { "atlas": "sprites/nina/atlas/nina_atlas.json",         "sword": "sword",   "shield": "shield" },
+    "Ramorand": { "atlas": "sprites/ramorand/atlas/ramorand_atlas.json", "sword": "r_sword", "shield": "r_shield" }
+  },
+  "items": "sprites/items/items_atlas.json",
+  "order": ["Lucca", "Nina", "Ramorand"]
+}
