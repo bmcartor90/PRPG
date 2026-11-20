@@ -24,3 +24,16 @@ One line each: the question, and what the code assumes until Brad answers. Answe
 
 13. **Ramorand's movement numbers.** Nothing gives them, so `movement.json` has him identical to Lucca (the lab shows him at 1.9 tiles). Confirm or give his numbers.
 14. **"Safe".** The dodge slide is anchored but not safe. There is no safety state in the simulation yet (it needs threats), so nothing marks this beyond `InDynamicAction` being true during a slide. Will add `Safe` when monsters exist.
+
+## Map editor brief (`map-editor-brief.md`)
+
+15. **Sixths in the map file.** Proposal, approved by Brad: store every coordinate as a whole number of sixths (7 means 7/6 of a tile); the game converts on load. Please record it in the spec's map format.
+16. **Floating rock.** Closed ground traces break today's rule that nothing is under ground. The lab needs new cliff logic as well as the underside (ceiling) rule, with recordings for both. Waiting on them.
+17. **Doors use interact, not up.** Decided by Brad. Up also mounts ladders, so a door near a ladder would be ambiguous. Please update the brief and `design.md`.
+18. **Big maps.** Engineering, no design change: the simulation will only check surfaces near him. Ties still go by file order; the traces will prove nothing changed.
+19. **Top edge with no partner.** Until ceilings exist, it stops upward speed like an invisible lid. Brad says ceilings are coming soon; then it is just a ceiling.
+
+## Stats
+
+20. **Upper limit 200.** Brad: Body, Agility and Mind start at 80 minimum, 100 typical, with about 200 near the upper limit. `design.md` has 80 and 100 but not 200.
+21. **How stats and gear change movement numbers.** Each movement number needs a rule (a curve) from Body / Agility / Mind and gear. Proposal: the curves live in data so Brad tunes them without code. With an 80–200 spread, the curve shape matters more than the range (a straight line would take jump height from 4 to 8). Needs drafting with Brad.
