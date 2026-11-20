@@ -1,20 +1,21 @@
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 import json, numpy as np, scipy.ndimage as ndi
 from PIL import Image
-B=json.load(open('sprites/boxes.json'))
-B['ledge']=json.load(open('sprites/boxes_ledge.json'))
-B['climb']=json.load(open('sprites/boxes_climb.json'))
-B['empty']=json.load(open('sprites/boxes_empty.json'))
-B['mdraw']=json.load(open('sprites/boxes_mdraw.json'))
-B['opp']=json.load(open('sprites/boxes_opp.json'))
-src=dict(action='/mnt/user-data/uploads/9aa0aed0-image.png',move='/mnt/user-data/uploads/67ddc9c4-image.png')
+B=json.load(open(WORK+'/boxes.json'))
+B['ledge']=json.load(open(WORK+'/boxes_ledge.json'))
+B['climb']=json.load(open(WORK+'/boxes_climb.json'))
+B['empty']=json.load(open(WORK+'/boxes_empty.json'))
+B['mdraw']=json.load(open(WORK+'/boxes_mdraw.json'))
+B['opp']=json.load(open(WORK+'/boxes_opp.json'))
+src=dict(action=SRC('9aa0aed0'),move=SRC('67ddc9c4'))
 arr={k:np.asarray(Image.open(v).convert('RGB')) for k,v in src.items()}
 # The ledge-and-lunge sheet arrived with a transparent background, so its own alpha is the cut-out.
 ALPHAS={}
-for _k,_p in dict(ledge='/mnt/user-data/uploads/ebd959ba-image.png', climb='/mnt/user-data/uploads/31b2f36f-image.png').items():
+for _k,_p in dict(ledge=SRC('ebd959ba'), climb=SRC('31b2f36f')).items():
     _im=Image.open(_p).convert('RGBA'); arr[_k]=np.asarray(_im)[...,:3]; ALPHAS[_k]=np.asarray(_im)[...,3]
 # The empty-handed draw sheet has a black background; its cut-out mask comes from empty_boxes.py.
-_im=Image.open('/mnt/user-data/uploads/51f22a66-image.png').convert('RGB'); arr['empty']=np.asarray(_im); ALPHAS['empty']=np.load('sprites/alpha_empty.npy')
-for _k,_p in dict(mdraw='/mnt/user-data/uploads/442ad3cf-image.png', opp='/mnt/user-data/uploads/1dce5bb6-image.png').items():
+_im=Image.open(SRC('51f22a66')).convert('RGB'); arr['empty']=np.asarray(_im); ALPHAS['empty']=np.load(WORK+'/alpha_empty.npy')
+for _k,_p in dict(mdraw=SRC('442ad3cf'), opp=SRC('1dce5bb6')).items():
     _im=Image.open(_p).convert('RGBA'); arr[_k]=np.asarray(_im)[...,:3]; ALPHAS[_k]=np.asarray(_im)[...,3]
 REL={'ledge':1.05,'empty':0.97,'mdraw':0.97,'opp':0.955}      # this sheet drew him about 5% smaller than the first two
 # Where his hands are in the hanging and pull-up frames (sheet pixels), so the sprite can be pinned to the ledge by the hands.
@@ -67,10 +68,10 @@ atlas=Image.new('RGBA',(MAXW,y+shelf+PAD),(0,0,0,0))
 for im,px,py in placed: atlas.paste(im,(px,py))
 atlas=atlas.quantize(colors=128,method=Image.FASTOCTREE,dither=Image.NONE).convert('RGBA') if False else atlas
 q=atlas.quantize(colors=160,method=Image.FASTOCTREE,dither=Image.NONE)
-q.save('/home/claude/feel-lab/sprites.png',optimize=True)
+q.save(LAB+'/sprites.png',optimize=True)
 atlas=q.convert('RGBA')
 stand=B['move'][0][0]; meta_out=dict(standH=round((stand['y1']-stand['y0'])*S,1),frames=meta)
-json.dump(meta_out,open('sprites/meta.json','w'),separators=(',',':'))
+json.dump(meta_out,open(WORK+'/meta.json','w'),separators=(',',':'))
 print(atlas.size, json.dumps(meta_out,separators=(',',':')))
 # preview on black to judge the cut-out edges
-prev=Image.new('RGBA',atlas.size,(0,0,0,255)); prev.alpha_composite(atlas); prev.convert('RGB').save('sprites/preview.png')
+prev=Image.new('RGBA',atlas.size,(0,0,0,255)); prev.alpha_composite(atlas); prev.convert('RGB').save(WORK+'/preview.png')

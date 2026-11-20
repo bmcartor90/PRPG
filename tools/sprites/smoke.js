@@ -1,7 +1,7 @@
 const fs=require('fs');
-const html=fs.readFileSync('/home/claude/feel-lab/index.html','utf8');
+const html=fs.readFileSync(require('path').join(__dirname,'../../feel-lab/index.html'),'utf8');
 const script=html.split('<script>')[1].split('</script>')[0];
-fs.writeFileSync('all.js',script);
+fs.writeFileSync(require('path').join(__dirname,'work/all.js'),script);
 const ids=[...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]);
 const handlers={}; const els={};
 function mkEl(id){

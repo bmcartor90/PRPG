@@ -1,4 +1,5 @@
 # Ramorand: fist positions per frame, read by eye from the contact sheets (his near fist is often gauntlet-grey, so the colour test misses it),
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 # item poses for his draw frames, and grip points for ledges and ropes. All in each frame's own pixels.
 import json
 N=None
@@ -11,8 +12,8 @@ fists={k:[list(q) for q in v] for k,v in F.items()}
 POSE=dict(drawSword=[None,[101,118,37,0],[245,87,-19,0],[90,184,38,0]], drawShield=[[98,130,0,1],None], nearShield=[[98,130,0,1],None])
 HANDS=dict(hang=[(100,15),(86,15)], pull=[(81,15),(101,126),(180,134),None], hang1=[(76,13)],
            rope=[(147,45),(137,144),(145,46),(131,136)], ropeHang=[(139,67)], rope1=[(169,28)], ropeSlide=[(151,130)])
-m=json.load(open('sprites/meta_ramorand.json'))
+m=json.load(open(WORK+'/meta_ramorand.json'))
 for nm,hs in HANDS.items():
     for i,h in enumerate(hs):
         if h: m['frames'][nm][i]=m['frames'][nm][i][:6]+[h[0],h[1]]
-json.dump(m,open('sprites/meta_ramorand.json','w'),separators=(',',':')); json.dump(dict(fists=fists,pose=POSE),open('sprites/fists_ramorand.json','w')); print('ok')
+json.dump(m,open(WORK+'/meta_ramorand.json','w'),separators=(',',':')); json.dump(dict(fists=fists,pose=POSE),open(WORK+'/fists_ramorand.json','w')); print('ok')

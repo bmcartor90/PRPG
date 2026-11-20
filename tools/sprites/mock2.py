@@ -1,10 +1,11 @@
 # Mock-up at 1080p game scale: far background (repeating), crystal ground, wooden scaffolds, ladder, rope, Lucca.
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 import sys, json, numpy as np
 from PIL import Image
 W,H,TILE=1920,1080,80
-M=json.load(open('sprites/meta.json')); A=Image.open('/home/claude/feel-lab/sprites.png').convert('RGBA')
-T=Image.open('/mnt/user-data/uploads/6dd62cb4-image.png').convert('RGBA'); ta=np.asarray(T).copy(); ta[...,3]=np.load('sprites/alpha_tiles.npy'); T=Image.fromarray(ta,'RGBA'); TB=json.load(open('sprites/boxes_tiles.json'))
-S=Image.open('/mnt/user-data/uploads/474ce6bb-image.png').convert('RGBA'); SB=json.load(open('sprites/boxes_scaffold.json')); ks=0.53; DECK_TOP=59
+M=json.load(open(WORK+'/meta.json')); A=Image.open(LAB+'/sprites.png').convert('RGBA')
+T=Image.open(SRC('6dd62cb4')).convert('RGBA'); ta=np.asarray(T).copy(); ta[...,3]=np.load(WORK+'/alpha_tiles.npy'); T=Image.fromarray(ta,'RGBA'); TB=json.load(open(WORK+'/boxes_tiles.json'))
+S=Image.open(SRC('474ce6bb')).convert('RGBA'); SB=json.load(open(WORK+'/boxes_scaffold.json')); ks=0.53; DECK_TOP=59
 bg=Image.open(sys.argv[1]).convert('RGBA'); k=H/bg.size[1]; bg=bg.resize((round(bg.size[0]*k),H),Image.LANCZOS)
 out=Image.new('RGBA',(W,H)); x=-200
 while x<W: out.paste(bg,(x,0)); x+=bg.size[0]

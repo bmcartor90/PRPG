@@ -1,23 +1,29 @@
 # Which skin-coloured patch is which fist, labelled by eye from the numbered contact sheets (blobs.py).
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 # back = the fist on the side he is facing away from, front = the fist on the side he is facing. None = hidden behind his body.
 # Facing right, his right hand is the back fist; mirrored to face left, his right hand is the front fist.
 import json, re
-bl={}
-for t in ['draw','guard','walk','air','mwalk','mrun']: bl.update(json.load(open(f'sprites/blobs_{t}.json')))
-PICK=dict(walk=[(3,2),(3,2),(4,3),(2,3),(None,3),(4,3)], run=[(2,3),(3,2),(3,2),(3,4),(3,2),(3,2)],
-          jump=[(2,None),(2,None),(3,2),(4,5),(3,None),(1,3),(2,None)], slide=[(4,3),(3,2),(3,2)], crouch=[(3,4),(2,None)],
-          drawSword=[(2,3),(1,2),(1,None),(1,2)], drawShield=[(0,3),(2,1)], drawStaff=[(0,None),(0,2),(2,1),(2,1)], guard=[(1,2),(2,1)],
-          walkDrawSword=[(2,3),(1,2),(2,3),(3,2)], walkDrawShield=[(1,3),(2,3)], nearShield=[(0,2),(2,3)],
-          runDrawSword=[(1,2),(1,2),(2,None),(2,1)], runDrawShield=[(0,2),(2,1)])
-out={}
-for nm,rows in PICK.items():
-    out[nm]=[]
-    for i,(b,f) in enumerate(rows):
-        B=bl[f'{nm}{i}']; g=lambda k: [None,None] if k is None else [round(B[k]['x']),round(B[k]['y'])]
-        out[nm].append(g(b)+g(f))
-# While an item is on its way in or out, where it is and how it is turned: [x, y, angle in degrees, drawn behind him?]. None = not visible yet.
+# [back x, back y, front x, front y] per frame, in the frame's own pixels; N = hidden. First labelled by blob number from blobs.py contact
+# sheets; stored as coordinates so a change to the blob finder can't silently relabel them. To relabel, run blobs.py and read the sheet.
+N=None
+F=dict(
+  walk=[(77,179,127,172),(61,178,147,173),(61,179,156,173),(79,176,142,177),(N,N,164,172),(73,176,127,175)],
+  run=[(58,132,198,139),(64,125,220,106),(77,115,208,111),(98,117,221,121),(64,116,209,105),(80,132,211,126)],
+  jump=[(40,119,N,N),(44,98,N,N),(24,117,157,103),(36,112,170,131),(32,127,N,N),(36,54,179,106),(34,116,N,N)],
+  slide=[(37,119,200,80),(27,117,178,90),(39,143,180,81)],
+  crouch=[(37,127,161,161),(46,143,N,N)],
+  drawSword=[(107,134,114,164),(60,129,125,162),(153,102,N,N),(48,176,148,177)],
+  drawShield=[(41,49,145,178),(39,177,140,177)],
+  drawStaff=[(51,34,N,N),(75,31,122,96),(69,148,148,116),(73,136,160,96)],
+  guard=[(48,159,175,159),(64,164,152,120)],
+  walkDrawSword=[(125,149,153,177),(84,132,155,169),(180,99,138,174),(52,176,152,173)],
+  walkDrawShield=[(45,46,152,175),(110,149,141,171)],
+  nearShield=[(54,41,145,179),(92,144,139,179)],
+  runDrawSword=[(112,121,208,157),(110,117,178,144),(244,93,N,N),(88,141,200,139)],
+  runDrawShield=[(99,41,208,155),(151,136,191,128)])
+fists={k:[list(q) for q in v] for k,v in F.items()}
 POSE=dict(drawSword=[None,[60,129,37,0],[153,102,-19,0],[48,176,38,0]], drawShield=[[55,128,0,1],None],
           walkDrawSword=[None,[84,132,37,0],[180,99,-19,0],[52,176,38,0]], runDrawSword=[None,[110,117,37,0],[244,93,-19,0],[88,141,152,0]],
           walkDrawShield=[[62,128,0,1],None], nearShield=[[62,128,0,1],None], runDrawShield=[[118,122,0,1],None])
-js='const FISTS = '+json.dumps(out,separators=(',',':'))+';\nconst DRAW_POSE = '+json.dumps(POSE,separators=(',',':'))+';'
-json.dump(dict(fists=out,pose=POSE),open('sprites/fists.json','w')); open('sprites/fists.js','w').write(js); print(js[:400])
+js='const FISTS = '+json.dumps(fists,separators=(',',':'))+';\nconst DRAW_POSE = '+json.dumps(POSE,separators=(',',':'))+';'
+json.dump(dict(fists=fists,pose=POSE),open(WORK+'/fists.json','w')); open(WORK+'/fists.js','w').write(js); print(js[:400])

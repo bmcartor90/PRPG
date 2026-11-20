@@ -1,4 +1,5 @@
 # Build a character's packed frames from sheets with transparent backgrounds. Usage: atlas2.py nina
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 import json, sys, numpy as np, scipy.ndimage as ndi
 from PIL import Image
 CH=sys.argv[1]
@@ -15,7 +16,7 @@ CFG=dict(nina=dict(
     ladder=('rope_wall',1,[0,1,2]), ladderRest=('rope_wall',1,[3]), wall=('rope_wall',1,[4,5]), wallHang=('rope_wall',1,[6]))),
  ramorand=dict(
   sheets=dict(walk_run='7997c641', action='9bc3dcb6', ledge='f8aa2c67', rope_wall='b64f54a6', combat='5e5e0121'),
-  alpha=dict(ledge='sprites/alpha_ramorand_ledge.npy'),   # this sheet came on a grey background
+  alpha=dict(ledge=WORK+'/alpha_ramorand_ledge.npy'),   # this sheet came on a grey background
   rel=dict(ledge=1.12, combat=1.013), halo=205,
   stand=('walk_run',0,0),
   # His action sheet has 5 jump frames, 1 crouch and 1 slide where the others have 7, 2 and 3, so frames are reused to fill the same slots.
@@ -24,7 +25,7 @@ CFG=dict(nina=dict(
     rope=('rope_wall',0,[0,1,2,3]), ropeHang=('rope_wall',0,[4]), rope1=('rope_wall',0,[5]), ropeSlide=('rope_wall',0,[6]),
     drawSword=('combat',0,[0,1,2,3]), drawShield=('combat',0,[4,5]), drawStaff=('combat',1,[0,1,2,3]), guard=('combat',1,[4,5]), nearShield=('combat',0,[4,5]),
     ladder=('rope_wall',1,[0,1,2]), ladderRest=('rope_wall',1,[3]), wall=('rope_wall',1,[4,5]), wallHang=('rope_wall',1,[6]))))[CH]
-B=json.load(open(f'sprites/boxes_{CH}.json')); arr={}; alpha={}
+B=json.load(open(f'{WORK}/boxes_{CH}.json')); arr={}; alpha={}
 def robe_fix(rgb, gain):
     # One sheet drew her robe cream instead of grey-white. Pull light, low-colour pixels (the robe) toward the other sheets' robe colour,
     # fading the change out toward skin and hair (strongly warm) and toward dark cloth, which already match.
@@ -32,7 +33,7 @@ def robe_fix(rgb, gain):
     w=np.clip((62-(r-b))/18,0,1)*np.clip((a.max(-1)-120)/40,0,1)
     out=a*(1+(np.array(gain)-1)*w[...,None]); return out.clip(0,255).astype(np.uint8)
 for k,n in CFG['sheets'].items():
-    im=np.asarray(Image.open(f'/mnt/user-data/uploads/{n}-image.png').convert('RGBA')); arr[k]=im[...,:3]; alpha[k]=im[...,3]
+    im=np.asarray(Image.open(SRC(n)).convert('RGBA')); arr[k]=im[...,:3]; alpha[k]=im[...,3]
     if k in CFG.get('alpha',{}): alpha[k]=np.load(CFG['alpha'][k])
     if k in CFG.get('robe_fix',{}): arr[k]=robe_fix(arr[k],CFG['robe_fix'][k])
 PAD=2
@@ -65,6 +66,6 @@ for key,(im,ax,ay) in seen.items():
     where[key]=[x,y,im.size[0],im.size[1],round(ax,1),round(ay,1)]; placed.append((im,x,y)); shelf=max(shelf,im.size[1]); x+=im.size[0]+PAD
 atlas=Image.new('RGBA',(MAXW,y+shelf+PAD),(0,0,0,0))
 for im,px,py in placed: atlas.paste(im,(px,py))
-atlas.quantize(colors=160,method=Image.FASTOCTREE,dither=Image.NONE).save(f'/home/claude/feel-lab/{CH}.png',optimize=True)
+atlas.quantize(colors=160,method=Image.FASTOCTREE,dither=Image.NONE).save(f'{LAB}/{CH}.png',optimize=True)
 s=CFG['stand']; f=B[s[0]][s[1]][s[2]]; meta=dict(standH=round((f['y1']-f['y0'])*CFG['rel'].get(s[0],1.0),1),frames={name:[list(where[k]) for k in fr] for name,fr in rows})
-json.dump(meta,open(f'sprites/meta_{CH}.json','w'),separators=(',',':')); print(atlas.size,'standH',meta['standH'],'frames',sum(len(v) for v in meta['frames'].values()),'unique',len(seen))
+json.dump(meta,open(f'{WORK}/meta_{CH}.json','w'),separators=(',',':')); print(atlas.size,'standH',meta['standH'],'frames',sum(len(v) for v in meta['frames'].values()),'unique',len(seen))

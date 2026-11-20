@@ -1,0 +1,10 @@
+__pycache__/
+# Rebuildable scratch output
+work/all.js
+work/fists.js
+work/blobs_*
+work/dbg_*
+work/n_*.png
+work/look*.png
+work/preview.png
+work/items_prev.png

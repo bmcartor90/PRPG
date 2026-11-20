@@ -1,3 +1,4 @@
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 import json, numpy as np, scipy.ndimage as ndi
 from PIL import Image, ImageDraw
 import sys; path=sys.argv[1]; TAG=sys.argv[2]
@@ -42,4 +43,4 @@ for ri,r in enumerate(rows):
         mb=fg[B['y0']:B['y1'],B['x0']:B['x1']]
         gaps.append(int(dist[B['y0']:B['y1'],B['x0']:B['x1']][mb].min()))
     print('row',ri,'nearest pixel gap between neighbours:',gaps)
-dbg.save(f'sprites/dbg_{TAG}.png'); json.dump(rows,open(f'sprites/boxes_{TAG}.json','w'))
+dbg.save(f'{WORK}/dbg_{TAG}.png'); json.dump(rows,open(f'{WORK}/boxes_{TAG}.json','w'))

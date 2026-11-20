@@ -1,8 +1,9 @@
 # Mock-up of Lucca on the crystal platforms over a background, at 1080p game scale. Usage: mock.py <background> <output>
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from paths import ROOT, WORK, LAB, SRC
 import sys, json, numpy as np
 from PIL import Image
-T=Image.open('/mnt/user-data/uploads/6dd62cb4-image.png').convert('RGBA'); ta=np.asarray(T).copy(); ta[...,3]=np.load('sprites/alpha_tiles.npy'); T=Image.fromarray(ta,'RGBA')
-B=json.load(open('sprites/boxes_tiles.json')); M=json.load(open('sprites/meta.json')); A=Image.open('/home/claude/feel-lab/sprites.png').convert('RGBA')
+T=Image.open(SRC('6dd62cb4')).convert('RGBA'); ta=np.asarray(T).copy(); ta[...,3]=np.load(WORK+'/alpha_tiles.npy'); T=Image.fromarray(ta,'RGBA')
+B=json.load(open(WORK+'/boxes_tiles.json')); M=json.load(open(WORK+'/meta.json')); A=Image.open(LAB+'/sprites.png').convert('RGBA')
 BG=Image.open(sys.argv[1]).convert('RGBA').resize((1920,1080),Image.LANCZOS); TILE=80; ks=0.8
 def piece(i):
     im=T.crop(tuple(B[i])); return im.resize((round(im.size[0]*ks),round(im.size[1]*ks)),Image.LANCZOS)
