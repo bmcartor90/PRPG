@@ -2,6 +2,8 @@
 
 `Meshy_AI_crystal_cavern_bg_matte.png`: 1536 x 864, one screen, opaque.
 
+`crystal_cavern_bg_violet.png`: the same image recoloured. Its blues are moved to a dark, muted violet so a navy character stands out against it; the warm torch colours are untouched. Made by a hue shift, not by Meshy. Compare the two mock-ups in `docs/mockups/`.
+
 ## Limits
 
 - **It is one screen wide and does not repeat.** Maps are many screens wide. As it stands it can only be a fixed backdrop or a very slow-scrolling far layer.
