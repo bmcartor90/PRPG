@@ -18,4 +18,4 @@ Numbered to match the programmer's list. "Decided" means Brad has said so. "Reco
 
 10. **Eight more numbers in the lab's code. Done.** They are in `BODY` and `WORLD` now; see `changes.md`.
 11. **Order of surfaces. Done.** The lab now uses the same order as the map file: ground, then scaffolds.
-12. **Map editor.** Brad wants it built into the game as an editor mode, after the tuning panel. The brief for it is still to be written.
+12. **Map editor.** Built into the game as an editor mode, after the tuning panel. The brief is `map-editor-brief.md`.

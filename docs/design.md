@@ -176,6 +176,15 @@ These have to be built in from the start, because they are painful to add later:
 - **Negative space is filled.** Under the lowest ground the rock continues off the bottom of the screen.
 - Ceilings (caves, overhangs) are not designed yet.
 
+### Map size, doors and edges (decided 2026-11-19)
+
+- **A map is up to 344 by 344 tiles:** about 14 screens wide and 25 tall. There will be a lot of vertical climbing.
+- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
+- **Positions snap to sixths of a tile** in the map editor.
+- **Doors.** Press up while standing at a door to go through it to another map. Doors come in pairs. They are an escape: you can use one while a monster has noticed you. A door can be marked locked, and then a plot element is needed to open it.
+- **Edges.** Walking off the edge of a map can lead to the opposite edge of another map. Edges are paired the way doors are.
+- **The map editor** is built into the game as an editor mode, one map at a time. See `map-editor-brief.md`.
+
 ### Background
 
 The background is a matte painting zoomed way out. As the foreground scrolls quickly, the background scrolls slowly behind it.

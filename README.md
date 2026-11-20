@@ -6,6 +6,7 @@ A 2D sidescroller platforming RPG. Working title.
 
 - `docs/build-spec.md`: what to build first, and the rules for building it. **Programmers start here.**
 - `docs/design.md`: the wider design.
+- `docs/map-editor-brief.md`: what the map editor must do.
 - `docs/handoff-sprites.md`: the brief for whoever brings new art into the project.
 - `docs/changes.md`, `docs/answers.md`: what has changed for the programmer, and answers to his questions.
 - `tools/sprites/`: the scripts that cut sprite sheets into frames.
