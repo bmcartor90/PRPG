@@ -58,7 +58,13 @@ The lab is the reference. Port its behaviour, not its code style.
   - **Ground** is solid. Rock fills everything from the line down to the bottom of the map. Where ground ends or steps down there is a **cliff face** that blocks sideways movement for anyone whose feet are below its top. Nothing can be underneath ground.
   - **Scaffolds** are jump-through. He passes up through them and lands on top, and there is nothing underneath.
 - **Cliff faces are derived, not authored.** `buildCliffs` in the lab works them out from the ground lines; port that rule. `_world.json` lists the result so the port can be checked. The top corner of a cliff is a ledge and can be grabbed and pulled up onto like any other.
-- **Ceilings do not exist yet.** Ground always runs to the bottom of the map, so there is never anything to hit from below. Caves and overhangs will need them later; do not build them now.
+- **Floating rock** is a closed outline, listed as points going clockwise. Each edge is one of three things, decided by its direction:
+  - left to right: a surface, exactly like ground;
+  - right to left: an **underside**. Rising into one stops his rise dead and leaves his sideways speed alone. Moving sideways into one that is too low for him is blocked, on the ground or in the air;
+  - straight up or down: a **face**, which blocks like a cliff but has a bottom. He passes under it when his head is below that bottom.
+- **He always counts at full standing height against rock**, even during a dodge slide. Nothing lets him under rock lower than he is tall. (A crawl may come later; do not build one.)
+- Undersides are not checked while he is hanging, pulling up or climbing. A map should not run a climbable through rock.
+- The lab functions are `makeSlab`, `roofOver` and the bottom test in `hitCliffs`. `_world.json` lists the derived undersides and faces to check against.
 - **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
 - **Dodge slide:** pressing down while sprinting drops him into a short slide: low, no steering, losing speed, ended by time, by slowing too far, or by a jump. "Press" means down was not held on the previous tick, so the simulation state remembers whether down was held. `heightNow` in the lab gives his height during it; nothing uses that yet.
 - **Numbers the lab has no slider for** are still tuning, not code. They are the `BODY` and `WORLD` tables at the top of the lab's simulation and are listed in `_world.json` under `fixed`. Load the `character` ones from `data/movement.json` with the rest of that character's numbers, and the `world` ones from their own data file.
@@ -70,7 +76,7 @@ The lab is the reference. Port its behaviour, not its code style.
 
 ### How to know the port is right
 
-`feel-lab/traces/` holds 22 recorded runs of the lab's simulation. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
+`feel-lab/traces/` holds recorded runs of the lab's simulation, one file each. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
 
 - Write a test that replays each trace's inputs through the C# simulation and compares every tick.
 - Positions, velocities and stamina must match to within 0.000001. Mode, grounded and hands must match exactly.
@@ -101,13 +107,14 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 {
   "width": 292,
   "ground": [[x1, y1, x2, y2], ...],
+  "floatingRock": [[[x, y], [x, y], ...], ...],
   "scaffolds": [[x1, y1, x2, y2], ...],
   "climbables": [{"kind": "Ladder", "x": 262, "y1": 0, "y2": 8}, ...]
 }
 ```
 
-- Coordinates are in tiles and may be fractional. A platform at height 1.66 is legal.
-- `ground` lines are solid and filled beneath; `scaffolds` are jump-through.
+- **Coordinates are whole numbers of a unit, and the file says how many units make a tile** (`"unitsPerTile"`). Maps made in the editor use 6: every position is a whole number of sixths, so 7 means 7/6 of a tile. The game converts to tiles on load. The lab's test map needs 60, because its level has positions such as 331.6 and 5.75 that are not sixths; `_world.json` gives it in plain tiles.
+- `ground` lines are solid and filled beneath, down to the bottom of the map; `scaffolds` are jump-through; each `floatingRock` entry is one closed outline, clockwise.
 - `kind` is `Ladder`, `Rope` or `Wall`. Each kind has a stamina cost multiplier in the parameters.
 - The format will grow (areas, monsters, hazards). Keep the loader simple and tolerant of fields it does not know.
 

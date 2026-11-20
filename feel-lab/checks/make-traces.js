@@ -59,6 +59,18 @@ const SCENARIOS = [
    steps:[[70,RUN],[30,{...RUN,down:true}],[50,{down:true}],[20,{}],[40,R],[20,{dir:1,down:true}],[30,{}]]},
   {name:'dodge-slide-jump-and-edge', about:'Sprint, slide, jump out of it. Then sprint and slide off the end of the ground into a gap.', x:20,
    steps:[[70,RUN],[7,{...RUN,down:true}],[25,{...RUN,jump:true}],[40,RUN],[60,{}],[1,{}],[52,RUN],[40,{...RUN,down:true}],[120,{}]]},
+  {name:'head-bump', about:'Jump under floating rock whose underside is at 3 and hit his head; then the same jump out in the open.', x:353,
+   steps:[[2,{}],[50,{jump:true}],[40,{}],[70,L],[2,{}],[50,{jump:true}],[40,{}]]},
+  {name:'head-bump-while-running', about:'Run under the rock at 3 and jump: the rise stops, the sideways speed does not.', x:346,
+   steps:[[36,RUN],[30,{...RUN,jump:true}],[40,RUN],[40,{}]]},
+  {name:'floating-rock-face', about:'Jump into the side of the floating rock: stopped at its face while his body overlaps it, then carried on under it once he has dropped below.', x:347,
+   steps:[[2,{}],[26,{dir:1,jump:true}],[60,R],[30,{}]]},
+  {name:'floating-rock-corner-grab', about:'Jump beside the floating rock holding grab, catch its top corner, pull up, and walk off the far side.', x:348.6,
+   steps:[[2,{}],[40,{dir:1,jump:true,grab:true}],[80,{grab:true,up:true}],[30,{}],[90,R],[40,{}]]},
+  {name:'overhang-too-low', about:'Walk left under an overhang that slopes down from 4.5 to 1.5 until it is too low; jump under it there; then walk back out.', x:372,
+   steps:[[200,L],[2,{}],[40,{jump:true}],[40,{}],[60,R]]},
+  {name:'under-high-rock', about:'Walk and dodge-slide under rock whose underside is higher than he stands.', x:371,
+   steps:[[40,R],[40,RUN],[30,{...RUN,down:true}],[60,{}]]},
   {name:'draw-and-sheathe', about:'Draw both hands, sheathe the left, while walking.', x:20,
    steps:[[1,{hand:1}],[30,{}],[1,{hand:0,dir:1}],[40,R],[1,{hand:0}],[40,{}]]},
 ];
@@ -67,13 +79,13 @@ const run = new Function('PARAMS', 'SCENARIOS', sim + level + `
   const out = [];
   for (const sc of SCENARIOS){
     let ground = null;
-    for (const M of LINES) if (M.solid && sc.x >= M.x1 && sc.x <= M.x2 && (!ground || yAt(M, sc.x) > yAt(ground, sc.x))) ground = M;
+    for (const M of LINES) if (M.solid && !M.slab && sc.x >= M.x1 && sc.x <= M.x2 && (!ground || yAt(M, sc.x) > yAt(ground, sc.x))) ground = M;
     const p = makePlayer(sc.x, ground), states = [], modes = new Set(); let prevJump = false;
     const r = (v) => Math.round(v*1e6)/1e6;
     for (const [ticks, h] of sc.steps) for (let t = 0; t < ticks; t++){
       const jump = !!h.jump;
       step(p, PARAMS, {dir:h.dir || 0, run:!!h.run, jumpHeld:jump, jumpPressed:jump && !prevJump, up:!!h.up, down:!!h.down, grab:!!h.grab,
-                       swapHand:(t === 0 && h.hand !== undefined) ? h.hand : -1}, LINES, WORLD_W, CLIMBS, CLIFFS);
+                       swapHand:(t === 0 && h.hand !== undefined) ? h.hand : -1}, LINES, WORLD_W, CLIMBS, CLIFFS, ROOFS);
       prevJump = jump; modes.add(p.mode + (p.grounded ? '/ground' : '/air') + (p.prone > 0 ? '/prone' : '') + (p.exhaust > 0 ? '/exhausted' : ''));
       if (p.duck > 0) modes.add('dodge-slide');
       states.push([r(p.x), r(p.y), r(p.vx), r(p.vy), r(p.stamina), p.mode, p.grounded ? 1 : 0, p.held[0] ? 1 : 0, p.held[1] ? 1 : 0, p.duck > 0 ? 1 : 0]);
@@ -81,9 +93,10 @@ const run = new Function('PARAMS', 'SCENARIOS', sim + level + `
     out.push({name:sc.name, about:sc.about, modes:[...modes], states, startY:yAt(ground, sc.x)});
   }
   const seg = (M) => [M.x1, M.y1, M.x2, M.y2];
-  return {out, world:{width:WORLD_W, ground:LINES.filter(M => M.solid).map(seg), scaffolds:LINES.filter(M => !M.solid).map(seg),
+  return {out, world:{width:WORLD_W, ground:LINES.filter(M => M.solid && !M.slab).map(seg), floatingRock:SLABS, scaffolds:LINES.filter(M => !M.solid).map(seg),
     climbables:CLIMBS.map(c => ({kind:c.kind, x:c.x, y1:c.y1, y2:c.y2}))},
     fixed:{character:BODY, world:WORLD},
+    undersides:ROOFS.map(U => [U.x1, U.y1, U.x2, U.y2]),
     cliffs:CLIFFS.map(c => ({x:c.x, top:c.top, bottom:c.bottom === -Infinity ? null : c.bottom, openSide:c.face < 0 ? 'left' : 'right'}))};
 `);
 const res = run(PARAMS, SCENARIOS);
@@ -93,7 +106,7 @@ fs.writeFileSync(path.join(dir, '_world.json'), JSON.stringify({ticksPerSecond:6
   fixedNote:'Numbers the lab has no slider for. They are still tuning, not code: character numbers belong beside params, world numbers belong to the game.', fixed:res.fixed,
   groundedNote:'The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.',
   world:res.world,
-  cliffsNote:'Derived from ground, not authored: listed so a port can check its own derivation. bottom null means the face runs down out of the map.', cliffs:res.cliffs}, null, 1));
+  cliffsNote:'Derived, not authored: listed so a port can check its own derivation. Cliffs come from the ends of ground lines and from the upright edges of floating rock. bottom null means the face runs down out of the map. Undersides are the right-to-left edges of floating rock, listed left to right.', cliffs:res.cliffs, undersides:res.undersides}, null, 1));
 for (let i = 0; i < SCENARIOS.length; i++){
   const sc = SCENARIOS[i], o = res.out[i];
   fs.writeFileSync(path.join(dir, sc.name + '.json'), JSON.stringify({name:sc.name, about:sc.about, startX:sc.x, startY:o.startY,

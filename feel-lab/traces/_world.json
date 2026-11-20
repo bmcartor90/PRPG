@@ -89,7 +89,7 @@
  },
  "groundedNote": "The grounded column is the lab meaning: true whenever he is on a surface, including sliding down one too steep to stand on.",
  "world": {
-  "width": 344,
+  "width": 384,
   "ground": [
    [
     0,
@@ -234,6 +234,68 @@
     7,
     344,
     7
+   ],
+   [
+    344,
+    0,
+    384,
+    0
+   ]
+  ],
+  "floatingRock": [
+   [
+    [
+     350,
+     4.5
+    ],
+    [
+     356,
+     4.5
+    ],
+    [
+     356,
+     3
+    ],
+    [
+     350,
+     3
+    ]
+   ],
+   [
+    [
+     362,
+     6
+    ],
+    [
+     370,
+     6
+    ],
+    [
+     370,
+     4.5
+    ],
+    [
+     362,
+     1.5
+    ]
+   ],
+   [
+    [
+     374,
+     5
+    ],
+    [
+     380,
+     5
+    ],
+    [
+     380,
+     2.5
+    ],
+    [
+     374,
+     2.5
+    ]
    ]
   ],
   "scaffolds": [
@@ -391,7 +453,7 @@
    }
   ]
  },
- "cliffsNote": "Derived from ground, not authored: listed so a port can check its own derivation. bottom null means the face runs down out of the map.",
+ "cliffsNote": "Derived, not authored: listed so a port can check its own derivation. Cliffs come from the ends of ground lines and from the upright edges of floating rock. bottom null means the face runs down out of the map. Undersides are the right-to-left edges of floating rock, listed left to right.",
  "cliffs": [
   {
    "x": 0,
@@ -510,8 +572,70 @@
   {
    "x": 344,
    "top": 7,
+   "bottom": 0,
+   "openSide": "right"
+  },
+  {
+   "x": 384,
+   "top": 0,
    "bottom": null,
    "openSide": "right"
+  },
+  {
+   "x": 356,
+   "top": 4.5,
+   "bottom": 3,
+   "openSide": "right"
+  },
+  {
+   "x": 350,
+   "top": 4.5,
+   "bottom": 3,
+   "openSide": "left"
+  },
+  {
+   "x": 370,
+   "top": 6,
+   "bottom": 4.5,
+   "openSide": "right"
+  },
+  {
+   "x": 362,
+   "top": 6,
+   "bottom": 1.5,
+   "openSide": "left"
+  },
+  {
+   "x": 380,
+   "top": 5,
+   "bottom": 2.5,
+   "openSide": "right"
+  },
+  {
+   "x": 374,
+   "top": 5,
+   "bottom": 2.5,
+   "openSide": "left"
   }
+ ],
+ "undersides": [
+  [
+   350,
+   3,
+   356,
+   3
+  ],
+  [
+   362,
+   1.5,
+   370,
+   4.5
+  ],
+  [
+   374,
+   2.5,
+   380,
+   2.5
+  ]
  ]
 }

@@ -2,6 +2,19 @@
 
 Newest first. Each entry says what changed and what a port of the simulation has to do about it.
 
+## 2026-11-19, evening: floating rock
+
+All earlier traces are unchanged tick for tick. There are six new ones.
+
+1. **Floating rock.** A closed outline of solid rock, with surfaces on top, faces at the sides and undersides beneath. The rules are in the spec under "The movement simulation". In the lab: `makeSlab` turns an outline into surfaces, faces and undersides; `roofOver` finds the lowest underside over his body; `hitCliffs` gained a bottom test; `step` takes the undersides as an eighth argument and checks them in three places (end of the ground move, end of the air move, and the rise).
+2. **`buildCliffs` ignores the surfaces of floating rock**, both as a source of cliffs and as "ground beyond". Floating rock supplies its own faces.
+3. **Hitting his head** sets upward speed to zero and ends the jump's rise (`jumping` false, `cutting` true). It does not touch sideways speed.
+4. **Map format:** a new `floatingRock` list. `_world.json` lists the derived `undersides`, and its `cliffs` now include faces with a real bottom.
+5. **The test map is 384 tiles wide**, with a seventh section.
+6. **New traces:** `head-bump`, `head-bump-while-running`, `floating-rock-face`, `floating-rock-corner-grab`, `overhang-too-low`, `under-high-rock`.
+7. **Map coordinates** are whole numbers of a unit named in the file (`unitsPerTile`): 6 for editor maps, 60 for the test map. See "Map format".
+8. **Doors open with interact, not up.**
+
 ## 2026-11-19, later the same day
 
 All 22 traces are unchanged tick for tick.

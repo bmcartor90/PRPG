@@ -179,9 +179,9 @@ These have to be built in from the start, because they are painful to add later:
 ### Map size, doors and edges (decided 2026-11-19)
 
 - **A map is up to 344 by 344 tiles:** about 14 screens wide and 25 tall. There will be a lot of vertical climbing.
-- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
+- **Ground can have an underside.** A floating mass of rock is solid all the way round, and you bump your head on it from below: your rise stops dead and your sideways speed carries on. Rock lower than you are tall cannot be got under, not even with a dodge slide; a crawl is not designed. Ground that is not floating still fills down to the bottom of the map. (This replaces "ceilings are not designed yet" above.)
 - **Positions snap to sixths of a tile** in the map editor.
-- **Doors.** Press up while standing at a door to go through it to another map. Doors come in pairs. A door is 1.25 tiles wide, and you can enter from anywhere within it. They are an escape: you can use one while a monster has noticed you. A door can be marked locked, and then a plot element is needed to open it.
+- **Doors.** Press **interact** while standing at a door to go through it to another map. (Not up: up also mounts ladders, so a door near a ladder would be ambiguous.) Doors come in pairs. A door is 1.25 tiles wide, and you can enter from anywhere within it. They are an escape: you can use one while a monster has noticed you. A door can be marked locked, and then a plot element is needed to open it.
 - **Edges.** Walking off the edge of a map can lead to the opposite edge of another map. Edges are paired the way doors are.
 - **The map editor** is built into the game as an editor mode, one map at a time. See `map-editor-brief.md`.
 
@@ -311,7 +311,8 @@ Notes on Mind:
 ### Stat scale
 
 - The stamina and movement costs in the lab are what the game should feel like at **100 / 100 / 100** (Body / Agility / Mind).
-- **100 / 100 / 100 is the typical starting condition. 80 / 80 / 80 is the minimum.**
+- **100 / 100 / 100 is the typical starting condition. 80 / 80 / 80 is the minimum. About 200 is near the upper limit.**
+- **How each stat changes each movement number is not designed yet.** It needs a curve per number, kept in data so it can be tuned. The shape matters more than the range: a straight line from 80 to 200 would take jump height from 4 tiles to 8.
 - At these numbers stamina feels costly, and it is not the free-jumping Mario dream. That is accepted: it is the starting point, not the ceiling.
 
 ### Draw and sheathe

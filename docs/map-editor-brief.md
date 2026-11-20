@@ -11,7 +11,7 @@ He edits **one map at a time**. Maps connect through doors and edges, described 
 ## The map
 
 - Up to **344 by 344 tiles**: about 14 screens wide and 25 tall. Maps are tall, and a lot of play is vertical climbing. The game camera must follow up and down as well as sideways.
-- Positions snap to **sixths of a tile**. Store them so sixths stay exact; do not round them to decimals.
+- Positions snap to **sixths of a tile**, and the map file stores every coordinate as a whole number of sixths (7 means 7/6 of a tile). There is no finer placement: if a map ever needs one, its file declares a smaller unit.
 - The editor writes each slope's angle values into the file, so nobody types them (see `answers.md`, item 7).
 
 ## What Brad places
@@ -20,7 +20,7 @@ He edits **one map at a time**. Maps connect through doors and edges, described 
    - An **open** trace is ground that fills all the way down to the bottom of the map.
    - A **closed** trace is a floating mass of rock with an underside.
    - The fill, the cliff faces and the undersides are worked out from the trace. He never draws them.
-   - Undersides are a new movement rule (you bump your head). It is being added to the feel lab first; `changes.md` will say when it and its recordings are ready. Do not invent the rule.
+   - Undersides and the faces of floating rock are in the feel lab now, with recordings. See `changes.md` and the spec.
 2. **Scaffolds.** A line he can jump up through.
 3. **Climbables.** Ladder, rope or wall: where it is, its bottom and its top.
 4. **Doors.** Placed on a surface. Each has:
@@ -33,14 +33,14 @@ He edits **one map at a time**. Maps connect through doors and edges, described 
 
 ## Doors and edges in play
 
-- Press **up** while standing on the ground at a door to go through it. You arrive standing at its partner.
+- Press **interact** while standing on the ground at a door to go through it. You arrive standing at its partner. Up is not used, because up also mounts ladders.
 - Doors are an escape: you can go through one even while a monster has noticed you.
 - Going through a door or an edge counts as leaving the map.
-- An edge with no partner: left and right are walls; the bottom is a pit, which sends you back to the last save point. *(The top is assumed closed. Brad has not said.)*
+- An edge with no partner: left and right are walls; the bottom is a pit, which sends you back to the last save point; the top is an invisible lid.
 
 ## Snapping and measuring
 
-- Snap to sixths by default. Hold a key to place freely. Typing an exact number always works.
+- Everything snaps to sixths. Typing a number places a point exactly, in sixths.
 - Optional snap for slopes to the three clean grades: 1 in 2, 1 in 1, 2 in 1.
 - Slopes too steep to stand on are drawn dashed, as in the lab.
 - A ruler: pick two points and read the distance across and the height difference, in tiles.
@@ -81,5 +81,4 @@ Monsters, areas, hazards and sleep sites. Hand-placed art; surfaces get their ar
 
 ## Still open with Brad
 
-- What the top edge of a map does when it has no partner.
 - Whether an edge exit is the whole edge or a marked stretch of it.
