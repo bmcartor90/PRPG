@@ -168,6 +168,17 @@ These have to be built in from the start, because they are painful to add later:
 - Every map always has a **"slow" way** that the player is known to be capable of.
 - **Every map is clearable at minimum abilities.** Stats and abilities open faster routes; they are never required to get through.
 
+### Ground, scaffolds and cliffs
+
+- **Ground is solid.** It is filled in from its surface down to the bottom of the map, and where it ends or steps down there is a cliff face you cannot walk or jump through. The top corner of a cliff is a ledge: it can be grabbed and pulled up onto.
+- **Scaffolds are jump-through.** Anything you can jump up through looks built, like wooden scaffolding, so the two read differently at a glance.
+- **Negative space is filled.** Under the lowest ground the rock continues off the bottom of the screen.
+- Ceilings (caves, overhangs) are not designed yet.
+
+### Background
+
+The background is a matte painting zoomed way out. As the foreground scrolls quickly, the background scrolls slowly behind it.
+
 ## Current focus
 
 Movement and map building come first. Battle-start edge rules and similar details are deferred until they can be felt in play.

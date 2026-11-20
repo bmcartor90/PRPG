@@ -23,6 +23,7 @@
   "slideSteer": 0.3,
   "slideJump": 1,
   "footWidth": 0.6,
+  "bodyWidth": 0.6,
   "staminaMax": 100,
   "jumpCost": 30,
   "runDrain": 2,
@@ -49,8 +50,8 @@
   "climbSprintCost": 3
  },
  "world": {
-  "width": 292,
-  "lines": [
+  "width": 344,
+  "ground": [
    [
     0,
     0,
@@ -93,6 +94,110 @@
     168,
     0
    ],
+   [
+    168,
+    0,
+    176,
+    4
+   ],
+   [
+    176,
+    4,
+    180,
+    4
+   ],
+   [
+    180,
+    4,
+    188,
+    0
+   ],
+   [
+    188,
+    0,
+    193,
+    0
+   ],
+   [
+    193,
+    0,
+    198,
+    5
+   ],
+   [
+    198,
+    5,
+    201,
+    5
+   ],
+   [
+    201,
+    5,
+    206,
+    0
+   ],
+   [
+    206,
+    0,
+    211,
+    0
+   ],
+   [
+    211,
+    0,
+    214,
+    6
+   ],
+   [
+    214,
+    6,
+    218,
+    6
+   ],
+   [
+    218,
+    6,
+    221,
+    0
+   ],
+   [
+    221,
+    0,
+    300,
+    0
+   ],
+   [
+    300,
+    2,
+    306,
+    2
+   ],
+   [
+    306,
+    6.5,
+    312,
+    6.5
+   ],
+   [
+    312,
+    3,
+    318,
+    3
+   ],
+   [
+    321,
+    0,
+    332,
+    0
+   ],
+   [
+    332,
+    7,
+    344,
+    7
+   ]
+  ],
+  "scaffolds": [
    [
     9,
     2,
@@ -178,78 +283,6 @@
     3.5
    ],
    [
-    168,
-    0,
-    176,
-    4
-   ],
-   [
-    176,
-    4,
-    180,
-    4
-   ],
-   [
-    180,
-    4,
-    188,
-    0
-   ],
-   [
-    188,
-    0,
-    193,
-    0
-   ],
-   [
-    193,
-    0,
-    198,
-    5
-   ],
-   [
-    198,
-    5,
-    201,
-    5
-   ],
-   [
-    201,
-    5,
-    206,
-    0
-   ],
-   [
-    206,
-    0,
-    211,
-    0
-   ],
-   [
-    211,
-    0,
-    214,
-    6
-   ],
-   [
-    214,
-    6,
-    218,
-    6
-   ],
-   [
-    218,
-    6,
-    221,
-    0
-   ],
-   [
-    221,
-    0,
-    292,
-    0
-   ],
-   [
     234,
     5,
     238,
@@ -284,6 +317,12 @@
     8,
     285.5,
     8
+   ],
+   [
+    323,
+    3.5,
+    327,
+    3.5
    ]
   ],
   "climbables": [
@@ -304,7 +343,136 @@
     "x": 282,
     "y1": 0,
     "y2": 8
+   },
+   {
+    "kind": "Ladder",
+    "x": 331.6,
+    "y1": 0,
+    "y2": 7
    }
   ]
- }
+ },
+ "cliffsNote": "Derived from ground, not authored: listed so a port can check its own derivation. bottom null means the face runs down out of the map.",
+ "cliffs": [
+  {
+   "x": 0,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 40,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 42,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 50,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 53,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 61,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 65,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 73,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 79,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 87,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 95,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 103,
+   "top": 0,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 113,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 300,
+   "top": 2,
+   "bottom": 0,
+   "openSide": "left"
+  },
+  {
+   "x": 306,
+   "top": 6.5,
+   "bottom": 2,
+   "openSide": "left"
+  },
+  {
+   "x": 312,
+   "top": 6.5,
+   "bottom": 3,
+   "openSide": "right"
+  },
+  {
+   "x": 318,
+   "top": 3,
+   "bottom": null,
+   "openSide": "right"
+  },
+  {
+   "x": 321,
+   "top": 0,
+   "bottom": null,
+   "openSide": "left"
+  },
+  {
+   "x": 332,
+   "top": 7,
+   "bottom": 0,
+   "openSide": "left"
+  },
+  {
+   "x": 344,
+   "top": 7,
+   "bottom": null,
+   "openSide": "right"
+  }
+ ]
 }

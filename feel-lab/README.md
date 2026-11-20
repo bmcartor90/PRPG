@@ -10,7 +10,7 @@ Inside `index.html`, everything between `/*SIM-START*/` and `/*SIM-END*/` is the
 
 ## Traces
 
-`traces/` holds 16 recorded runs of the simulation: the inputs for every tick and the resulting position, velocity, stamina and state. `traces/_world.json` has the parameters and the map they ran on. A port of the simulation is correct when it reproduces these. `checks/make-traces.js` regenerates them and is where to add scenarios.
+`traces/` holds 20 recorded runs of the simulation: the inputs for every tick and the resulting position, velocity, stamina and state. `traces/_world.json` has the parameters and the map they ran on. A port of the simulation is correct when it reproduces these. `checks/make-traces.js` regenerates them and is where to add scenarios.
 
 ## Checks
 
@@ -21,4 +21,5 @@ They print measurements (how far a jump carries, how much stamina a climb costs)
 - `slopes.js`: sliding, running onto and off slopes, launching from a ramp.
 - `feet-and-gaps.js`: foot width, walking off edges, widest gap cleared.
 - `stamina-and-climbing.js`: stamina, ledge grabs, pull-ups, ladders, ropes, walls, lunge, hands.
+- `cliffs.js`: solid ground, cliff faces, the pit, a scaffold, and a ladder against a cliff.
 - `page.js`: loads the whole page with a stand-in browser and checks it starts and picks sprite frames.

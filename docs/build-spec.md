@@ -54,7 +54,11 @@ The lab is the reference. Port its behaviour, not its code style.
 - **Where it is:** `feel-lab/index.html`, between `/*SIM-START*/` and `/*SIM-END*/`. About 450 lines. `step(player, params, input, lines, worldWidth, climbables)` advances one tick.
 - **Units:** tiles and seconds. `y` is up. Speeds are tiles per second.
 - **The numbers:** `feel-lab/traces/_world.json` has every parameter with the agreed starting values. These are what the game should feel like for a character with Body, Agility and Mind all at 100.
-- **Platforms** are line segments, flat or sloped. They are one-way: he lands on them from above and passes through them from below. Slopes steeper than the walkable limit cannot be stood on; he slides.
+- **Surfaces** are line segments, flat or sloped. He lands on any of them from above. Slopes steeper than the walkable limit cannot be stood on; he slides. There are two kinds:
+  - **Ground** is solid. Rock fills everything from the line down to the bottom of the map. Where ground ends or steps down there is a **cliff face** that blocks sideways movement for anyone whose feet are below its top. Nothing can be underneath ground.
+  - **Scaffolds** are jump-through. He passes up through them and lands on top, and there is nothing underneath.
+- **Cliff faces are derived, not authored.** `buildCliffs` in the lab works them out from the ground lines; port that rule. `_world.json` lists the result so the port can be checked. The top corner of a cliff is a ledge and can be grabbed and pulled up onto like any other.
+- **Ceilings do not exist yet.** Ground always runs to the bottom of the map, so there is never anything to hit from below. Caves and overhangs will need them later; do not build them now.
 - **States to preserve:** on the ground, in the air, hanging from a ledge, pulling up, climbing (ladder, rope or wall), prone after a missed lunge, exhausted. Plus what each hand holds and any draw or sheathe in progress.
 - **Three terms from the design that the code should name explicitly,** because later systems depend on them:
   - *Anchored:* gravity is not acting on him (standing, hanging, climbing).
@@ -63,7 +67,7 @@ The lab is the reference. Port its behaviour, not its code style.
 
 ### How to know the port is right
 
-`feel-lab/traces/` holds 16 recorded runs of the lab's simulation. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
+`feel-lab/traces/` holds 20 recorded runs of the lab's simulation. Each file gives a starting position, the inputs for every tick, and the resulting state for every tick (position, velocity, stamina, mode, grounded, and what each hand holds). `_world.json` has the parameters and the test map they ran on.
 
 - Write a test that replays each trace's inputs through the C# simulation and compares every tick.
 - Positions, velocities and stamina must match to within 0.000001. Mode, grounded and hands must match exactly.
@@ -93,12 +97,14 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 ```json
 {
   "width": 292,
-  "lines": [[x1, y1, x2, y2], ...],
+  "ground": [[x1, y1, x2, y2], ...],
+  "scaffolds": [[x1, y1, x2, y2], ...],
   "climbables": [{"kind": "Ladder", "x": 262, "y1": 0, "y2": 8}, ...]
 }
 ```
 
 - Coordinates are in tiles and may be fractional. A platform at height 1.66 is legal.
+- `ground` lines are solid and filled beneath; `scaffolds` are jump-through.
 - `kind` is `Ladder`, `Rope` or `Wall`. Each kind has a stamina cost multiplier in the parameters.
 - The format will grow (areas, monsters, hazards). Keep the loader simple and tolerant of fields it does not know.
 
@@ -109,7 +115,8 @@ A JSON file. The test map is `feel-lab/traces/_world.json` under `world`; copy i
 - **Sprites:** `assets/sprites/lucca/atlas/`. The README one folder up explains every field, including the foot anchor, the hand anchor for ledge and rope frames, and the fist positions.
 - **Which frame when:** `pickFrame` in `feel-lab/index.html` is the reference. Port its choices.
 - **Items:** `assets/sprites/items/`. The sword and shield are separate pictures pinned to his fists. Read "Which hand is which" and "Drawing and sheathing" in the Lucca README before touching this; the handedness rule is easy to get backwards. The lab's drawing code just after `pickFrame` is the reference.
-- Platforms can be plain white lines for now, as in the lab. Dashed for too steep to stand on.
+- Surfaces can be plain white lines for now, as in the lab: dashed for too steep to stand on, ground filled in dark beneath with its cliff faces drawn, scaffolds with thin posts. Tile art comes later.
+- **Background:** leave a hook for layers that scroll slower than the camera. The far layer will be a zoomed-out painting that moves at a small fraction of camera speed. No art for it yet; a flat colour is fine.
 
 ## Controls
 
@@ -117,7 +124,7 @@ Layouts are in `design.md` under "Controls". The controller layout is locked. Ev
 
 ## Order of work
 
-1. **Simulation.** `sim/` in plain C#, the parameter and map loaders, and all the tests above passing. Nothing visual. This is done when `dotnet test` is green on all 16 traces.
+1. **Simulation.** `sim/` in plain C#, the parameter and map loaders, and all the tests above passing. Nothing visual. This is done when `dotnet test` is green on every trace.
 2. **On screen.** The Unity project: the test map, Lucca with his animations and items, the camera, controller and keyboard.
 3. **Tuning panel.** A way for Brad to change the numbers while playing and write them back to `data/movement.json`. Simple is fine.
 

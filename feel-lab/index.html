@@ -126,6 +126,7 @@ button.capturing{background:var(--white);color:var(--ink);border-color:var(--whi
     <button type="button" id="go-2">3 Playground</button>
     <button type="button" id="go-3">4 Slopes</button>
     <button type="button" id="go-4">5 Climbing</button>
+    <button type="button" id="go-5">6 Cliffs</button>
   </div>
 
   <div class="bar">
@@ -167,6 +168,40 @@ function mkLine(x1, y1, x2, y2){
 function yAt(L, x){ return L.y1 + (L.y2-L.y1)*(x-L.x1)/(L.x2-L.x1); }
 function clampX(L, x){ return Math.min(Math.max(x, L.x1), L.x2); }
 function isSteep(L, P){ return L.deg > P.walkLimit + 1e-6; }
+
+// ---- Solid ground ----
+// A line marked solid is the top of filled ground: rock runs from it down to the bottom of the map.
+// Lines not marked solid are scaffolds: you jump up through them and land on top, and there is nothing underneath.
+// Where solid ground ends or steps down there is a cliff face, which blocks sideways movement for anyone whose feet are below its top.
+// (Called cliffs here because "Wall" is already the name of a climbable surface.)
+function buildCliffs(lines){
+  const cliffs = [];
+  for (const M of lines){
+    if (!M.solid) continue;
+    for (const side of [-1, 1]){
+      const ex = side < 0 ? M.x1 : M.x2, ey = side < 0 ? M.y1 : M.y2, bx = ex + side*0.01;   // a point just beyond this end
+      let below = -Infinity, covered = false;
+      for (const N of lines){
+        if (N === M || !N.solid || bx < N.x1 || bx > N.x2) continue;
+        const ny = yAt(N, bx);
+        if (ny >= ey - 0.05){ covered = true; break; }      // ground carries on, or steps up: no cliff belongs to this end
+        if (ny > below) below = ny;                         // lower ground beyond: the cliff runs down to it
+      }
+      if (!covered) cliffs.push({x:ex, top:ey, bottom:below, face:side});   // face: which side is open air
+    }
+  }
+  return cliffs;
+}
+// Stop him at a cliff face. x0 and y0 are where he was before this tick's sideways move.
+function hitCliffs(p, P, cliffs, x0, y0){
+  if (!cliffs) return;
+  const hb = (P.bodyWidth || 0)/2;
+  for (const W of cliffs){
+    if (y0 >= W.top - 0.02) continue;                       // feet at or above the top: he is over it, not against it
+    if (W.face < 0){ if (x0 <= W.x && p.x + hb > W.x){ p.x = W.x - hb; if (p.vx > 0) p.vx = 0; } }
+    else           { if (x0 >= W.x && p.x - hb < W.x){ p.x = W.x + hb; if (p.vx < 0) p.vx = 0; } }
+  }
+}
 
 function derive(P){
   const g = 2*P.jumpHeight/(P.apexTime*P.apexTime);   // gravity while rising with jump held
@@ -361,7 +396,7 @@ function tail(p, P){
   if (p.y < -7) respawn(p, p.safeX, p.safeLine);
 }
 
-function step(p, P, inp, lines, worldW, climbs){
+function step(p, P, inp, lines, worldW, climbs, cliffs){
   const d = derive(P);
   p.px = p.x; p.py = p.y; p.plift = p.lift;
   if (p.stamina == null || p.stamina > P.staminaMax) p.stamina = P.staminaMax;
@@ -439,6 +474,7 @@ function step(p, P, inp, lines, worldW, climbs){
     p.x += p.vx*L.cos*DT;
     if (p.x < RADIUS){ p.x = RADIUS; p.vx = 0; }
     if (p.x > worldW-RADIUS){ p.x = worldW-RADIUS; p.vx = 0; }
+    hitCliffs(p, P, cliffs, p.px, p.py);
 
     if (p.x < L.x1 || p.x > L.x2){
       // The middle of the body is past the end of this line.
@@ -484,6 +520,7 @@ function step(p, P, inp, lines, worldW, climbs){
     p.x += p.vx*DT;
     if (p.x < RADIUS){ p.x = RADIUS; p.vx = 0; }
     if (p.x > worldW-RADIUS){ p.x = worldW-RADIUS; p.vx = 0; }
+    hitCliffs(p, P, cliffs, p.px, p.py);
   }
 
   // Jump: a press counts now, or for a short while before landing (buffer),
@@ -533,7 +570,8 @@ function step(p, P, inp, lines, worldW, climbs){
     const v1 = Math.max(p.vy - g*DT, -P.terminal);
     const y1 = ay + 0.5*(p.vy+v1)*DT;
 
-    // Lines are one-way: you pass up through them and land on them from above.
+    // You land on a line from above. Scaffolds can also be jumped up through; solid ground cannot be reached from below at all,
+    // because its cliffs keep you out from the sides.
     // You land if any part of your footing comes down on the line, not only the middle of the body.
     let land = null, landY = -Infinity;
     const hwAir = (P.footWidth || 0)/2;
@@ -585,16 +623,17 @@ function step(p, P, inp, lines, worldW, climbs){
 /*SIM-END*/
 
 // ---------- Level ----------
-const WORLD_W = 292;
+const WORLD_W = 344;
 const LINES = [];
 const MARKS = [];      // small number labels
 const CAPTIONS = [];   // section captions
-function slope(x1, y1, x2, y2){ const L = mkLine(x1, y1, x2, y2); LINES.push(L); return L; }
-function line(x1, x2, y){ return slope(x1, y, x2, y); }
+// solid = filled ground with cliff faces at its ends. Otherwise it is a scaffold you can jump up through.
+function slope(x1, y1, x2, y2, solid){ const L = mkLine(x1, y1, x2, y2); L.solid = !!solid; LINES.push(L); return L; }
+function line(x1, x2, y, solid){ return slope(x1, y, x2, y, solid); }
 
 // Ground, broken by gaps of known width.
-const START = line(0, 40, 0);
-[[42,50],[53,61],[65,73],[79,87],[95,103],[113,168]].forEach(s => line(s[0], s[1], 0));
+const START = line(0, 40, 0, true);
+[[42,50],[53,61],[65,73],[79,87],[95,103],[113,168]].forEach(s => line(s[0], s[1], 0, true));
 [[40,42],[50,53],[61,65],[73,79],[87,95],[103,113]].forEach(g => MARKS.push({x:(g[0]+g[1])/2, y:0.15, text:String(g[1]-g[0])}));
 
 // Height ledges, measured from the ground.
@@ -609,16 +648,16 @@ CAPTIONS.push({x:118, y:10.4, text:'PLAYGROUND'});
 
 // Slopes: three hills at the grades that tile cleanly (1:2, 1:1, 2:1), each up, across and down.
 function hill(x, run, rise, top, label){
-  slope(x, 0, x+run, rise); line(x+run, x+run+top, rise); slope(x+run+top, rise, x+2*run+top, 0);
+  slope(x, 0, x+run, rise, true); line(x+run, x+run+top, rise, true); slope(x+run+top, rise, x+2*run+top, 0, true);
   MARKS.push({x:x+run+top/2, y:rise+0.25, text:label});
   return x+2*run+top;
 }
 let hx = hill(168, 8, 4, 4, '27°');
-line(hx, hx+5, 0);
+line(hx, hx+5, 0, true);
 hx = hill(hx+5, 5, 5, 3, '45°');
-line(hx, hx+5, 0);
+line(hx, hx+5, 0, true);
 hx = hill(hx+5, 3, 6, 4, '63°');
-line(hx, WORLD_W, 0);
+line(hx, 300, 0, true);
 CAPTIONS.push({x:168, y:10.4, text:'SLOPES   a dashed line is too steep to stand on'});
 
 // Climbing: ledges just out of jumping range, then a ladder, a rope and a brick wall up to platforms 8 tiles high.
@@ -626,6 +665,14 @@ const CLIMBS = [];
 [[234, 5], [242, 5.75], [250, 6.5]].forEach(l => { line(l[0], l[0]+4, l[1]); MARKS.push({x:l[0]+2, y:l[1]+0.25, text:String(l[1])}); });
 [['Ladder', 262], ['Rope', 272], ['Wall', 282]].forEach(c => { CLIMBS.push({kind:c[0], x:c[1], y1:0, y2:8}); line(c[1]-0.5, c[1]+3.5, 8); });
 CAPTIONS.push({x:232, y:10.4, text:'CLIMBING   hold grab to catch a ledge or climbable; up or jump pulls you up. In the air: grab + direction + jump lunges'});
+
+// Cliffs: solid ground at different heights, with cliff faces between. Scaffolds everywhere else can be jumped up through; these cannot.
+[[300,306,2],[306,312,6.5],[312,318,3],[321,332,0],[332,WORLD_W,7]].forEach(b => { line(b[0], b[1], b[2], true); if (b[2] > 0) MARKS.push({x:(b[0]+b[1])/2, y:b[2]+0.25, text:String(b[2])}); });
+MARKS.push({x:319.5, y:0.4, text:'pit'});
+line(323, 327, 3.5);                                   // a scaffold over solid ground, for comparison
+CLIMBS.push({kind:'Ladder', x:331.6, y1:0, y2:7});
+CAPTIONS.push({x:294, y:10.4, text:'CLIFFS   filled ground is solid: its faces block you. Jump up 2, grab and pull up to 6.5, drop into the pit, take the ladder up 7'});
+const CLIFFS = buildCliffs(LINES);
 
 // ---------- Parameters ----------
 const DEFS = [
@@ -681,6 +728,8 @@ const DEFS = [
   {group:'Stamina', k:'exhaustTime', name:'Exhaustion', unit:' s', min:0.2, max:4, step:0.1, dp:1, def:1.2,
    desc:'How long you are down when the bar hits zero. You drop off anything you are holding, and you cannot run again until the bar is a quarter full.'},
 
+  {group:'Climbing', k:'bodyWidth', name:'Body width', unit:' tiles', min:0, max:1.5, step:0.05, dp:2, def:0.6,
+   desc:'How wide he is when he runs into a cliff face. He stops with this much of him clear of the rock.'},
   {group:'Climbing', k:'charHeight', name:'Character height', unit:' tiles', min:1, max:3, step:0.05, dp:2, def:1.9,
    desc:'How tall he stands. A per-character number, and it does not have to be a whole tile. Taller characters reach higher ledges.'},
   {group:'Climbing', k:'armReach', name:'Arm reach', unit:' tiles', min:0, max:1, step:0.05, dp:2, def:0.1,
@@ -871,7 +920,7 @@ function queueSwap(hand){ if (!swapQueue.includes(hand)) swapQueue.push(hand); }
 const DEFAULT_BINDS = {left:['ArrowLeft'], right:['ArrowRight'], up:['ArrowUp'], down:['ArrowDown'],
                        jump:['Space'], run:['KeyD'], grab:['KeyF'], handL:['KeyQ'], handR:['KeyW']};
 const ACTIONS = {left:'Left', right:'Right', up:'Up', down:'Down', jump:'Jump', run:'Run', grab:'Grab', handL:'Left hand', handR:'Right hand'};
-const RESERVED = ['KeyT', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Tab', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
+const RESERVED = ['KeyT', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Tab', 'ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'MetaLeft', 'MetaRight'];
 const KEY_STORE = 'feel-lab-keys-v7';   // v7: Brad's arrow-key layout, hands on Q and W
 let BINDS = JSON.parse(JSON.stringify(DEFAULT_BINDS));
 try {
@@ -949,7 +998,7 @@ window.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (!controlFocused()){
     if (e.code === 'KeyT'){ warp(currentSection); return; }   // T for try again; R is the right hand now
-    const n = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5'].indexOf(e.code);
+    const n = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6'].indexOf(e.code);
     if (n >= 0){ warp(n); $('hint').hidden = true; return; }
   }
   const a = MAP[e.code]; if (!a) return;
@@ -1102,7 +1151,7 @@ window.addEventListener('resize', resize);
 
 // The course is long, so each section has a start point. R returns to the current one.
 const GEAR = ['shield', 'sword'];   // stand-in names for what the left and right hand draw
-const SECTIONS = [3, 36, 115, 163, 229];
+const SECTIONS = [3, 36, 115, 163, 229, 294];
 let currentSection = 0;
 function warp(i){
   const x = SECTIONS[i];
@@ -1127,7 +1176,7 @@ function tick(){
   padPrevL = pad.handL; padPrevR = pad.handR;
   const swapHand = (!player.swap && swapQueue.length) ? swapQueue.shift() : -1;   // one hand at a time; the other waits its turn
   const wasGrounded = player.grounded;
-  step(player, P, {dir, run:keys.run || pad.run, jumpHeld, jumpPressed:pressed, up:keys.up || pad.up || tapQueued.up, down:keys.down || pad.down || tapQueued.down, grab:keys.grab || pad.grab, swapHand}, LINES, WORLD_W, CLIMBS);
+  step(player, P, {dir, run:keys.run || pad.run, jumpHeld, jumpPressed:pressed, up:keys.up || pad.up || tapQueued.up, down:keys.down || pad.down || tapQueued.down, grab:keys.grab || pad.grab, swapHand}, LINES, WORLD_W, CLIMBS, CLIFFS);
   tapQueued.up = tapQueued.down = false;
 
   // Animation bookkeeping: which way he faces, how far he has travelled on foot, landing and slide timers.
@@ -1196,6 +1245,21 @@ function render(alpha){
   }
 
   const lw = Math.max(2, s*0.09);
+  // Solid ground: rock filled in from the surface down past the bottom of the view, with its cliff faces drawn.
+  ctx.fillStyle = '#1c1c1c';
+  for (const L of LINES) if (L.solid){
+    ctx.beginPath(); ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); ctx.lineTo(X(L.x2), Y(-40)); ctx.lineTo(X(L.x1), Y(-40)); ctx.closePath(); ctx.fill();
+  }
+  ctx.strokeStyle = '#8a8a8a'; ctx.lineWidth = Math.max(1.5, lw*0.6); ctx.lineCap = 'butt'; ctx.beginPath();
+  for (const W of CLIFFS){ ctx.moveTo(X(W.x), Y(W.top)); ctx.lineTo(X(W.x), Y(W.bottom === -Infinity ? -40 : W.bottom)); }
+  ctx.stroke();
+  // Scaffolds: thin posts underneath, so they read as something built that you can jump up through.
+  ctx.strokeStyle = '#5a5a5a'; ctx.lineWidth = Math.max(1, lw*0.35); ctx.beginPath();
+  for (const L of LINES) if (!L.solid){
+    for (const q of [0.12, 0.88]){ const x = L.x1 + (L.x2 - L.x1)*q, y = yAt(L, x); ctx.moveTo(X(x), Y(y)); ctx.lineTo(X(x), Y(y - 0.9)); }
+    ctx.moveTo(X(L.x1 + (L.x2 - L.x1)*0.12), Y(L.y1 - 0.9)); ctx.lineTo(X(L.x1 + (L.x2 - L.x1)*0.88), Y(L.y2 - 0.45));
+  }
+  ctx.stroke();
   ctx.strokeStyle = '#fff'; ctx.lineWidth = lw; ctx.lineCap = 'round';
   ctx.setLineDash([]); ctx.beginPath();
   for (const L of LINES) if (!isSteep(L, P)){ ctx.moveTo(X(L.x1), Y(L.y1)); ctx.lineTo(X(L.x2), Y(L.y2)); }
