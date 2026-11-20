@@ -23,7 +23,7 @@ This gets close, not exact. Expect small drift in size and colour between sheets
 ## Lucca
 
 - **Reference picture:** `references/lucca_anchor.png` (first frame of the walk sheet)
-- **Role in the game:** test character. Role and stats not yet decided.
+- **Archetype:** agile fighter / swordsman (read from his reference picture; stats not yet decided)
 - **Height in the game:** 1.9 tiles
 - **Size on a sheet:** about 307 pixels tall and 140 wide standing, on a 1536 x 864 sheet
 - **Hair:** shoulder-length, wavy, blue-black
@@ -43,7 +43,7 @@ Copy this block, fill it in, and add a reference picture to `references/` once t
 ## [Name]
 
 - Reference picture: references/[name]_anchor.png
-- Role in the game: [for example: heavy fighter, archer, mage]
+- Archetype: [for example: heavy knight, archer, mage]
 - Height in the game: [tiles; Lucca is 1.9]
 - Size compared with Lucca: [for example: same height but broader; 15% taller]
 - Hair:
