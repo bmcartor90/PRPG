@@ -29,7 +29,8 @@ if errorlevel 1 (
 
 echo.
 echo Done. Opening the build folder: run PRPG.exe.
-start "" "%ROOT%build"
+rem Use explorer explicitly: "start" on the build folder would find build.bat first and run it again.
+explorer "%ROOT%build"
 exit /b 0
 
 :fail
