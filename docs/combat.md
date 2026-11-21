@@ -101,18 +101,20 @@ Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat
 | MP | Current and maximum. Pays spell costs. | Includes Mind. |
 | Speed | Fills the ready bar. | To try first: the stat curve on Agility. |
 | Attack | The damage a physical attack fundamentally does. | The weapon. |
-| Strength | The attacker's side of the physical comparison. | Includes Body. |
+| Strength | The attacker's side of the physical comparison. | Character Strength + Body ÷ 2. |
 | Defense | The defender's side of the physical comparison. | Character Defense + armour Defense + Agility ÷ 4. |
 | Magic Attack | The damage a skill or spell fundamentally does. | The skill or spell. |
-| Magic Power | The attacker's side of the magical comparison. | Mind. |
-| Fortitude | A saving throw. | Body. |
-| Reflex | A saving throw. | Agility. |
-| Will | A saving throw. | Mind. |
+| Magic Power | The attacker's side of the magical comparison. | Character Magic + Mind ÷ 2. |
+| Fortitude | A saving throw. | Character Fortitude + Body ÷ 2. |
+| Reflex | A saving throw. | Character Reflex + Agility ÷ 2. |
+| Will | A saving throw. | Character Will + Mind ÷ 2. |
 | Dodge % | Chance a dodgeable attack misses. | Agility ÷ 20: 4% at 80, 5% at 100, 10% at 200. |
 | Block % | Chance a blockable attack misses. | The shield. |
-| Critical % | Proposed (C26). | The weapon. |
+| Critical % | Agreed in outline (C26), settled with gear. | The weapon. |
 
 - **Decided 2026-11-20:** Defense runs from **80 to 120 early** in the game to **300 to 420 late**. Agility is about 25% of Defense early and about 11% late.
+- **Decided 2026-11-20 (C24):** Strength and Defense have to scale commensurately with each other, and so do Magic Power and the saving throws. The two pairs do not have to be on the same scale as each other.
+- **Decided 2026-11-20 (C25):** Agility's share of Defense fades as levels rise, and that is intended. Gear should be an important part of Defense, and the ninja should not be naturally high in Defense.
 - **Decided 2026-11-20 (C14):** stamina is strictly a platformer-view stat. It plays no part in a fight. This also answers item 8 of the brief: stamina does not carry in.
 - **Decided 2026-11-20 (C14):** skills cost nothing, or mana.
 - **Decided 2026-11-20 (C21):** Body's part in staying alive is HP. (The idea of reaching Defense through armour weight was not taken up.)
@@ -130,7 +132,22 @@ Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat
 
 So every attack, skill and spell is described by: its base value (the weapon's Attack, or its own Magic Attack), which comparison it uses, whether it can be dodged, whether it can be blocked, and its cost (nothing, or mana).
 
-- **Proposed (C19):** the comparison is a plain ratio: scale = attacker's stat ÷ defender's stat, held between 50% and 200%. 80% to 125% is then two values within a quarter of each other. Not yet answered.
+### The Attack Quotient
+
+- **Decided 2026-11-20 (C19):** **AQ**, the Attack Quotient, is the attacker's stat ÷ the defender's stat: Strength ÷ Defense, or Magic Power ÷ the saving throw.
+- **Decided 2026-11-20 (C19):** damage is half the attack's value, plus a second half that moves with AQ.
+- **Proposed (C29), a correction:** as Brad wrote it, the second half is divided by AQ, which makes a stronger attacker do less. Multiplying is what matches every number he has given:
+
+  **Damage = (Attack ÷ 2) + (Attack × AQ ÷ 2)**, which is Attack × (1 + AQ) ÷ 2, and never more than 200%.
+
+  | AQ | 0.25 | 0.5 | 0.67 | 0.8 | 1 | 1.25 | 1.5 | 2 | 3 or more |
+  |---|---|---|---|---|---|---|---|---|---|
+  | Damage | 63% | 75% | 83% | 90% | 100% | 113% | 125% | 150% | 200% |
+
+  - The floor of 50% is built in: it is what is left when the attacker's stat is nothing beside the defender's. It is approached, never reached.
+  - 200% is reached at AQ 3 and held there.
+  - With Strength and Defense both between 80 and 120, AQ runs from 0.67 to 1.5, which is 83% to 125%: the "tends to do 80% to 125%" band.
+- **Raised (C30):** this is a gentle formula. Doubling Defense from an even match takes damage from 100% to 75%. The whole early spread of Defense (80 to 120, against Strength 100) is 113% down to 92% of damage taken, about a fifth. Late (300 to 420 against 360) it is 110% down to 93%. If gear is meant to matter more than that, the formula wants to be steeper; a plain Damage = Attack × AQ would make the same early spread 125% down to 83%.
 
 ### Shields and hands
 
@@ -143,25 +160,24 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 
 - **Decided 2026-11-20 (C17):** Body and Agility do not unlock skills.
 - **Decided 2026-11-20 (C17):** Mind × experience gives a character **Tech Points**, which are spent on skills, like Job Points in Final Fantasy Tactics.
-- **Proposed (C27):** Tech Points gained = experience gained × Mind ÷ 100, for each character on their own Mind. That is 0.8 per point of experience at Mind 80, 1 at 100 and 2 at 200. Experience is not used up by this.
-- **Proposed (C27):** a skill has to be unlocked in the world before it can be bought. The randomizer shuffles the unlocks; Tech Points decide who learns what.
-- **Open (C28):** whether the platformer-view abilities (double jump, teleport, perceiving threat zones and the rest) are bought with the same Tech Points. Recommended: yes. It belongs to `design.md`, open question 6.
+- **To try first (C27):** Tech Points gained = experience gained × Mind ÷ 100, for each character on their own Mind. Experience is not used up by this. The scale can end up anywhere; ability prices are balanced to it.
+- **To try first (C27):** a skill has to be unlocked in the world before it can be bought. The randomizer shuffles the unlocks; Tech Points decide who learns what.
+- **Decided 2026-11-20 (C28):** the platformer-view abilities (double jump, teleport, perceiving threat zones and the rest) are bought with the same Tech Points.
+
+### Critical hits
+
+- **Agreed in outline 2026-11-20 (C26), punted until gear:** no random spread on damage. Critical hits instead, as a weapon stat. First numbers: 5% to 25% by weapon, ×1.5, applied after the comparison, only on attacks that use the weapon's Attack.
 
 ### Waiting on Brad
 
-- **C19:** the comparison as a plain ratio (above).
-- **C24:** the other comparison stats take the same shape as Defense, and live in the same range (80 to 120 early, 300 to 420 late) so that comparisons centre on 100%:
-  - Strength = character Strength + Body ÷ 2
-  - Magic Power = character Magic + Mind ÷ 2
-  - Fortitude, Reflex, Will = the character's own value + Body, Agility or Mind ÷ 2
-- **C25:** an added share shrinks as levels rise. A point of Agility is worth less than half as much Defense late as it is early (25% of Defense down to 11%). If the vital statistics should matter equally all game, make the share a percentage instead: Defense = (character + armour) × (75% + Agility ÷ 400). That gives the same numbers early and keeps Agility at up to 25% late. If the fade is intended, nothing changes.
-- **C26:** no random spread on damage. Critical hits instead, as a weapon stat: 5% to 25% by weapon, ×1.5, applied after the comparison, and only on attacks that use the weapon's Attack.
-- **C27, C28:** Tech Points, above.
+- **C29:** the corrected damage formula.
+- **C30:** whether the formula is steep enough for gear to matter as much as intended.
+- **C31:** what comes next: a playable battle prototype on placeholder numbers, or more of the list on paper first.
 
 ### For `design.md` (the design conversation maintains it)
 
 - Character level exists and raises combat values.
-- The Mind row of the vital statistics table: abilities are bought with Tech Points, earned as Mind × experience.
+- The Mind row of the vital statistics table: abilities, in both scenes, are bought with Tech Points, earned as Mind × experience. This answers part of open question 6.
 - Menu speed is an overworld option (C10).
 
 ### Not proposed yet
