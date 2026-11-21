@@ -135,18 +135,23 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 ### The Defense Quotient
 
 - **Decided 2026-11-20 (C29):** the comparison is a **Defense Quotient**, not an attack quotient. **DQ = the defender's stat ÷ the attacker's stat:** Defense ÷ Strength, or the saving throw ÷ Magic Power.
-- **Decided 2026-11-20 (C29):** **Damage = (Attack ÷ 2) + (Attack ÷ (2 × DQ)).** Half the attack's value always lands; the other half is divided by DQ.
-  - Brad's message wrote the divisor as "2AQ". It is read here as 2 × DQ, which is the only reading that fits his definition. **To be confirmed by Brad.**
-- **Proposed (C29):** damage is never more than 200%, which is reached at DQ ⅓.
+- **Decided 2026-11-20 (C29):** part of an attack's value always lands, and the rest is divided by DQ. At DQ 1 the attack does exactly 100%.
+- **Decided 2026-11-20 (C30):** with half always landing, armour does not do enough.
+- **Proposed by Brad 2026-11-20 (C32), awaiting his confirmation of the numbers:** the literal floor is **25%**, and the floor met in practice is expected to be about 50%. So a quarter always lands and three quarters are divided by DQ:
 
-  | DQ | 4 | 2 | 1.5 | 1.25 | 1 | 0.8 | 0.67 | 0.5 | ⅓ or less |
-  |---|---|---|---|---|---|---|---|---|---|
-  | Damage | 63% | 75% | 83% | 90% | 100% | 113% | 125% | 150% | 200% |
+  **Damage = Attack × (25% + 75% ÷ DQ)**, and never more than 200%.
 
-  - The floor of 50% is built in: it is approached as the defender's stat grows beside the attacker's, and never reached.
-  - With Strength and Defense both between 80 and 120, DQ runs from 0.67 to 1.5, which is 125% down to 83%: the "tends to do 80% to 125%" band.
-- Superseded: an earlier version, withdrawn by Brad, used an Attack Quotient (attacker ÷ defender) with the same division, which made a stronger attacker do less.
-- **Raised (C30):** this is a gentle formula. Doubling Defense from an even match takes damage from 100% to 75%. The whole early spread of Defense (80 to 120, against Strength 100) is 113% down to 92% of damage taken, about a fifth. Late (300 to 420 against 360) it is 110% down to 93%. Brad has said gear should be an important part of Defense; whether a fifth is enough is his call.
+  | DQ | 4 | 3 | 2 | 1.5 | 1.25 | 1 | 0.8 | 0.75 | 0.67 | 0.5 | 0.43 or less |
+  |---|---|---|---|---|---|---|---|---|---|---|---|
+  | Damage | 44% | 50% | 63% | 75% | 85% | 100% | 119% | 125% | 138% | 175% | 200% |
+
+  - 50% is reached when the defender's stat is three times the attacker's. That is the practical floor.
+  - 200% is reached at DQ 0.43, an attacker about 2.3 times the defender, and held there.
+  - Doubling Defense from an even match takes damage from 100% to 63%.
+  - The whole early spread of Defense (80 to 120, against Strength 100) is 119% down to 88% of damage taken: the best armour takes about a quarter less than the worst. Late (300 to 420 against 360) it is 115% down to 89%.
+  - With Strength and Defense both anywhere between 80 and 120, damage runs from 75% to 138%. The "tends to do 80% to 125%" band is DQ 1.36 down to 0.75.
+  - Agility 200 against Agility 100 is 25 more Defense: about 15% less damage taken early, about 5% less late.
+- Superseded: half always landing (Damage = Attack ÷ 2 + Attack ÷ (2 × DQ)), which made the early armour spread only 113% down to 92%. Before that, a version withdrawn by Brad used an Attack Quotient with the same division, which made a stronger attacker do less.
 
 ### Shields and hands
 
@@ -169,8 +174,7 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 
 ### Waiting on Brad
 
-- **C29:** confirm "2AQ" was meant as 2 × DQ, and the 200% cap at DQ ⅓.
-- **C30:** whether a one-fifth swing across the armour range is enough.
+- **C32:** confirm Damage = Attack × (25% + 75% ÷ DQ), capped at 200%.
 - **C31:** what comes next: a playable battle prototype on placeholder numbers, or more of the list on paper first.
 
 ### For `design.md` (the design conversation maintains it)
