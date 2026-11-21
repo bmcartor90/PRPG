@@ -53,7 +53,8 @@ Superseded: C1 first recommended a single mode in which time always stops while 
 ### The opening
 
 - **Decided 2026-11-20 (C6):** nobody starts a fight with a full bar. The clock skips straight to the first bar to fill, so a fight never opens on a wait.
-- **Proposed (C6):** starting fill is the lever for sheathed gear (item 6) and for how the fight began (who touched whom). Numbers come with those items.
+- **To try first (C15):** opening fill = Agility ÷ 4, as a percentage of the bar: 20% at 80, 25% at 100, 50% at 200.
+- **Proposed (C6):** starting fill is also the lever for sheathed gear (item 6) and for how the fight began (who touched whom). Numbers come with those items.
 
 ## What the player sees of monsters
 
@@ -84,29 +85,37 @@ Superseded: C1 first recommended a single mode in which time always stops while 
 
 Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat owns a bar" proposal (C14 to C16), which is withdrawn.
 
+### Where a stat's value comes from
+
+- **Decided 2026-11-20:** each character has **base stats** of their own, before the vital statistics are counted.
+- **Decided 2026-11-20:** **character level** raises all of these values.
+- **Decided 2026-11-20:** Body, Agility and Mind are therefore one part of each value, not the whole of it. The spread between characters is narrower than the 80 to 200 range of the vital statistics suggests.
+
 ### The stats
 
-**Decided 2026-11-20**, except the sources marked proposed.
+**Decided 2026-11-20**, except where marked.
 
-| Stat | What it is | Set by |
+| Stat | What it is | Made from |
 |---|---|---|
-| HP | Current and maximum. The character faints at zero. | Proposed (C18): Body |
-| MP | Current and maximum. Pays spell costs. | Proposed (C18): Mind |
-| Speed | Fills the ready bar. | Proposed (C18): Agility, on the stat curve |
-| Attack | The damage a physical attack fundamentally does. | The weapon |
-| Strength | The attacker's side of the physical comparison. | Proposed (C18): Body |
-| Defense | The defender's side of the physical comparison. | Armour and Agility |
-| Magic Attack | The damage a skill or spell fundamentally does. | The skill or spell |
-| Magic Power | The attacker's side of the magical comparison. | Mind |
-| Fortitude | A saving throw. | Body |
-| Reflex | A saving throw. | Agility |
-| Will | A saving throw. | Mind |
-| Dodge % | Chance a dodgeable attack misses. | Agility |
-| Block % | Chance a blockable attack misses. | The shield |
+| HP | Current and maximum. The character faints at zero. | Includes Body. Body governs it; the scaling is open. |
+| MP | Current and maximum. Pays spell costs. | Includes Mind. |
+| Speed | Fills the ready bar. | To try first: the stat curve on Agility. |
+| Attack | The damage a physical attack fundamentally does. | The weapon. |
+| Strength | The attacker's side of the physical comparison. | Includes Body. |
+| Defense | The defender's side of the physical comparison. | Character Defense + armour Defense + Agility ÷ 4. |
+| Magic Attack | The damage a skill or spell fundamentally does. | The skill or spell. |
+| Magic Power | The attacker's side of the magical comparison. | Mind. |
+| Fortitude | A saving throw. | Body. |
+| Reflex | A saving throw. | Agility. |
+| Will | A saving throw. | Mind. |
+| Dodge % | Chance a dodgeable attack misses. | Agility ÷ 20: 4% at 80, 5% at 100, 10% at 200. |
+| Block % | Chance a blockable attack misses. | The shield. |
+| Critical % | Proposed (C26). | The weapon. |
 
+- **Decided 2026-11-20:** Defense runs from **80 to 120 early** in the game to **300 to 420 late**. Agility is about 25% of Defense early and about 11% late.
 - **Decided 2026-11-20 (C14):** stamina is strictly a platformer-view stat. It plays no part in a fight. This also answers item 8 of the brief: stamina does not carry in.
 - **Decided 2026-11-20 (C14):** skills cost nothing, or mana.
-- **Decided 2026-11-20 (C14):** Agility also affects physical defence.
+- **Decided 2026-11-20 (C21):** Body's part in staying alive is HP. (The idea of reaching Defense through armour weight was not taken up.)
 
 ### How an attack resolves
 
@@ -121,47 +130,45 @@ Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat
 
 So every attack, skill and spell is described by: its base value (the weapon's Attack, or its own Magic Attack), which comparison it uses, whether it can be dodged, whether it can be blocked, and its cost (nothing, or mana).
 
-### Numbers to try, all proposed
+- **Proposed (C19):** the comparison is a plain ratio: scale = attacker's stat ÷ defender's stat, held between 50% and 200%. 80% to 125% is then two values within a quarter of each other. Not yet answered.
 
-- **C19, the comparison:** scale = attacker's stat ÷ defender's stat, held between 50% and 200%. The 80% to 125% band is then two combatants within about one stat level of each other.
+### Shields and hands
 
-  | Attacker ÷ defender | 80 ÷ 200 | 80 ÷ 100 | 100 ÷ 100 | 120 ÷ 100 | 125 ÷ 100 | 200 ÷ 100 | 200 ÷ 80 |
-  |---|---|---|---|---|---|---|---|
-  | Scale | 50% (held) | 80% | 100% | 120% | 125% | 200% | 200% (held) |
+- **Decided 2026-11-20 (C22):** there will be a wide range of gear, and shields can do many things. Each shield is defined on its own, not by a size table.
+- **Decided 2026-11-20 (C22):** shields should be pretty good. A two-handed weapon against sword and shield is always a trade-off, and this game adds a third pull: wanting an open hand in the platformer view.
+- **To try first (C22):** Block % runs from 6% to 30% across shields.
+- **Proposed (C22):** Attack and Block come from what is actually in the hands, so they are most of what sheathed gear costs (item 6).
 
-- **C18, sources:** HP = Body. MP = Mind. Strength = Body. Magic Power = Mind. Fortitude = Body, Reflex = Agility, Will = Mind. Speed = the stat curve on Agility.
-- **C20, Defense:** Defense = armour + Agility ÷ 2. Starting armour is worth 50, so a starting character has Defense 100.
-- **C21, Dodge:** Dodge % = Agility ÷ 10. That is 8% at 80, 10% at 100, 20% at 200.
-- **C22, Block:** 10%, 20% or 30% by the size of the shield, and only while the shield is in a hand.
-- **C23, no damage spread:** damage has no random variation. Dodge and block are the only rolls in an ordinary attack.
+### Skills and Tech Points
 
-### Points raised with these numbers
+- **Decided 2026-11-20 (C17):** Body and Agility do not unlock skills.
+- **Decided 2026-11-20 (C17):** Mind × experience gives a character **Tech Points**, which are spent on skills, like Job Points in Final Fantasy Tactics.
+- **Proposed (C27):** Tech Points gained = experience gained × Mind ÷ 100, for each character on their own Mind. That is 0.8 per point of experience at Mind 80, 1 at 100 and 2 at 200. Experience is not used up by this.
+- **Proposed (C27):** a skill has to be unlocked in the world before it can be bought. The randomizer shuffles the unlocks; Tech Points decide who learns what.
+- **Open (C28):** whether the platformer-view abilities (double jump, teleport, perceiving threat zones and the rest) are bought with the same Tech Points. Recommended: yes. It belongs to `design.md`, open question 6.
 
-- **C21:** Agility now sets four things (Speed, part of Defense, Reflex, Dodge) against three each for Body and Mind, and two of its four reduce physical damage. The ninja would be the fastest and the hardest to hurt. Proposed answer: keep Agility's share of Defense and its Dodge small, as above, and give Body its own route to defence through armour weight, since Body already governs what a character can carry. That belongs with gear (item 9).
-- **C22:** Attack comes from the weapon in hand and Block from the shield in hand. So most of what sheathed gear costs (item 6) follows from the stat list.
-- **Dump stats:** each stat is also a saving throw, so a character who dumps one takes up to 200% from attacks aimed at it. That keeps Mind from being a free dump for soldiers.
+### Waiting on Brad
 
-### Still proposed from before
+- **C19:** the comparison as a plain ratio (above).
+- **C24:** the other comparison stats take the same shape as Defense, and live in the same range (80 to 120 early, 300 to 420 late) so that comparisons centre on 100%:
+  - Strength = character Strength + Body ÷ 2
+  - Magic Power = character Magic + Mind ÷ 2
+  - Fortitude, Reflex, Will = the character's own value + Body, Agility or Mind ÷ 2
+- **C25:** an added share shrinks as levels rise. A point of Agility is worth less than half as much Defense late as it is early (25% of Defense down to 11%). If the vital statistics should matter equally all game, make the share a percentage instead: Defense = (character + armour) × (75% + Agility ÷ 400). That gives the same numbers early and keeps Agility at up to 25% late. If the fade is intended, nothing changes.
+- **C26:** no random spread on damage. Critical hits instead, as a weapon stat: 5% to 25% by weapon, ×1.5, applied after the comparison, and only on attacks that use the weapon's Attack.
+- **C27, C28:** Tech Points, above.
 
-- **C15:** opening fill = Agility ÷ 4, as a percentage of the bar (20% at 80, 25% at 100, 50% at 200).
-- **C17:** which stat unlocks which abilities. `design.md` gives Mind "which abilities you can equip". Proposed narrowing: Mind unlocks spells and perception abilities (the monster hint among them); Body and Agility thresholds unlock free skills. If accepted, this changes the Mind row of the vital statistics table in `design.md`.
+### For `design.md` (the design conversation maintains it)
+
+- Character level exists and raises combat values.
+- The Mind row of the vital statistics table: abilities are bought with Tech Points, earned as Mind × experience.
+- Menu speed is an overworld option (C10).
 
 ### Not proposed yet
 
+- How HP and MP scale with Body, Mind and level.
 - Whether health recovers by itself outside a fight.
-- Critical hits, if any.
-
-## Waiting on Brad
-
-- C15: opening fill from Agility.
-- C17: each stat unlocks its own abilities; narrows a line in `design.md`.
-- C18: what sets HP, MP, Speed and Strength.
-- C19: the comparison is a plain ratio, held between 50% and 200%.
-- C20: Defense = armour + Agility ÷ 2.
-- C21: Dodge % = Agility ÷ 10; Body reaches defence through armour weight.
-- C22: Block 10 / 20 / 30%, only with the shield in hand.
-- C23: no random damage spread.
 
 ## Not started
 
-In the order of `handoff-combat.md`: how stats rise (5); what sheathed gear costs (6), partly answered by C22; running away (7); gear and abilities (9); each monster (10). The battle scene's confirm and cancel controls are also to come.
+In the order of `handoff-combat.md`: how stats rise (5), now partly fixed by character level and Tech Points; what sheathed gear costs (6), partly answered by C22; running away (7); gear and abilities (9); each monster (10). The battle scene's confirm and cancel controls are also to come.
