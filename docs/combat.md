@@ -132,11 +132,11 @@ Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat
 
 So every attack, skill and spell is described by: its base value (the weapon's Attack, or its own Magic Attack), which comparison it uses, whether it can be dodged, whether it can be blocked, and its cost (nothing, or mana).
 
-### The Attack Quotient
+### The comparison formula
 
-- **Decided 2026-11-20 (C19):** **AQ**, the Attack Quotient, is the attacker's stat ÷ the defender's stat: Strength ÷ Defense, or Magic Power ÷ the saving throw.
-- **Decided 2026-11-20 (C19):** damage is half the attack's value, plus a second half that moves with AQ.
-- **Proposed (C29), a correction:** as Brad wrote it, the second half is divided by AQ, which makes a stronger attacker do less. Multiplying is what matches every number he has given:
+**Open.** Brad offered a formula on 2026-11-20 and withdrew it a minute later as "all wrong": AQ (Attack Quotient) = attacker ÷ defender, damage = (Attack ÷ 2) + (Attack ÷ (2 × AQ)). As written it makes a stronger attacker do less. Nothing here is decided until he gives his replacement.
+
+- **Proposed (C29), one candidate:** keep AQ as the attacker's stat ÷ the defender's stat (Strength ÷ Defense, or Magic Power ÷ the saving throw), and multiply where the withdrawn formula divided:
 
   **Damage = (Attack ÷ 2) + (Attack × AQ ÷ 2)**, which is Attack × (1 + AQ) ÷ 2, and never more than 200%.
 
@@ -144,10 +144,10 @@ So every attack, skill and spell is described by: its base value (the weapon's A
   |---|---|---|---|---|---|---|---|---|---|
   | Damage | 63% | 75% | 83% | 90% | 100% | 113% | 125% | 150% | 200% |
 
-  - The floor of 50% is built in: it is what is left when the attacker's stat is nothing beside the defender's. It is approached, never reached.
+  - The floor of 50% is built in: it is approached as the attacker's stat shrinks beside the defender's, and never reached.
   - 200% is reached at AQ 3 and held there.
   - With Strength and Defense both between 80 and 120, AQ runs from 0.67 to 1.5, which is 83% to 125%: the "tends to do 80% to 125%" band.
-- **Raised (C30):** this is a gentle formula. Doubling Defense from an even match takes damage from 100% to 75%. The whole early spread of Defense (80 to 120, against Strength 100) is 113% down to 92% of damage taken, about a fifth. Late (300 to 420 against 360) it is 110% down to 93%. If gear is meant to matter more than that, the formula wants to be steeper; a plain Damage = Attack × AQ would make the same early spread 125% down to 83%.
+- **Raised (C30), about that candidate:** it is gentle. Doubling Defense from an even match takes damage from 100% to 75%. The whole early spread of Defense (80 to 120, against Strength 100) is 113% down to 92% of damage taken, about a fifth. Late (300 to 420 against 360) it is 110% down to 93%. A plain Damage = Attack × AQ, held between 50% and 200%, makes the same early spread 125% down to 83%.
 
 ### Shields and hands
 
@@ -170,8 +170,8 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 
 ### Waiting on Brad
 
-- **C29:** the corrected damage formula.
-- **C30:** whether the formula is steep enough for gear to matter as much as intended.
+- **C29:** the comparison formula. Brad withdrew his; his replacement, or the candidate above.
+- **C30:** how steep it should be, so gear matters as much as intended.
 - **C31:** what comes next: a playable battle prototype on placeholder numbers, or more of the list on paper first.
 
 ### For `design.md` (the design conversation maintains it)
