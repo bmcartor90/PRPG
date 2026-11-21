@@ -29,7 +29,7 @@ Nothing here is ready to build. Battles are outside the first build.
   - Wait: a sub-menu freezes them.
 - **Decided 2026-11-20 (C9):** a sub-menu freezes bar filling only. An action already animating carries on and lands.
 - **Decided 2026-11-20 (C2, C9):** this is meant to be played with. When the player opens a sub-menu changes how the bars line up, to make a fight easier or to make it faster. It is a source of skill expression.
-- **Proposed (C13):** while a sub-menu is open, actions already queued keep starting, one after another, as in Final Fantasy VI. The rule is then "bars stop, nothing else does". A monster whose bar was already full still gets its attack.
+- **Decided 2026-11-20 (C13):** while a sub-menu is open, actions already queued keep starting, one after another, as in Final Fantasy VI. The rule is "bars stop, nothing else does". A monster whose bar was already full still gets its attack.
 
 Superseded: C1 first recommended a single mode in which time always stops while choosing; C2 recommended freezing the bars during animations too; C9 recommended that a sub-menu stop the whole battle clock. Brad chose otherwise each time.
 
@@ -80,71 +80,88 @@ Superseded: C1 first recommended a single mode in which time always stops while 
 - **Proposed (C10):** a run records the mode (Active or Wait) and battle speed it was played at.
 - **Not combat (C10):** menu speed is an overworld option, about how quickly text can be skipped. It belongs in `design.md`.
 
-## What the stats do in a fight
+## Character stats in a fight
 
-All of this section is **Proposed** (C14 to C17), awaiting Brad.
+Brad set this list and the damage rule on 2026-11-20. It replaces the "each stat owns a bar" proposal (C14 to C16), which is withdrawn.
 
-**Each stat owns a bar.** Body owns health and stamina, Agility owns the ready bar, Mind owns mana. Each stat also drives one multiplier, and all three use the stat curve: 50% + stat ÷ 2.
+### The stats
 
-| | Body | Agility | Mind |
-|---|---|---|---|
-| Theme | Sustained effort | Bursts of speed | Abilities |
-| Bar | Health = Body. Stamina = Body. | Ready bar | Mana = Mind |
-| Multiplier (stat curve) | Fight and Skill damage | Ready bar fill rate | Magic power |
-| Also | | Opening fill = Agility ÷ 4, as a percentage | |
-| Pays for | Skills, in stamina | | Magic, in mana |
-| Per point | +1 health, +1 stamina, +0.5% damage | +0.5% fill rate, +0.25% opening fill | +1 mana, +0.5% magic power |
+**Decided 2026-11-20**, except the sources marked proposed.
 
-### Body (C14)
+| Stat | What it is | Set by |
+|---|---|---|
+| HP | Current and maximum. The character faints at zero. | Proposed (C18): Body |
+| MP | Current and maximum. Pays spell costs. | Proposed (C18): Mind |
+| Speed | Fills the ready bar. | Proposed (C18): Agility, on the stat curve |
+| Attack | The damage a physical attack fundamentally does. | The weapon |
+| Strength | The attacker's side of the physical comparison. | Proposed (C18): Body |
+| Defense | The defender's side of the physical comparison. | Armour and Agility |
+| Magic Attack | The damage a skill or spell fundamentally does. | The skill or spell |
+| Magic Power | The attacker's side of the magical comparison. | Mind |
+| Fortitude | A saving throw. | Body |
+| Reflex | A saving throw. | Agility |
+| Will | A saving throw. | Mind |
+| Dodge % | Chance a dodgeable attack misses. | Agility |
+| Block % | Chance a blockable attack misses. | The shield |
 
-- Health equals Body, point for point. 100 at a typical start.
-- Stamina comes into the fight. It equals Body, as it already does in the platformer view.
-- Skills are paid for in stamina. Stamina recovers steadily during a fight, and quickly while defending, as crouching does outside one.
-- Fight and Skill damage are multiplied by the stat curve on Body.
-- Cost: a fourth bar on each character (health, stamina, mana, ready).
+- **Decided 2026-11-20 (C14):** stamina is strictly a platformer-view stat. It plays no part in a fight. This also answers item 8 of the brief: stamina does not carry in.
+- **Decided 2026-11-20 (C14):** skills cost nothing, or mana.
+- **Decided 2026-11-20 (C14):** Agility also affects physical defence.
 
-### Agility (C15)
+### How an attack resolves
 
-- Fill rate, by the stat curve, as already being tried.
-- Opening fill = Agility ÷ 4, as a percentage of the bar.
+**Decided 2026-11-20:**
 
-  | Agility | 80 | 100 | 120 | 140 | 160 | 180 | 200 |
+1. An attack fundamentally does its **Attack** value (from the weapon) or its **Magic Attack** value (from the skill or spell).
+2. That value is scaled by a comparison:
+   - physical: the attacker's **Strength** against the defender's **Defense**;
+   - magical: the attacker's **Magic Power** against one of the defender's saving throws, **Fortitude, Reflex or Will**, as the skill or spell defines.
+3. The comparison makes the attack do **50% to 200%** of its value. It will tend to do **80% to 125%**.
+4. Each attack is marked **Dodgeable?** and **Blockable?**. A dodgeable attack misses on the defender's Dodge %. A blockable attack misses on the defender's Block %. Dodge is rolled first, and the two combine multiplicatively: the chance of being hit is (1 − Dodge) × (1 − Block).
+
+So every attack, skill and spell is described by: its base value (the weapon's Attack, or its own Magic Attack), which comparison it uses, whether it can be dodged, whether it can be blocked, and its cost (nothing, or mana).
+
+### Numbers to try, all proposed
+
+- **C19, the comparison:** scale = attacker's stat ÷ defender's stat, held between 50% and 200%. The 80% to 125% band is then two combatants within about one stat level of each other.
+
+  | Attacker ÷ defender | 80 ÷ 200 | 80 ÷ 100 | 100 ÷ 100 | 120 ÷ 100 | 125 ÷ 100 | 200 ÷ 100 | 200 ÷ 80 |
   |---|---|---|---|---|---|---|---|
-  | Opening fill | 20% | 25% | 30% | 35% | 40% | 45% | 50% |
+  | Scale | 50% (held) | 80% | 100% | 120% | 125% | 200% | 200% (held) |
 
-- Evasion and critical hits are not proposed yet.
+- **C18, sources:** HP = Body. MP = Mind. Strength = Body. Magic Power = Mind. Fortitude = Body, Reflex = Agility, Will = Mind. Speed = the stat curve on Agility.
+- **C20, Defense:** Defense = armour + Agility ÷ 2. Starting armour is worth 50, so a starting character has Defense 100.
+- **C21, Dodge:** Dodge % = Agility ÷ 10. That is 8% at 80, 10% at 100, 20% at 200.
+- **C22, Block:** 10%, 20% or 30% by the size of the shield, and only while the shield is in a hand.
+- **C23, no damage spread:** damage has no random variation. Dodge and block are the only rolls in an ordinary attack.
 
-### Mind (C16)
+### Points raised with these numbers
 
-- Mana equals Mind, point for point.
-- Magic is paid for in mana and multiplied by the stat curve on Mind.
-- Magic is the strong, fast way to end a fight, and mana does not come back. So mana is speed: spent on Magic it shortens fights, spent on Imagine it shortens the map, and the same pool pays for both.
+- **C21:** Agility now sets four things (Speed, part of Defense, Reflex, Dodge) against three each for Body and Mind, and two of its four reduce physical damage. The ninja would be the fastest and the hardest to hurt. Proposed answer: keep Agility's share of Defense and its Dodge small, as above, and give Body its own route to defence through armour weight, since Body already governs what a character can carry. That belongs with gear (item 9).
+- **C22:** Attack comes from the weapon in hand and Block from the shield in hand. So most of what sheathed gear costs (item 6) follows from the stat list.
+- **Dump stats:** each stat is also a saving throw, so a character who dumps one takes up to 200% from attacks aimed at it. That keeps Mind from being a free dump for soldiers.
 
-### Which stat unlocks which abilities (C17)
+### Still proposed from before
 
-- `design.md` gives Mind "which abilities you can equip". Proposed narrowing: Mind unlocks Magic and perception abilities (the monster hint among them). Body and Agility thresholds unlock Skills.
-- Reason: if Mind unlocks everything, Mind is the only stat that gives a character buttons to press.
-- If accepted, this changes the Mind row of the vital statistics table in `design.md`.
-
-### The two checks from the brief
-
-- **The ninja.** A high-Agility leader acts first and most often, and hits at ordinary strength. What the leader pays in a fight comes from the situation, not the stats: hands that may be sheathed (item 6) and stamina that may be spent (item 8).
-- **Mind.** A low-Mind party fights for free and slowly, on Fight and Skills, and has a short Imagine. A high-Mind party ends fights quickly on a budget that does not refill.
+- **C15:** opening fill = Agility ÷ 4, as a percentage of the bar (20% at 80, 25% at 100, 50% at 200).
+- **C17:** which stat unlocks which abilities. `design.md` gives Mind "which abilities you can equip". Proposed narrowing: Mind unlocks spells and perception abilities (the monster hint among them); Body and Agility thresholds unlock free skills. If accepted, this changes the Mind row of the vital statistics table in `design.md`.
 
 ### Not proposed yet
 
-- Defence. For now it is assumed to come from gear alone.
-- Hit, miss and critical chances.
 - Whether health recovers by itself outside a fight.
+- Critical hits, if any.
 
 ## Waiting on Brad
 
-- C13: with a sub-menu open, queued actions keep starting.
-- C14: Body gives health, stamina in battle, and Fight and Skill damage.
-- C15: Agility gives fill rate and opening fill.
-- C16: Mind gives mana and Magic power.
+- C15: opening fill from Agility.
 - C17: each stat unlocks its own abilities; narrows a line in `design.md`.
+- C18: what sets HP, MP, Speed and Strength.
+- C19: the comparison is a plain ratio, held between 50% and 200%.
+- C20: Defense = armour + Agility ÷ 2.
+- C21: Dodge % = Agility ÷ 10; Body reaches defence through armour weight.
+- C22: Block 10 / 20 / 30%, only with the shield in hand.
+- C23: no random damage spread.
 
 ## Not started
 
-In the order of `handoff-combat.md`: how stats rise (5); what sheathed gear costs (6); running away (7); gear and abilities (9); each monster (10). What one stat point is worth (4) and whether stamina carries in (8) are partly answered by the proposals above. The battle scene's confirm and cancel controls are also to come.
+In the order of `handoff-combat.md`: how stats rise (5); what sheathed gear costs (6), partly answered by C22; running away (7); gear and abilities (9); each monster (10). The battle scene's confirm and cancel controls are also to come.
