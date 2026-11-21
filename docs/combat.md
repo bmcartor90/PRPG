@@ -172,11 +172,6 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 
 - **Agreed in outline 2026-11-20 (C26), punted until gear:** no random spread on damage. Critical hits instead, as a weapon stat. First numbers: 5% to 25% by weapon, ×1.5, applied after the comparison, only on attacks that use the weapon's Attack.
 
-### Waiting on Brad
-
-- **C32:** confirm Damage = Attack × (25% + 75% ÷ DQ), capped at 200%.
-- **C31:** what comes next: a playable battle prototype on placeholder numbers, or more of the list on paper first.
-
 ### For `design.md` (the design conversation maintains it)
 
 - Character level exists and raises combat values.
@@ -187,6 +182,99 @@ So every attack, skill and spell is described by: its base value (the weapon's A
 
 - How HP and MP scale with Body, Mind and level.
 - Whether health recovers by itself outside a fight.
+
+## Characters and gear
+
+- **Decided 2026-11-20 (C31):** characters and gear have to be better defined before the battle prototype is built. No prototype until then.
+
+Everything below in this section is **Proposed**, as a first pass for Brad to correct.
+
+### What a character is, in data (C33)
+
+- Starting vital statistics: Body, Agility, Mind, summing to 300, none below 80.
+- Eight values of their own at level 1: HP, MP, Strength, Defense, Magic, Fortitude, Reflex, Will.
+- HP = character HP + Body. MP = character MP + Mind ÷ 2.
+
+The three so far, each strong in a different stat:
+
+| | Lucca | Nina | Ramorand |
+|---|---|---|---|
+| Role | Agile swordsman | Caster (C34) | Templar |
+| Body / Agility / Mind | 100 / 120 / 80 | 80 / 100 / 120 | 120 / 80 / 100 |
+| Character HP | 100 | 80 | 120 |
+| Character MP | 10 | 30 | 20 |
+| Character Strength | 50 | 40 | 55 |
+| Character Defense | 45 | 40 | 55 |
+| Character Magic | 40 | 60 | 45 |
+| Character Fortitude | 45 | 40 | 60 |
+| Character Reflex | 60 | 50 | 40 |
+| Character Will | 45 | 60 | 50 |
+| Starting armour | Leather, 30 | Cloth, 20 | Mail, 40 |
+
+What that makes at level 1:
+
+| | Lucca | Nina | Ramorand |
+|---|---|---|---|
+| HP | 200 | 160 | 240 |
+| MP | 50 | 90 | 70 |
+| Speed | 1.10× | 1.00× | 0.90× |
+| Strength | 100 | 80 | 115 |
+| Defense | 105 | 85 | 115 |
+| Magic Power | 80 | 120 | 95 |
+| Fortitude | 95 | 80 | 120 |
+| Reflex | 120 | 100 | 80 |
+| Will | 85 | 120 | 100 |
+| Dodge | 6% | 5% | 4% |
+
+- Every comparison stat sits between 80 and 120, the early range Brad set for Defense.
+- Lucca is the natural leader for movement and has the shortest Imagine and the least mana. Leading with Nina reverses that.
+
+### Nina (C34)
+
+- Her archetype is not decided. Proposed: the caster, so that the three cover Agility, Mind and Body between them.
+
+### Levels (C35)
+
+This is item 5 of the brief, as far as characters need it.
+
+- Character levels run from 1 to 30.
+- Each level adds 6 to each of a character's own comparison values (Strength, Defense, Magic, Fortitude, Reflex, Will). A value of 50 at level 1 is 224 at level 30.
+- With late armour worth about 120 and Agility ÷ 4, late Defense comes to about 370 to 390, inside the 300 to 420 Brad set.
+- Each level gives 4 points to place freely among Body, Agility and Mind. Thirty levels is 116 points, enough to take one stat from 100 to 200 with a little left over.
+- How HP and MP grow with level is not proposed yet.
+
+### Gear (C36)
+
+- **Four slots:** right hand, left hand, armour, one accessory.
+- **A weapon has:** Attack, hands needed (one or two), Critical %, and whether its basic attack can be dodged and blocked.
+- **A shield has:** Block %, and whatever else that shield does.
+- **Armour has:** Defense.
+- First numbers:
+
+  | Item | Hands | Numbers |
+  |---|---|---|
+  | Sword | 1 | Attack 20, critical 10% |
+  | Two-handed sword | 2 | Attack 30, critical 10% |
+  | Staff | 2 | Attack 12, critical 5%, Magic Power +10 |
+  | Shield | 1 | Block 15% |
+  | Cloth / leather / mail | | Defense 20 / 30 / 40 |
+
+- A two-handed weapon is worth half again the Attack of a one-handed one; that is the price of the shield's 15%.
+- Any character can hold any gear. All three already have frames for sword, shield and staff.
+
+### Skills (C37)
+
+- **Open:** whether skills are bought from one pool that any character can learn, or from a list of each character's own.
+- Proposed: one pool. The randomizer shuffles unlocks, so any party can use whatever turns up, and a character's identity comes from their own values and how the player builds them.
+
+### Waiting on Brad
+
+- **C32:** confirm Damage = Attack × (25% + 75% ÷ DQ), capped at 200%.
+- **C33:** the character sheet and the three characters' numbers.
+- **C34:** Nina as the caster.
+- **C35:** 30 levels, +6 a level, 4 free vital points a level.
+- **C36:** four gear slots, the fields, the first numbers.
+- **C37:** one skill pool or a list per character.
 
 ## Not started
 
