@@ -241,12 +241,10 @@ The game has two separate views:
 
 ## Battle system
 
-**Open.** Two candidates, to be decided later:
+**Decided on 2026-11-20: a ready bar.** A traditional JRPG battle, where each character acts when their ready bar fills. Final Fantasy VI and Chrono Trigger both use it, and both have great randomizers.
 
-- A traditional JRPG battle, where each character acts when their ready bar fills.
-- A hex-grid battle in the style of Heroes of Might and Magic.
-
-Noted in favour of the ready-bar option: Final Fantasy VI and Chrono Trigger both use it, and both have great randomizers.
+- The other candidate, a hex-grid battle in the style of Heroes of Might and Magic, is dropped.
+- **Combat is designed in its own conversation and written up in `docs/combat.md`.** That conversation's brief is `docs/handoff-combat.md`, which also lists where the two scenes meet. This document keeps everything outside the battle scene.
 
 ## Party and leader
 
@@ -290,7 +288,7 @@ Notes on Mind:
 
 ### What each does in battle
 
-**Open.** Not yet defined; depends on the battle system.
+**Open.** Being settled in the combat conversation; see `docs/combat.md` once it exists.
 
 ## Stamina and climbing
 
@@ -455,9 +453,9 @@ Decided on 2026-11-19:
 
 ## Open questions
 
-1. Which battle system: ready-bar JRPG or hex grid?
+1. ~~Which battle system~~ Decided: a ready bar.
 2. What is the lore reason for a party of 3?
-3. What do Body, Agility and Mind do in battle?
+3. What do Body, Agility and Mind do in battle? (With the combat conversation; see `docs/handoff-combat.md`.)
 4. Does reaching a Big Safe without sleeping count as a save point, or only actually sleeping?
 5. The battle-start edge rules (hazards, pits, several enemies touched before anchoring). Deferred until it can be felt.
 6. Which abilities Mind unlocks, and how each is statted (double jump, teleportation, a steeper walkable limit and others).

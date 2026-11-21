@@ -2,6 +2,10 @@
 
 Newest first. Each entry says what changed and what a port of the simulation has to do about it.
 
+## 2026-11-20: battle system chosen, nothing to build
+
+Brad chose the ready bar over the hex grid. Battles are still outside the first build. Combat is now designed in a separate conversation, which will write `docs/combat.md`; its brief is `docs/handoff-combat.md`. No lab, trace or spec change.
+
 ## 2026-11-19, late night: crouching, crawling and low rock
 
 Brad reversed an earlier decision: he must be able to get under anything with at least 1 tile of room, by sliding or crawling.
