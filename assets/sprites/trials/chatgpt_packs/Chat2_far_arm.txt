@@ -1,0 +1,43 @@
+Sprite sheet for a 2D side-scrolling platformer.
+
+The attached picture is my character, Lucca. The large figure on the left is him standing.
+On the right are his walk frames (top row) and run frames (bottom row). Match him exactly:
+the same face, hair, robe, colours, outline and pixel style. Do not redesign him.
+
+CAMERA
+- Fixed and side-on, level with his waist, no perspective distortion.
+- He faces right with his chest turned very slightly toward the viewer, as in the picture.
+- That angle never changes in any frame, whatever he is doing. We never see him from the
+  front or from behind. Only his limbs and spine move.
+- Facing right, his right arm is the near arm and his left arm is the far arm.
+
+RULES
+- One landscape image, 1536 x 1024. A truly transparent background.
+- Frames in equal-sized cells, in order, left to right, with clear space between them.
+  Nothing touching, nothing cut off at an edge.
+- The same scale in every frame: his head is the same size in every frame.
+- Hands are empty closed fists.
+- No text, labels, grid lines, ground lines, shadows, glows or motion lines.
+- No scenery or props: no ledge, rope, wall or weapon. Only Lucca.
+- The LAST frame is always Lucca standing exactly like the large figure in the picture.
+  Draw it fresh; do not paste it in.
+
+FRAMES: reaching for a shield on his back, 5 frames in one row.
+
+He stands with his feet still. His LEFT arm, the one farther from the viewer, does all the
+work. His RIGHT arm, the near one, hangs at his side with a closed fist and does not move.
+
+1. Standing, both fists at his sides.
+2. His left arm lifts: left elbow raised to shoulder height and pointing forward, left fist
+   beside his left ear.
+3. His left fist reaches back over his left shoulder to the middle of his back, as if
+   gripping a shield slung there. His left elbow points up.
+4. His left arm swings forward and stops with the forearm level across the front of his
+   chest, fist closed, as if holding a shield in front of him.
+5. Standing, exactly like the large figure in the picture.
+
+The left arm passes behind his head and body where it should. Do not swap the arms, and do
+not draw anything in his hands.
+
+After the image, list frame by frame what you drew and say plainly where any frame departs
+from this. Then stop.

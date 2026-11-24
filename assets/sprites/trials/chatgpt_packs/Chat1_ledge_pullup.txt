@@ -1,0 +1,47 @@
+Sprite sheet for a 2D side-scrolling platformer.
+
+The attached picture is my character, Lucca. The large figure on the left is him standing.
+On the right are his walk frames (top row) and run frames (bottom row). Match him exactly:
+the same face, hair, robe, colours, outline and pixel style. Do not redesign him.
+
+CAMERA
+- Fixed and side-on, level with his waist, no perspective distortion.
+- He faces right with his chest turned very slightly toward the viewer, as in the picture.
+- That angle never changes in any frame, whatever he is doing. We never see him from the
+  front or from behind. Only his limbs and spine move.
+- Facing right, his right arm is the near arm and his left arm is the far arm.
+
+RULES
+- One landscape image, 1536 x 1024. A truly transparent background.
+- Frames in equal-sized cells, in order, left to right, with clear space between them.
+  Nothing touching, nothing cut off at an edge.
+- The same scale in every frame: his head is the same size in every frame.
+- Hands are empty closed fists.
+- No text, labels, grid lines, ground lines, shadows, glows or motion lines.
+- No scenery or props: no ledge, rope, wall or weapon. Only Lucca.
+- The LAST frame is always Lucca standing exactly like the large figure in the picture.
+  Draw it fresh; do not paste it in.
+
+FRAMES: a ledge pull-up, 9 frames. Row 1 is frames 1 to 5, row 2 is frames 6 to 9.
+
+Imagine a ledge just in front of him, on his right, at the height his fists reach when he
+hangs at full stretch. Do not draw it. His two fists stay side by side, gripping it, from
+frame 1 to frame 5.
+
+1. Dead hang. Arms straight overhead, body hanging straight down, legs together. Seen from
+   the side, the same angle as the standing figure.
+2. Starting to pull. Elbows bent to a right angle, the top of his head level with his
+   fists, knees slightly bent.
+3. Chin over. His chin is above his fists, elbows tucked down by his ribs, legs trailing.
+4. Chest over. His chest is above his fists and leaning forward over the ledge. His arms
+   push down, elbows pointing up and back. His near knee is coming up.
+5. Knee on. His near knee is planted at the height of his fists. His arms are almost
+   straight, pushing down. His far leg still hangs below.
+6. Crouched on top. Both feet on the ledge, crouched low, both fists on the ground by his
+   feet.
+7. Rising. A half crouch, fists leaving the ground, back straightening.
+8. Nearly upright, knees still slightly bent.
+9. Standing, exactly like the large figure in the picture.
+
+After the image, list frame by frame what you drew and say plainly where any frame departs
+from this. Then stop.

@@ -50,3 +50,7 @@ Brad chose ChatGPT's version of Lucca over matching the Meshy look: a camera tha
 - **Look: matches the painted Meshy Lucca, not ChatGPT's own test 1 Lucca.** Robe (57 to 62, 87 to 92, 118 to 124) against the painted (57, 88, 118); swept-back wavy hair, wide sleeves.
 - So ChatGPT can draw the original Lucca. It also means its two sheets so far show two different Luccas; which reference each chat had decides what that says about coherence.
 - The walk steps high in frames 2 and 5, a little like marching.
+
+## One pack per chat, 2026-11-23
+
+The earlier handoff asked Brad to send different subsets of one zip to different chats, which caused confusion about which reference each sheet had seen. Replaced by `chatgpt_packs/`: each pack is one new ChatGPT chat, with exactly one picture to attach (`lucca_reference.png`, the painted Lucca: standing close-up plus his walk and run rows) and one text to paste. Every pack ends with a freshly drawn standing control frame. The three packs (pull-up, far arm, crawl) in three separate chats are the coherence test. This goes back to the original Lucca look, since ChatGPT's walk sheet showed it can draw him.
