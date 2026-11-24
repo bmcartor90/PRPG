@@ -41,3 +41,12 @@ Brad chose ChatGPT's version of Lucca over matching the Meshy look: a camera tha
 - `chatgpt/lucca_v2_anchor.png` is the standing frame from test 1, enlarged, as the provisional reference picture for new requests.
 - Not yet proven: that ChatGPT keeps him the same from sheet to sheet and in a new chat, and that it can animate the far arm. Both get tested before the Meshy sheets are retired.
 - The Meshy character sheets stay in the lab until a full replacement set has passed the checks.
+
+### ChatGPT walk sheet, 2026-11-23
+
+`chatgpt/sheetB_walk.png`; beside the painted walk in `chatgpt/sheetB_walk_vs_painted.gif`; the three standing Luccas in `chatgpt/three_luccas.png`.
+
+- **Structure: pass.** 6 walk frames and a standing frame, side-on throughout, real transparency. All seven are 360 to 367 pixels tall, faces 50 to 53 pixels, and six of seven share the same foot line to the pixel.
+- **Look: matches the painted Meshy Lucca, not ChatGPT's own test 1 Lucca.** Robe (57 to 62, 87 to 92, 118 to 124) against the painted (57, 88, 118); swept-back wavy hair, wide sleeves.
+- So ChatGPT can draw the original Lucca. It also means its two sheets so far show two different Luccas; which reference each chat had decides what that says about coherence.
+- The walk steps high in frames 2 and 5, a little like marching.
