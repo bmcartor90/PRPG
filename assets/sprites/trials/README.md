@@ -15,3 +15,12 @@ A stylised 3D Lucca was rigged in Meshy and photographed side-on at game size. T
 - **Structure: pass.** 8 frames in order, nothing touching, no props or effects. Real transparency (82% fully transparent, under 2% semi-transparent fringe; cuts cleanly at alpha above 200). The camera stays side-on from the hang to the crouch, which Meshy never managed, and the frames read as one motion. Face height is 45 to 50 pixels across frames 1 to 7, so the scale holds.
 - **Look: fail.** A different drawing of the same character: shorter, bushier hair with a fringe over the eye, a rounder and younger face, narrower sleeves, a thicker outline and flatter shading. The robe is dark indigo (59, 64, 91) against the painted blue (57, 88, 118); that part can be recoloured when cutting.
 - Not mixable with the Meshy sheets as it stands.
+
+## Gemini image generation, 2026-11-23
+
+Same brief. `gemini/test1_ledge_pullup.jpg`. Gemini said it had not looked at the reference images (they were given as a zip, which it could not open), so it worked from the text alone.
+
+- **Fail.** It is not a pull-up: he stands with his feet on the ground in every frame, and frames 2 to 5 are a guard pose, two running poses and a raised knee. The camera is front three-quarter and changes direction (frames 6 and 7 face left).
+- Labels and black grid lines are painted in; the brief forbade both. A lossy JPEG, 1264 x 848, on magenta with compression noise.
+- The look is a smooth painted style with a purple robe (66, 75, 128), not the chunky pixel look.
+- Not a fair test of matching the look, since it never saw the references. A fair retry attaches the four PNGs directly.
