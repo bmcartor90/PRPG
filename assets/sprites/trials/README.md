@@ -98,3 +98,5 @@ Each chat draws him at a different size, which the control frame corrects; scale
 - Sword, near hand: the ready frame ends with the fist close to his belly, much like the first frame. The far-hand row reads better.
 - **Crawl: redo.** He is 0.98 to 1.01 tiles tall, so he exactly fills a 1-tile gap with no clearance, and the legs barely alternate (frames 1, 4 and 6 are nearly the same).
 - ChatGPT's Lucca has a slightly heavier outline and smoother shading than the Meshy frames, so the two should not be mixed within one character.
+
+Prompts revised after the first results (the files in `chatgpt_packs/` are the current versions): the shield sheet's far-arm row now says where that arm appears from, because the first "ready" frame drew the forearm coming out of the middle of his chest with no shoulder or elbow; the sword sheet's near-hand ready pose is pushed clear of the body; the crawl is lower (40% of standing height) with the legs spelled out.

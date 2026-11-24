@@ -22,19 +22,28 @@ RULES
 - The LAST frame is always Lucca standing exactly like the large figure in the picture.
   Draw it fresh; do not paste it in.
 
-FRAMES: a crawl on hands and knees that loops, 7 frames in one row.
+FRAMES: a low crawl on hands and knees that loops, 7 frames in one row.
 
-He faces right. His back is level and his head is up, looking ahead. From the ground to the
-top of his head he is no more than half his standing height. His robe drapes over his back
-and trails between his legs. Hands and knees rest on the same invisible ground line in
-every frame, and his body is the same length in every frame.
+He faces right. He is LOW: from the ground to the top of his head he is no more than 40% of
+his standing height. His back is level and his head is level with his back, chin pushed
+forward, not raised. His shins lie flat on the ground behind his knees. On this sheet only,
+a hand that is planted is open and flat on the ground. His robe drapes over his back and
+trails between his legs. Hands and knees rest on the same invisible ground line in every
+frame, and his body is the same length in every frame.
 
-1. Right hand and left knee forward, left hand and right knee back.
-2. Right hand and left knee planted and taking his weight; left hand lifting.
-3. Left hand and right knee passing forward, halfway.
-4. Left hand and right knee forward, right hand and left knee back. The mirror of frame 1.
-5. Left hand and right knee planted and taking his weight; right hand lifting.
-6. Right hand and left knee passing forward, halfway. This leads back into frame 1.
+His arms and legs move in opposite pairs, and the legs must clearly alternate: when one
+knee is forward under his hips, the other is well behind.
+
+1. Right hand far forward, left knee forward under his hips. Left hand back by his chest,
+   right knee far back.
+2. Weight on the right hand and left knee. Left hand lifted off the ground and moving
+   forward. Right knee lifted and sliding forward.
+3. Left hand and right knee passing the other pair, halfway.
+4. Left hand far forward, right knee forward under his hips. Right hand back by his chest,
+   left knee far back. The mirror of frame 1.
+5. Weight on the left hand and right knee. Right hand lifted and moving forward. Left knee
+   lifted and sliding forward.
+6. Right hand and left knee passing the other pair, halfway. This leads back into frame 1.
 7. Standing, exactly like the large figure in the picture.
 
 After the image, list frame by frame what you drew and say plainly where any frame departs
