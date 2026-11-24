@@ -54,3 +54,5 @@ Brad chose ChatGPT's version of Lucca over matching the Meshy look: a camera tha
 ## One pack per chat, 2026-11-23
 
 The earlier handoff asked Brad to send different subsets of one zip to different chats, which caused confusion about which reference each sheet had seen. Replaced by `chatgpt_packs/`: each pack is one new ChatGPT chat, with exactly one picture to attach (`lucca_reference.png`, the painted Lucca: standing close-up plus his walk and run rows) and one text to paste. Every pack ends with a freshly drawn standing control frame. The three packs (pull-up, far arm, crawl) in three separate chats are the coherence test. This goes back to the original Lucca look, since ChatGPT's walk sheet showed it can draw him.
+
+Packs as of 2026-11-23: `Chat1_ledge_pullup`, `Chat3_crawl`, `Chat4_sword_draws`, `Chat5_shield_draws`. The two draw packs each show the move with the near arm and with the far arm, hands empty, and replace the earlier `Chat2_far_arm`. Brad wants sword and shield draws with either hand in the game but would cut them at the Meshy sheets' quality, so these two decide whether they stay.

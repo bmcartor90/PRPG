@@ -1,0 +1,53 @@
+Sprite sheet for a 2D side-scrolling platformer.
+
+The attached picture is my character, Lucca. The large figure on the left is him standing.
+On the right are his walk frames (top row) and run frames (bottom row). Match him exactly:
+the same face, hair, robe, colours, outline and pixel style. Do not redesign him.
+
+CAMERA
+- Fixed and side-on, level with his waist, no perspective distortion.
+- He faces right with his chest turned very slightly toward the viewer, as in the picture.
+- That angle never changes in any frame, whatever he is doing. We never see him from the
+  front or from behind. Only his limbs and spine move.
+- Facing right, his right arm is the near arm and his left arm is the far arm.
+
+RULES
+- One landscape image, 1536 x 1024. A truly transparent background.
+- Frames in equal-sized cells, in order, left to right, with clear space between them.
+  Nothing touching, nothing cut off at an edge.
+- The same scale in every frame: his head is the same size in every frame.
+- Hands are empty closed fists.
+- No text, labels, grid lines, ground lines, shadows, glows or motion lines.
+- No scenery or props: no ledge, rope, wall or weapon. Only Lucca.
+- The LAST frame is always Lucca standing exactly like the large figure in the picture.
+  Draw it fresh; do not paste it in.
+
+FRAMES: drawing a sword, once with each hand, 9 frames.
+
+He stands with his feet still in every frame. His hands are empty closed fists throughout:
+draw no sword, no shield, no sheath and no strap. The game adds those itself. Only the arm
+named moves; the other arm hangs at his side with a closed fist and does not move.
+
+Five columns. Row 1 is frames 1 to 4, with the fifth cell left empty. Row 2 is frames 5 to 9.
+
+Row 1, his RIGHT arm, the one nearer the viewer, draws a sword worn on his left hip:
+1. His right fist crosses in front of his belly to his left hip, as if gripping a hilt there.
+2. His right fist pulls forward and up to chest height, elbow bent, as if the blade is
+   half out.
+3. His right arm sweeps out in front of him, nearly straight, fist at shoulder height, as
+   if the blade has just come free.
+4. Ready. His right fist is held in front of him at waist height, elbow bent, as if
+   holding a sword that points forward and up.
+
+Row 2, his LEFT arm, the one farther from the viewer, draws a sword worn on his right hip.
+The left arm is partly hidden behind his body where it should be:
+5. His left fist crosses in front of his belly to his right hip, as if gripping a hilt there.
+6. His left fist pulls forward and up to chest height, elbow bent.
+7. His left arm sweeps out in front of him, nearly straight, fist at shoulder height.
+8. Ready. His left fist is held in front of him at waist height, elbow bent.
+9. Standing, exactly like the large figure in the picture.
+
+Do not swap the arms. In row 1 the left arm never moves; in row 2 the right arm never moves.
+
+After the image, list frame by frame what you drew and say plainly where any frame departs
+from this. Then stop.

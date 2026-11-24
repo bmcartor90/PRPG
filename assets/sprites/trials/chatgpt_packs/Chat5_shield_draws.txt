@@ -1,0 +1,56 @@
+Sprite sheet for a 2D side-scrolling platformer.
+
+The attached picture is my character, Lucca. The large figure on the left is him standing.
+On the right are his walk frames (top row) and run frames (bottom row). Match him exactly:
+the same face, hair, robe, colours, outline and pixel style. Do not redesign him.
+
+CAMERA
+- Fixed and side-on, level with his waist, no perspective distortion.
+- He faces right with his chest turned very slightly toward the viewer, as in the picture.
+- That angle never changes in any frame, whatever he is doing. We never see him from the
+  front or from behind. Only his limbs and spine move.
+- Facing right, his right arm is the near arm and his left arm is the far arm.
+
+RULES
+- One landscape image, 1536 x 1024. A truly transparent background.
+- Frames in equal-sized cells, in order, left to right, with clear space between them.
+  Nothing touching, nothing cut off at an edge.
+- The same scale in every frame: his head is the same size in every frame.
+- Hands are empty closed fists.
+- No text, labels, grid lines, ground lines, shadows, glows or motion lines.
+- No scenery or props: no ledge, rope, wall or weapon. Only Lucca.
+- The LAST frame is always Lucca standing exactly like the large figure in the picture.
+  Draw it fresh; do not paste it in.
+
+FRAMES: taking a shield off his back, once with each hand, 9 frames.
+
+He stands with his feet still in every frame. His hands are empty closed fists throughout:
+draw no sword, no shield, no sheath and no strap. The game adds those itself. Only the arm
+named moves; the other arm hangs at his side with a closed fist and does not move.
+
+Five columns. Row 1 is frames 1 to 4, with the fifth cell left empty. Row 2 is frames 5 to 9.
+
+Row 1, his RIGHT arm, the one nearer the viewer, fetches a shield slung on his back:
+1. His right elbow lifts to shoulder height and points forward, right fist beside his
+   right ear.
+2. His right fist reaches back over his right shoulder to the middle of his back, as if
+   gripping the shield. His right elbow points up.
+3. His right arm swings forward past his shoulder, elbow bent, fist at chest height out in
+   front of him.
+4. Ready. His right forearm is level across the front of his chest, fist closed, as if
+   holding a shield in front of him.
+
+Row 2, his LEFT arm, the one farther from the viewer, does the same. The left arm passes
+behind his head and body where it should:
+5. His left elbow lifts to shoulder height and points forward, left fist beside his left ear.
+6. His left fist reaches back over his left shoulder to the middle of his back. His left
+   elbow points up.
+7. His left arm swings forward past his shoulder, elbow bent, fist at chest height out in
+   front of him.
+8. Ready. His left forearm is level across the front of his chest, fist closed.
+9. Standing, exactly like the large figure in the picture.
+
+Do not swap the arms. In row 1 the left arm never moves; in row 2 the right arm never moves.
+
+After the image, list frame by frame what you drew and say plainly where any frame departs
+from this. Then stop.
