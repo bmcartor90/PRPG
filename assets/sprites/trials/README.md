@@ -65,3 +65,14 @@ All five packs were given to ChatGPT as the zip file itself, with a typed line s
 - Crawl, sword and shield packs: the image generator was handed "game ready assets" and returned generic asset-pack pictures (a spider, village props).
 
 Lesson: the reference must be attached as a loose picture and the prompt pasted as the message, with nothing else typed. A zip is treated as a file to process, and the picture inside never reaches the image generator as a visual reference. Packs are now delivered as one loose picture plus text pasted from the conversation, one test at a time.
+
+### Pull-up from one reference picture in a new chat, 2026-11-23: pass
+
+`chatgpt/pack1_pullup.png`; beside the painted pull-up in `chatgpt/pack1_vs_painted.png`; played against an imagined ledge in `chatgpt/pack1_on_ledge.gif`.
+
+- 9 frames in order, real transparency (under 3% fringe), nothing painted in.
+- **Camera holds side-on through the whole move, in the original Lucca look.** Robe (51 to 57, 84 to 90, 108 to 119) against the painted (57, 88, 118).
+- Pinned by the fists for frames 1 to 5 and by the feet after, it plays as one pull-up onto a ledge.
+- Control frame 372 pixels tall against 361 on the earlier walk sheet (3% apart, corrected when cutting); robe colour agrees between the two sheets.
+- Flaws: frames 2 and 3 are nearly the same pose (the chin never clears the fists); his sleeves ride up to the elbow in frames 4 and 5; in frame 1 his raised arm hides his face.
+- Method that worked: one loose reference picture attached, the prompt pasted as the message, nothing else typed.
