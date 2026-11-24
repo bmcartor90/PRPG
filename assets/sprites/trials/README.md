@@ -76,3 +76,25 @@ Lesson: the reference must be attached as a loose picture and the prompt pasted 
 - Control frame 372 pixels tall against 361 on the earlier walk sheet (3% apart, corrected when cutting); robe colour agrees between the two sheets.
 - Flaws: frames 2 and 3 are nearly the same pose (the chin never clears the fists); his sleeves ride up to the elbow in frames 4 and 5; in frame 1 his raised arm hides his face.
 - Method that worked: one loose reference picture attached, the prompt pasted as the message, nothing else typed.
+
+### Sword draws, shield draws and crawl, each in its own new chat, 2026-11-23
+
+`chatgpt/pack4_sword_draws.png`, `pack5_shield_draws.png`, `pack3_crawl.png`. Played back in `draws_either_hand.gif` and `crawl_cycle.gif`. The standing frame from all five ChatGPT sheets beside the painted one: `six_standing_luccas.png`.
+
+**Coherence across five separate chats: pass.**
+
+| Sheet | Control frame height | Robe colour |
+|---|---|---|
+| Painted (Meshy) | 307 | 57, 88, 118 |
+| Walk | 361 | 57, 90, 123 |
+| Pull-up | 372 | 54, 90, 119 |
+| Sword draws | 391 | 61, 91, 119 |
+| Shield draws | 439 | 60, 90, 121 |
+| Crawl | 345 | 55, 86, 115 |
+
+Each chat draws him at a different size, which the control frame corrects; scaled to the same height the five are the same character. Within the sword and shield sheets all nine frames are the same height to 2 pixels with feet on one line.
+
+- **Far arm: pass, on both sheets.** The left arm animates while the right hangs still, and the reverse. This is what Meshy never did.
+- Sword, near hand: the ready frame ends with the fist close to his belly, much like the first frame. The far-hand row reads better.
+- **Crawl: redo.** He is 0.98 to 1.01 tiles tall, so he exactly fills a 1-tile gap with no clearance, and the legs barely alternate (frames 1, 4 and 6 are nearly the same).
+- ChatGPT's Lucca has a slightly heavier outline and smoother shading than the Meshy frames, so the two should not be mixed within one character.
