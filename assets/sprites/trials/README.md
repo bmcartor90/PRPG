@@ -7,3 +7,11 @@ A stylised 3D Lucca was rigged in Meshy and photographed side-on at game size. T
 ## ChatGPT image generation, started 2026-11-23
 
 `chatgpt_brief.md` is pasted into ChatGPT with four Lucca images (walk and run sheet, a close-up, the action sheet, the ledge sheet as the example of what went wrong). It asks for a ledge pull-up with a fixed camera. `chatgpt_follow_up_tests.md` has a far-arm test and a crawl cycle. Results get the usual four checks.
+
+### Test 1 result (ledge pull-up, 8 frames), 2026-11-23
+
+`chatgpt/test1_ledge_pullup.png`, compared at game size in `chatgpt/test1_vs_painted.png`.
+
+- **Structure: pass.** 8 frames in order, nothing touching, no props or effects. Real transparency (82% fully transparent, under 2% semi-transparent fringe; cuts cleanly at alpha above 200). The camera stays side-on from the hang to the crouch, which Meshy never managed, and the frames read as one motion. Face height is 45 to 50 pixels across frames 1 to 7, so the scale holds.
+- **Look: fail.** A different drawing of the same character: shorter, bushier hair with a fringe over the eye, a rounder and younger face, narrower sleeves, a thicker outline and flatter shading. The robe is dark indigo (59, 64, 91) against the painted blue (57, 88, 118); that part can be recoloured when cutting.
+- Not mixable with the Meshy sheets as it stands.
