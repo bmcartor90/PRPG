@@ -24,3 +24,12 @@ Same brief. `gemini/test1_ledge_pullup.jpg`. Gemini said it had not looked at th
 - Labels and black grid lines are painted in; the brief forbade both. A lossy JPEG, 1264 x 848, on magenta with compression noise.
 - The look is a smooth painted style with a purple robe (66, 75, 128), not the chunky pixel look.
 - Not a fair test of matching the look, since it never saw the references. A fair retry attaches the four PNGs directly.
+
+### Gemini retry with the four reference PNGs attached, 2026-11-23
+
+`gemini/test1_retry_with_references.jpg`. All three side by side at game size: `test1_three_way.png`.
+
+- **Look: the closest yet.** Robe (56, 85, 113) against the painted (57, 88, 118); wavy shoulder-length hair, wide sleeves, ankle-length robe, and the painted sheets' shading.
+- **Structure: fail, the same way Meshy failed.** Frames 1, 2 and 6 face the viewer and the rest are side-on, so he turns during the move. Frame 5 is a forward punch, not a knee on the ledge. Frames 3 and 4 read as running.
+- Black grid lines are still painted in (labels are gone). JPEG on magenta, leaving a magenta fringe that needs trimming when cut.
+- Summary of the three: ChatGPT holds the camera and the motion but not the look; Gemini holds the look but not the camera. Next: give Gemini ChatGPT's sheet as the pose guide.
