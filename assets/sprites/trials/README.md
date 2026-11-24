@@ -33,3 +33,11 @@ Same brief. `gemini/test1_ledge_pullup.jpg`. Gemini said it had not looked at th
 - **Structure: fail, the same way Meshy failed.** Frames 1, 2 and 6 face the viewer and the rest are side-on, so he turns during the move. Frame 5 is a forward punch, not a knee on the ledge. Frames 3 and 4 read as running.
 - Black grid lines are still painted in (labels are gone). JPEG on magenta, leaving a magenta fringe that needs trimming when cut.
 - Summary of the three: ChatGPT holds the camera and the motion but not the look; Gemini holds the look but not the camera. Next: give Gemini ChatGPT's sheet as the pose guide.
+
+## Decision, 2026-11-23: ChatGPT draws the characters
+
+Brad chose ChatGPT's version of Lucca over matching the Meshy look: a camera that holds matters more than keeping the old drawing, and the story can be written around any character. Gemini is dropped.
+
+- `chatgpt/lucca_v2_anchor.png` is the standing frame from test 1, enlarged, as the provisional reference picture for new requests.
+- Not yet proven: that ChatGPT keeps him the same from sheet to sheet and in a new chat, and that it can animate the far arm. Both get tested before the Meshy sheets are retired.
+- The Meshy character sheets stay in the lab until a full replacement set has passed the checks.
