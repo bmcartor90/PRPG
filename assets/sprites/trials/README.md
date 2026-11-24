@@ -100,3 +100,9 @@ Each chat draws him at a different size, which the control frame corrects; scale
 - ChatGPT's Lucca has a slightly heavier outline and smoother shading than the Meshy frames, so the two should not be mixed within one character.
 
 Prompts revised after the first results (the files in `chatgpt_packs/` are the current versions): the shield sheet's far-arm row now says where that arm appears from, because the first "ready" frame drew the forearm coming out of the middle of his chest with no shoulder or elbow; the sword sheet's near-hand ready pose is pushed clear of the body; the crawl is lower (40% of standing height) with the legs spelled out.
+
+### Revised shield, sword and crawl sheets, 2026-11-23
+
+- **Shield v2 (`pack5_shield_draws_v2.png`, `shield_draws_v2.gif`): pass.** The far forearm now comes out from behind the front edge of his chest (`shield_far_ready_before_after.png`). All nine frames 433 to 434 pixels tall, feet on one line.
+- **Sword v2: use image 1 (`pack4_sword_draws_v2_image1.png`, `sword_draws_v2.gif`).** ChatGPT offered two. Image 1 has 8 frames with the boots identical to the pixel in every frame and the correct arm moving in each row; each draw is 3 frames (fist to hip, fist to chest, arm out) between a standing start and end, with no separate ready pose. Image 2 has 9 frames but his stance widens from 156 to 199 pixels through the sheet, and its last far-hand frame looks like the near arm. Both came out a little bluer than the other sheets (red about 45 against 54 to 61); corrected when cutting.
+- **Crawl v2 (`pack3_crawl_v2.png`, `crawl_cycle_v2.gif`): pass.** 0.85 to 0.87 tiles tall, so he clears a 1-tile gap; hands flat, legs alternating. His body length varies from 185 to 228 pixels across the frames, which will show as a slight pulse.
